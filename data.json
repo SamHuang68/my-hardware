@@ -1,0 +1,68 @@
+{
+  "last_updated": "2026-02-15",
+  "hardware": [
+    {
+      "id": "ai-rig",
+      "category": "AI Workstation",
+      "title": "GMKtec EVO-T1",
+      "spec_summary": "Core Ultra 9 285H | 96GB | 2TB",
+      "details": {
+        "CPU": "Intel Core Ultra 9 285H (16C/22T, up to 5.4GHz)",
+        "RAM": "96GB Micron 5600MHz DDR5 SODIMM (48GB x2)",
+        "SSD": "2TB Lexar NM790 PCIe Gen4 (7400MB/s)",
+        "GPU": "Intel Arc 140T (Integrated)",
+        "eGPU": "PNY RTX 5080 OC 16GB (via Minisforum DEG2 OCuLink)"
+      },
+      "tags": ["Arrow Lake", "AI Development", "OCuLink"],
+      "color": "blue"
+    },
+    {
+      "id": "msi-claw",
+      "category": "Gaming Handheld",
+      "title": "MSI Claw 8 AI+",
+      "spec_summary": "Ultra 7 268V | 32GB | 80Wh",
+      "details": {
+        "CPU": "Intel Core Ultra 7 268V (Lunar Lake)",
+        "RAM": "32GB LPDDR5X-8533 (On-Package)",
+        "GPU": "Intel Arc 140V Graphics",
+        "Battery": "80Whr High Capacity",
+        "Screen": "8-inch 120Hz FHD+"
+      },
+      "tags": ["Lunar Lake", "Next-Gen Gaming"],
+      "color": "red"
+    },
+    {
+      "id": "dell-laptop",
+      "category": "Mobile Work",
+      "title": "Dell Pro 14 Plus (7450)",
+      "spec_summary": "Ultra 7 268V | 32GB | 512GB",
+      "details": {
+        "CPU": "Intel Core Ultra 7 268V (Lunar Lake)",
+        "RAM": "32GB LPDDR5X (MoP)",
+        "SSD": "512GB PCIe Gen4 NVMe",
+        "FormFactor": "Latitude series / PB14250",
+        "Features": "Intel vPro Enterprise"
+      },
+      "tags": ["Lunar Lake", "vPro", "Productivity"],
+      "color": "emerald"
+    },
+    {
+      "id": "desktop",
+      "category": "Desktop Station",
+      "title": "AMD Performance Rig",
+      "spec_summary": "7800X3D | X670E-I | 32GB",
+      "details": {
+        "CPU": "AMD Ryzen 7 7800X3D (3D V-Cache)",
+        "Mobo": "ASUS ROG STRIX X670E-I Gaming WiFi",
+        "RAM": "32GB Micron Crucial Pro DDR5",
+        "SSD": "1TB Crucial T500 PCIe Gen4"
+      },
+      "tags": ["AM5", "X3D", "Workstation"],
+      "color": "orange"
+    }
+  ],
+  "display": {
+    "model": "JVC 65XM",
+    "specs": ["65\" 4K HDR", "QD-Mini LED", "Native 144Hz", "HDMI 2.1"]
+  }
+}

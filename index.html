@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardware Registry 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #050505; color: #f3f4f6; font-family: 'Inter', sans-serif; }
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .glass-card { background: #111; border: 1px solid #222; transition: all 0.3s ease; border-radius: 2rem; }
+        .glass-card:hover { border-color: #3b82f6; transform: translateY(-3px); }
+    </style>
+</head>
+<body class="p-8 md:p-20">
+
+    <header class="max-w-6xl mx-auto mb-16">
+        <h1 class="text-4xl font-bold">Hardware <span class="text-blue-500">Inventory</span></h1>
+        <p id="update-date" class="text-gray-600 text-sm mt-2"></p>
+    </header>
+
+    <main id="hardware-container" class="max-w-6xl mx-auto bento-grid">
+        </main>
+
+    <script>
+        async function loadHardware() {
+            try {
+                const response = await fetch('data.json');
+                const data = await response.json();
+                
+                document.getElementById('update-date').innerText = `Last Updated: ${data.last_updated}`;
+                const container = document.getElementById('hardware-container');
+
+                data.hardware.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = `glass-card p-8 flex flex-col justify-between`;
+                    
+                    let detailsHtml = '';
+                    for (const [key, value] of Object.entries(item.details)) {
+                        detailsHtml += `<div class="flex justify-between text-sm py-1 border-b border-white/5">
+                            <span class="text-gray-500">${key}</span>
+                            <span class="text-white font-medium text-right ml-4">${value}</span>
+                        </div>`;
+                    }
+
+                    card.innerHTML = `
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <span class="text-[10px] font-bold uppercase tracking-widest text-blue-400">${item.category}</span>
+                                <div class="flex gap-1">${item.tags.map(t => `<span class="bg-white/5 text-[9px] px-2 py-0.5 rounded">${t}</span>`).join('')}</div>
+                            </div>
+                            <h2 class="text-2xl font-bold mb-1">${item.title}</h2>
+                            <p class="text-gray-500 text-xs mb-6">${item.spec_summary}</p>
+                            <div class="space-y-1">${detailsHtml}</div>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Error loading JSON:", error);
+            }
+        }
+        loadHardware();
+    </script>
+</body>
+</html>
