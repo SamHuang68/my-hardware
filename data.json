@@ -65,12 +65,19 @@
       "color": "orange"
     }
   ],
-  "display": {
-    "model": "JVC 65XM",
-    "specs": ["65\" 4K HDR", "QD-Mini LED", "Native 144Hz", "HDMI 2.1"]
-    "mode2": "AORUS FV43U Gaming Monitor",
-    "specs": ["43\" 4K HDR", "QD-Display", "UHD 144Hz", "HDR-1000", "HDMI 2.1"]
-    "mode3": "AORUS FI32Q Gaming Monitor",
-    "specs": ["32\" FHD", "170Hz"]
+"display": {
+    "items": [
+      {
+        "name": "JVC 65XM",
+        "specs": ["65\" 4K HDR", "QD-Mini LED", "Native 144Hz", "HDMI 2.1"]
+      },
+      {
+        "name": "AORUS FV43U Gaming Monitor",
+        "specs": ["43\" 4K HDR", "QD-Display", "UHD 144Hz", "HDR-1000", "HDMI 2.1"]
+      },
+      {
+        "name": "AORUS FI32Q Gaming Monitor",
+        "specs": ["32\" FHD", "170Hz", "SS IPS Panel"]
+      }
+    ]
   }
-}
