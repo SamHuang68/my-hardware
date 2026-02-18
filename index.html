@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>Hardware Asset Registry | Management Console</title>
+    <title>Hardware Asset Registry | Sam Huang</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background: #0a0a0a; color: #d1d5db; font-family: 'Consolas', monospace; }
@@ -10,61 +10,53 @@
         .data-table th, .data-table td { border: 1px solid #333; padding: 14px; text-align: left; font-size: 0.85rem; vertical-align: top; }
         .data-table th { background: #1a1a1a; color: #3b82f6; text-transform: uppercase; }
         .tag-mop { background: #1e3a8a; color: #60a5fa; padding: 2px 5px; border-radius: 4px; font-weight: bold; font-size: 10px; }
-        .section-title { font-size: 1.3rem; font-weight: bold; color: #fff; margin: 2.5rem 0 1rem 0; border-left: 5px solid #3b82f6; padding-left: 1.2rem; }
+        .section-title { font-size: 1.3rem; font-weight: bold; color: #fff; margin: 2rem 0 1rem 0; border-left: 5px solid #3b82f6; padding-left: 1.2rem; }
     </style>
 </head>
 <body class="p-8 lg:p-16">
     <header class="mb-12 border-b border-gray-800 pb-6">
-        <h1 class="text-3xl font-black text-white uppercase italic">Hardware <span class="text-blue-500 font-sans">Command Center</span></h1>
+        <h1 class="text-3xl font-black text-white uppercase italic tracking-tighter">Hardware <span class="text-blue-500 font-sans">Command Center</span></h1>
         <p id="meta-info" class="text-gray-500 text-sm mt-2 font-mono"></p>
     </header>
-
     <div id="registry-container"></div>
-
     <script>
         async function init() {
             try {
-                // 強制讀取當前目錄下的 data.json 並停用快取
-                const res = await fetch('./data.json?t=' + new Date().getTime());
-                if (!res.ok) throw new Error('Load Error');
+                // 使用快取消除機制確保讀取最新 data.json
+                const res = await fetch('data.json?cache_bust=' + Date.now());
+                if (!res.ok) throw new Error('Data file not found');
                 const data = await res.json();
                 
                 document.getElementById('meta-info').innerText = `LAST SYNC: ${data.last_updated} | OWNER: ${data.inventory_owner}`;
                 const container = document.getElementById('registry-container');
 
-                // 系統表格
-                container.innerHTML += `<div class="section-title uppercase">Computing Systems</div>`;
-                let table = `<table class="data-table"><thead><tr>
-                    <th>System</th><th>CPU / Arch</th><th>RAM (MoP)</th><th>Storage</th><th>Details (GPU/PSU/Case)</th><th>Upgrade Notes</th>
-                </tr></thead><tbody>`;
+                container.innerHTML += `<div class="section-title">I. COMPUTING SYSTEMS (UPGRADE TRACKING)</div>`;
+                let table = `<table class="data-table"><thead><tr><th>System</th><th>CPU / Arch</th><th>RAM (MoP)</th><th>Storage</th><th>GPU / PSU Detail</th><th>Lifecycle Notes</th></tr></thead><tbody>`;
 
                 data.hardware_registry.forEach(h => {
                     const ramDisplay = h.ram.spec.includes('MoP') ? `<span class="tag-mop">MoP</span> ${h.ram.spec}` : h.ram.spec;
                     const gpuDisplay = h.gpu.external ? `Ext: ${h.gpu.external}<br>Int: ${h.gpu.internal}` : (typeof h.gpu === 'object' ? h.gpu.model : h.gpu);
-                    
                     table += `<tr>
                         <td class="font-bold text-white">${h.name}</td>
                         <td>${h.cpu.model}<br><span class="text-gray-600 text-xs">${h.cpu.architecture}</span></td>
                         <td>${ramDisplay}</td>
                         <td>${h.storage.primary}</td>
                         <td>GPU: ${gpuDisplay}<br>PSU: ${h.power_supply}${h.motherboard ? `<br>Mobo: ${h.motherboard}` : ""}${h.case ? `<br>Case: ${h.case}` : ""}</td>
-                        <td class="text-orange-400 italic">${h.upgrade_notes}</td>
+                        <td class="text-orange-400 italic font-medium">${h.upgrade_notes}</td>
                     </tr>`;
                 });
                 table += `</tbody></table>`;
                 container.innerHTML += table;
 
-                // 顯示器表格
-                container.innerHTML += `<div class="section-title uppercase">Visual Ecosystem</div>`;
+                container.innerHTML += `<div class="section-title">II. VISUAL ASSETS</div>`;
                 let dTable = `<table class="data-table"><thead><tr><th>Model</th><th>Panel</th><th>Specifications</th></tr></thead><tbody>`;
                 data.display_assets.forEach(d => {
                     dTable += `<tr><td class="font-bold text-blue-400">${d.name}</td><td>${d.panel}</td><td>${d.specs}</td></tr>`;
                 });
                 dTable += `</tbody></table>`;
                 container.innerHTML += dTable;
-
             } catch (e) {
-                document.getElementById('registry-container').innerHTML = `<p class="text-red-500 font-bold">CRITICAL: Database Load Failed. Verify 'data.json' syntax.</p>`;
+                document.getElementById('registry-container').innerHTML = `<p class="text-red-500 font-bold">DATABASE ERROR: ${e.message}. Please check GitHub Actions status.</p>`;
             }
         }
         init();
