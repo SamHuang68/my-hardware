@@ -14,49 +14,57 @@
     </style>
 </head>
 <body class="p-8 lg:p-16">
-    <header class="mb-12 border-b border-gray-800 pb-6">
-        <h1 class="text-3xl font-black text-white uppercase italic tracking-tighter">Hardware <span class="text-blue-500 font-sans">Command Center</span></h1>
+    <header class="mb-12 border-b border-gray-800 pb-6 text-center lg:text-left">
+        <h1 class="text-3xl font-black text-white uppercase italic tracking-tighter italic">Hardware <span class="text-blue-500 font-sans">Command Center</span></h1>
         <p id="meta-info" class="text-gray-500 text-sm mt-2 font-mono"></p>
     </header>
     <div id="registry-container"></div>
     <script>
         async function init() {
             try {
-                // 使用快取消除機制確保讀取最新 data.json
-                const res = await fetch('data.json?cache_bust=' + Date.now());
-                if (!res.ok) throw new Error('Data file not found');
+                const res = await fetch('data.json?cb=' + Date.now());
+                if (!res.ok) throw new Error('Network Error: data.json missing');
                 const data = await res.json();
                 
                 document.getElementById('meta-info').innerText = `LAST SYNC: ${data.last_updated} | OWNER: ${data.inventory_owner}`;
                 const container = document.getElementById('registry-container');
 
-                container.innerHTML += `<div class="section-title">I. COMPUTING SYSTEMS (UPGRADE TRACKING)</div>`;
-                let table = `<table class="data-table"><thead><tr><th>System</th><th>CPU / Arch</th><th>RAM (MoP)</th><th>Storage</th><th>GPU / PSU Detail</th><th>Lifecycle Notes</th></tr></thead><tbody>`;
+                container.innerHTML += `<div class="section-title italic">I. COMPUTING ASSETS (UPGRADE TRACKER)</div>`;
+                let table = `<table class="data-table"><thead><tr><th>System</th><th>CPU / Architecture</th><th>RAM (MoP)</th><th>Storage</th><th>GPU / PSU / Case</th><th>Lifecycle & Upgrade Notes</th></tr></thead><tbody>`;
 
                 data.hardware_registry.forEach(h => {
                     const ramDisplay = h.ram.spec.includes('MoP') ? `<span class="tag-mop">MoP</span> ${h.ram.spec}` : h.ram.spec;
-                    const gpuDisplay = h.gpu.external ? `Ext: ${h.gpu.external}<br>Int: ${h.gpu.internal}` : (typeof h.gpu === 'object' ? h.gpu.model : h.gpu);
+                    
+                    // 修正 GPU 顯示邏輯，防止 undefined
+                    let gpuText = `Primary: ${h.gpu.main}`;
+                    if (h.gpu.sub && h.gpu.sub !== "N/A") gpuText += `<br>Sub: ${h.gpu.sub}`;
+                    if (h.gpu.note) gpuText += `<br><span class="text-blue-400 text-[10px] underline">${h.gpu.note}</span>`;
+
                     table += `<tr>
-                        <td class="font-bold text-white">${h.name}</td>
+                        <td class="font-bold text-white text-base">${h.name}</td>
                         <td>${h.cpu.model}<br><span class="text-gray-600 text-xs">${h.cpu.architecture}</span></td>
                         <td>${ramDisplay}</td>
                         <td>${h.storage.primary}</td>
-                        <td>GPU: ${gpuDisplay}<br>PSU: ${h.power_supply}${h.motherboard ? `<br>Mobo: ${h.motherboard}` : ""}${h.case ? `<br>Case: ${h.case}` : ""}</td>
+                        <td>GPU: ${gpuText}<br>PSU: ${h.power_supply}${h.motherboard ? `<br>Mobo: ${h.motherboard}` : ""}${h.case ? `<br>Case: ${h.case}` : ""}</td>
                         <td class="text-orange-400 italic font-medium">${h.upgrade_notes}</td>
                     </tr>`;
                 });
                 table += `</tbody></table>`;
                 container.innerHTML += table;
 
-                container.innerHTML += `<div class="section-title">II. VISUAL ASSETS</div>`;
-                let dTable = `<table class="data-table"><thead><tr><th>Model</th><th>Panel</th><th>Specifications</th></tr></thead><tbody>`;
+                container.innerHTML += `<div class="section-title italic">II. VISUAL ASSETS</div>`;
+                let dTable = `<table class="data-table"><thead><tr><th>Model</th><th>Panel Technology</th><th>Detailed Specifications</th></tr></thead><tbody>`;
                 data.display_assets.forEach(d => {
-                    dTable += `<tr><td class="font-bold text-blue-400">${d.name}</td><td>${d.panel}</td><td>${d.specs}</td></tr>`;
+                    dTable += `<tr><td class="font-bold text-blue-400 text-base">${d.name}</td><td>${d.panel}</td><td>${d.specs}</td></tr>`;
                 });
                 dTable += `</tbody></table>`;
                 container.innerHTML += dTable;
             } catch (e) {
-                document.getElementById('registry-container').innerHTML = `<p class="text-red-500 font-bold">DATABASE ERROR: ${e.message}. Please check GitHub Actions status.</p>`;
+                document.getElementById('registry-container').innerHTML = `
+                <div class="bg-red-900/20 border border-red-500 p-8 rounded-xl text-red-400 font-bold">
+                    [DATABASE ERROR]: ${e.message}<br>
+                    <span class="text-xs font-normal text-gray-400 underline italic mt-2 block">Action Required: Verify JSON syntax and check GitHub Actions deployment status.</span>
+                </div>`;
             }
         }
         init();
