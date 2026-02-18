@@ -10,7 +10,7 @@
         "CPU": "Intel Core Ultra 9 285H (16C/22T, up to 5.4GHz)",
         "RAM": "96GB Micron 5600MHz DDR5 SODIMM (48GB x2)",
         "SSD": "2TB Lexar NQ790 PCIe Gen4 (7400MB/s)",
-        "eGPU": "PNY RTX 5080 OC 16GB (via Minisforum DEG2)",
+        "eGPU": "PNY GeForce RTX 5080 OC 16GB (via Minisforum DEG2)",
         "PowerSupply": "ASUS ROG Thor 1000W Platinum III (Type-C to Mini PC)"
       },
       "tags": ["Arrow Lake", "AI Development", "High-Power"]
@@ -19,11 +19,13 @@
       "id": "desktop",
       "category": "Desktop Station",
       "title": "AMD Performance Rig",
-      "spec_summary": "7800X3D | 3060 | Seasonic 550W",
+      "spec_summary": "7800X3D | 32GB | 1TB | Seasonic 550W",
       "details": {
         "CPU": "AMD Ryzen 7 7800X3D (3D V-Cache)",
         "Mobo": "ASUS ROG STRIX X670E-I Gaming WiFi",
+        "RAM": "32GB Micron Crucial Pro DDR5",
         "GPU": "EVGA GeForce RTX 3060 XC GAMING",
+        "SSD": "1TB Crucial T500 PCIe Gen4",
         "PowerSupply": "Seasonic FOCUS SGX-550 Gold",
         "Case": "Phanteks Evolv Shift 2 Air"
       },
