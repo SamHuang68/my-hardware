@@ -1,56 +1,74 @@
-{
-  "last_updated": "2026-02-18",
-  "inventory_owner": "Sam Huang",
-  "hardware_registry": [
-    {
-      "id": "AI_WORKSTATION_01",
-      "name": "GMKtec EVO-T1 AI Station",
-      "lifecycle_status": "Active / Development",
-      "cpu": { "model": "Intel Core Ultra 9 285H", "architecture": "Arrow Lake-H", "cores": "16C/22T" },
-      "ram": { "capacity": "96GB", "spec": "Micron 5600MHz DDR5 SODIMM (48GB x2)" },
-      "storage": { "primary": "2TB Lexar NQ790 PCIe Gen4 (7400MB/s)" },
-      "gpu": { "internal": "Intel Arc 140T", "external": "PNY GeForce RTX 5080 OC 16GB (via Minisforum DEG2)" },
-      "power_supply": "ASUS ROG Thor 1000W Platinum III (Powers DEG2 & Type-C to Mini PC)",
-      "upgrade_notes": "Monitor RTX 5080 GDDR7 thermals; Check OCuLink stability."
-    },
-    {
-      "id": "DESKTOP_PC_01",
-      "name": "AMD Performance Gaming Rig",
-      "lifecycle_status": "Active / Main Station",
-      "cpu": { "model": "AMD Ryzen 7 7800X3D", "architecture": "Zen 4 3D V-Cache" },
-      "motherboard": "ASUS ROG STRIX X670E-I GAMING WIFI",
-      "ram": { "capacity": "32GB", "spec": "Micron Crucial Pro DDR5" },
-      "storage": { "primary": "1TB Crucial T500 PCIe Gen4 NVMe" },
-      "gpu": "EVGA GeForce RTX 3060 XC GAMING",
-      "power_supply": "Seasonic FOCUS SGX-550 Gold (SFX-L)",
-      "case": "Phanteks Evolv Shift 2 Air",
-      "upgrade_notes": "Monitor 550W PSU headroom if GPU upgrades."
-    },
-    {
-      "id": "HANDHELD_AI_01",
-      "name": "MSI Claw 8 AI+",
-      "lifecycle_status": "Active / Portable AI",
-      "cpu": { "model": "Intel Core Ultra 7 268V", "architecture": "Lunar Lake" },
-      "ram": { "capacity": "32GB MoP", "spec": "LPDDR5X-8533 MoP" },
-      "storage": { "primary": "1TB KIOXIA BG6 PCIe Gen4" },
-      "gpu": "Intel Arc 140V Graphics",
-      "battery": "80Whr High Capacity",
-      "upgrade_notes": "Primary handheld AI testing platform."
-    },
-    {
-      "id": "LAPTOP_PRO_01",
-      "name": "Dell Pro 14 Plus (7450 / PB14250)",
-      "lifecycle_status": "Active / Productivity",
-      "cpu": { "model": "Intel Core Ultra 7 268V", "architecture": "Lunar Lake" },
-      "ram": { "capacity": "32GB MoP", "spec": "LPDDR5X-8533 MoP" },
-      "storage": { "primary": "512GB PCIe Gen4 NVMe" },
-      "features": "Intel vPro Enterprise",
-      "upgrade_notes": "Planned SSD upgrade to 2TB."
-    }
-  ],
-  "display_assets": [
-    { "name": "JVC 65XM", "panel": "65\" 4K QD-Mini LED", "specs": "144Hz Native / HDMI 2.1" },
-    { "name": "AORUS FV43U", "panel": "43\" 4K VA QD", "specs": "144Hz / HDR-1000 / HDMI 2.1" },
-    { "name": "AORUS FI32Q", "panel": "32\" SS IPS", "specs": "170Hz OC / QHD / KVM" }
-  ]
-}
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>Hardware Asset Registry | Management Console</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #0a0a0a; color: #d1d5db; font-family: 'Consolas', monospace; }
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; background: #111; }
+        .data-table th, .data-table td { border: 1px solid #333; padding: 12px; text-align: left; font-size: 0.8rem; }
+        .data-table th { background: #1a1a1a; color: #3b82f6; text-transform: uppercase; }
+        .tag-mop { background: #1e3a8a; color: #60a5fa; padding: 2px 4px; border-radius: 4px; font-weight: bold; }
+        .section-title { font-size: 1.2rem; font-weight: bold; color: #fff; margin: 2rem 0 1rem 0; border-left: 4px solid #3b82f6; padding-left: 1rem; }
+    </style>
+</head>
+<body class="p-6">
+    <header class="mb-10 border-b border-gray-800 pb-4">
+        <h1 class="text-2xl font-bold text-white uppercase tracking-wider">Hardware Inventory Management</h1>
+        <p id="meta-info" class="text-gray-500 text-sm mt-1"></p>
+    </header>
+
+    <div id="registry-container"></div>
+
+    <script>
+        async function init() {
+            try {
+                const res = await fetch('./data.json');
+                const data = await res.json();
+                
+                document.getElementById('meta-info').innerText = `Sync: ${data.last_updated} | Owner: ${data.inventory_owner}`;
+                const container = document.getElementById('registry-container');
+
+                // 系統清單
+                container.innerHTML += `<div class="section-title">Computing & AI Systems</div>`;
+                let table = `<table class="data-table"><thead><tr>
+                    <th>System</th><th>CPU / Architecture</th><th>RAM (MoP Standard)</th><th>Storage</th><th>Graphics / PSU / Case</th><th>Upgrade Notes</th>
+                </tr></thead><tbody>`;
+
+                data.hardware_registry.forEach(h => {
+                    const ramStr = h.ram.spec.includes('MoP') ? `<span class="tag-mop">MoP</span> ${h.ram.spec}` : h.ram.spec;
+                    const gpuInfo = h.gpu.external ? `Ext: ${h.gpu.external}<br>Int: ${h.gpu.internal}` : (typeof h.gpu === 'string' ? h.gpu : h.gpu.model);
+                    const psuInfo = h.power_supply || "N/A";
+                    const caseInfo = h.case ? `<br>Case: ${h.case}` : "";
+
+                    table += `<tr>
+                        <td class="font-bold text-white">${h.name}</td>
+                        <td>${h.cpu.model}<br><span class="text-gray-600">${h.cpu.architecture}</span></td>
+                        <td>${ramStr}</td>
+                        <td>${h.storage.primary}</td>
+                        <td>GPU: ${gpuInfo}<br>PSU: ${psuInfo}${caseInfo}</td>
+                        <td class="text-orange-400 text-[11px]">${h.upgrade_notes}</td>
+                    </tr>`;
+                });
+                table += `</tbody></table>`;
+                container.innerHTML += table;
+
+                // 顯示器清單
+                container.innerHTML += `<div class="section-title">Display Wall Assets</div>`;
+                let dTable = `<table class="data-table"><thead><tr><th>Model</th><th>Panel</th><th>Specifications</th></tr></thead><tbody>`;
+                data.display_assets.forEach(d => {
+                    dTable += `<tr><td class="font-bold text-blue-400">${d.name}</td><td>${d.panel}</td><td>${d.specs}</td></tr>`;
+                });
+                dTable += `</tbody></table>`;
+                container.innerHTML += dTable;
+
+            } catch (e) {
+                console.error(e);
+                document.body.innerHTML += `<p class="text-red-500">JSON 讀取失敗，請檢查檔案格式。</p>`;
+            }
+        }
+        init();
+    </script>
+</body>
+</html>
