@@ -5,44 +5,41 @@
     {
       "id": "AI_STATION_01",
       "name": "GMKtec EVO-T1 AI Rig",
-      "lifecycle_status": "Active / Development",
       "cpu": { "model": "Intel Core Ultra 9 285H", "architecture": "Arrow Lake-H" },
       "ram": { "capacity": "96GB", "spec": "Micron 5600MHz DDR5 SODIMM (48GB x2)" },
       "storage": { "primary": "2TB Lexar NQ790 PCIe Gen4 (7400MB/s)" },
-      "gpu": { "internal": "Intel Arc 140T", "external": "PNY GeForce RTX 5080 OC 16GB (via Minisforum DEG2)" },
+      "gpu": { "main": "PNY GeForce RTX 5080 OC 16GB", "sub": "Intel Arc 140T (Integrated)", "note": "via Minisforum DEG2" },
       "power_supply": "ASUS ROG Thor 1000W Platinum III (Type-C PD to Mini PC via DEG2)",
-      "upgrade_notes": "Monitor RTX 5080 thermals; Check OCuLink stability."
+      "upgrade_notes": "Monitor RTX 5080 GDDR7 thermals; Check OCuLink stability."
     },
     {
       "id": "DESKTOP_PC_01",
       "name": "AMD Performance Gaming Rig",
-      "lifecycle_status": "Active / Main Station",
       "cpu": { "model": "AMD Ryzen 7 7800X3D", "architecture": "Zen 4 3D V-Cache" },
       "motherboard": "ASUS ROG STRIX X670E-I GAMING WIFI",
       "ram": { "capacity": "32GB", "spec": "Micron Crucial Pro DDR5" },
       "storage": { "primary": "1TB Crucial T500 PCIe Gen4 NVMe" },
-      "gpu": "EVGA GeForce RTX 3060 XC GAMING",
+      "gpu": { "main": "EVGA GeForce RTX 3060 XC GAMING", "sub": "N/A" },
       "power_supply": "Seasonic FOCUS SGX-550 Gold (SFX-L)",
       "case": "Phanteks Evolv Shift 2 Air",
-      "upgrade_notes": "Monitor 550W PSU headroom if GPU upgrades."
+      "upgrade_notes": "Monitor 550W PSU headroom if upgrading to RTX 50 series."
     },
     {
       "id": "HANDHELD_01",
       "name": "MSI Claw 8 AI+",
-      "lifecycle_status": "Active / Portable AI",
       "cpu": { "model": "Intel Core Ultra 7 268V", "architecture": "Lunar Lake" },
       "ram": { "capacity": "32GB MoP", "spec": "32GB LPDDR5X-8533 MoP" },
       "storage": { "primary": "1TB KIOXIA BG6 PCIe Gen4" },
-      "gpu": "Intel Arc 140V Graphics",
-      "upgrade_notes": "Primary portable inference testbed."
+      "gpu": { "main": "Intel Arc 140V Graphics", "sub": "N/A" },
+      "upgrade_notes": "Primary portable AI inference testbed."
     },
     {
       "id": "LAPTOP_01",
       "name": "Dell Pro 14 Plus (7450 / PB14250)",
-      "lifecycle_status": "Active / Work",
       "cpu": { "model": "Intel Core Ultra 7 268V", "architecture": "Lunar Lake" },
       "ram": { "capacity": "32GB MoP", "spec": "32GB LPDDR5X-8533 MoP" },
       "storage": { "primary": "512GB PCIe Gen4 NVMe" },
+      "gpu": { "main": "Intel Arc 140V Graphics", "sub": "N/A" },
       "features": "Intel vPro Enterprise",
       "upgrade_notes": "SSD upgrade planned (2TB)."
     }
