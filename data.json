@@ -24,7 +24,7 @@
       "spec_summary": "Ultra 7 268V | 32GB | 1TB",
       "details": {
         "CPU": "Intel Core Ultra 7 268V (Lunar Lake)",
-        "RAM": "32GB LPDDR5X-8533 (Memory on Package)",
+        "RAM": "32GB LPDDR5X-8533 (MoP)",
         "GPU": "Intel Arc 140V Graphics",
         "SSD": "1TB KIOXIA BG6 PCIe Gen4 NVMe (6000MB/s)",
         "Battery": "80Whr High Capacity",
@@ -84,4 +84,5 @@
   }
 
 }
+
 
