@@ -10,7 +10,7 @@
         "CPU": "Intel Core Ultra 9 285H (16C/22T, up to 5.4GHz)",
         "RAM": "96GB Micron 5600MHz DDR5 SODIMM (48GB x2)",
         "SSD": "2TB Lexar NQ790 PCIe Gen4 (7400MB/s)",
-        "eGPU": "PNY GeForce RTX 5080 OC 16GB (via Minisforum DEG2)",
+        "eGPU": "PNY RTX 5080 OC 16GB (via Minisforum DEG2)",
         "PowerSupply": "ASUS ROG Thor 1000W Platinum III (Type-C to Mini PC)"
       },
       "tags": ["Arrow Lake", "AI Development", "High-Power"]
@@ -35,28 +35,28 @@
       "id": "msi-claw",
       "category": "Gaming Handheld",
       "title": "MSI Claw 8 AI+",
-      "spec_summary": "Ultra 7 268V | 32GB | 1TB",
+      "spec_summary": "Ultra 7 268V | 32GB MoP | 1TB",
       "details": {
         "CPU": "Intel Core Ultra 7 268V (Lunar Lake)",
-        "RAM": "32GB LPDDR5X-8533 (On-Package)",
+        "RAM": "32GB LPDDR5X-8533 MoP",
         "GPU": "Intel Arc 140V Graphics",
         "SSD": "1TB KIOXIA BG6 PCIe Gen4 NVMe",
         "Battery": "80Whr High Capacity"
       },
-      "tags": ["Lunar Lake", "Next-Gen Gaming"]
+      "tags": ["Lunar Lake", "MoP", "Next-Gen Gaming"]
     },
     {
       "id": "dell-laptop",
       "category": "Mobile Work",
       "title": "Dell Pro 14 Plus (7450)",
-      "spec_summary": "Ultra 7 268V | 32GB | 512GB",
+      "spec_summary": "Ultra 7 268V | 32GB MoP | 512GB",
       "details": {
         "CPU": "Intel Core Ultra 7 268V (Lunar Lake)",
-        "RAM": "32GB LPDDR5X-8533 (MoP)",
+        "RAM": "32GB LPDDR5X-8533 MoP",
         "SSD": "512GB PCIe Gen4 NVMe",
         "Features": "Intel vPro Enterprise"
       },
-      "tags": ["Lunar Lake", "vPro", "Productivity"]
+      "tags": ["Lunar Lake", "MoP", "Productivity"]
     }
   ],
   "display": {
