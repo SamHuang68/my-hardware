@@ -11,7 +11,7 @@
         "RAM": "96GB Micron DDR5 5600MHz SODIMM (48GB x2)",
         "GPU": "Intel Arc 140T (Integrated)",
         "SSD": "2TB Lexar NQ790 PCIe Gen4 (7400MB/s)",
-        "eGPU": "PNY RTX 5080 OC 16GB (via Minisforum DEG2 OCuLink)"
+        "eGPU": "PNY RTX 5080 OC 16GB (via Minisforum DEG2 OCuLink)",
         "PSU": "ROG Thor III 1000W ATX3.1 GaN MOSFET/OLED display"
       },
       "tags": ["Arrow Lake", "AI Development", "OCuLink"],
@@ -84,6 +84,7 @@
   }
 
 }
+
 
 
 
