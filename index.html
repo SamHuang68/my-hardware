@@ -2,103 +2,96 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sam Huang | Tech Arsenal 2026</title>
+    <title>Hardware Asset Registry | Management Console</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        :root { --bg: #050505; --text: #f3f4f6; --card: #111; --border: #222; }
-        .light-mode { --bg: #f9fafb; --text: #111827; --card: #ffffff; --border: #e5e7eb; }
-        body { background-color: var(--bg); color: var(--text); transition: all 0.5s ease; overflow-x: hidden; }
-        .glass-card { background: var(--card); border: 1px solid var(--border); border-radius: 2rem; transition: all 0.3s ease; height: 100%; }
-        .glass-card:hover { border-color: #3b82f6; transform: translateY(-5px); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.1); }
-        .mode-toggle { cursor: pointer; width: 45px; height: 45px; border-radius: 50%; background: rgba(59, 130, 246, 0.1); color: #3b82f6; display: flex; align-items: center; justify-content: center; }
+        body { background: #0a0a0a; color: #d1d5db; font-family: 'Consolas', 'Monaco', monospace; }
+        .data-table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+        .data-table th, .data-table td { border: 1px solid #333; padding: 12px; text-align: left; font-size: 0.85rem; }
+        .data-table th { background: #1a1a1a; color: #3b82f6; text-transform: uppercase; }
+        .tag-mop { background: #1e3a8a; color: #60a5fa; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .status-active { color: #10b981; }
+        .section-title { font-size: 1.5rem; font-weight: bold; color: #fff; margin: 2rem 0 1rem 0; border-left: 4px solid #3b82f6; padding-left: 1rem; }
     </style>
 </head>
-<body class="p-6 md:p-12 lg:p-20">
+<body class="p-8 lg:p-16">
 
-    <header class="max-w-7xl mx-auto mb-16 flex justify-between items-center" data-aos="fade-down">
-        <div>
-            <h1 class="text-5xl font-black tracking-tighter italic uppercase">Tech <span class="text-blue-500">Command</span></h1>
-            <p id="update-info" class="text-gray-600 text-sm mt-2 font-mono uppercase tracking-widest"></p>
-        </div>
-        <div id="theme-btn" class="mode-toggle shadow-lg hover:scale-110 transition">
-            <i class="fa-solid fa-moon text-xl" id="mode-icon"></i>
-        </div>
+    <header class="mb-12 border-b border-gray-800 pb-6">
+        <h1 class="text-3xl font-bold text-white uppercase tracking-widest">Hardware Inventory Management</h1>
+        <p id="meta-info" class="text-gray-500 mt-2"></p>
     </header>
 
-    <main id="main-content" class="max-w-7xl mx-auto grid grid-cols-12 gap-6"></main>
+    <div id="registry-container">
+        </div>
 
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        AOS.init({ duration: 800, once: true });
+        async function loadInventory() {
+            const response = await fetch('data.json');
+            const data = await response.json();
+            document.getElementById('meta-info').innerText = `Database Last Sync: ${data.last_updated} | Owner: ${data.inventory_owner}`;
 
-        const themeBtn = document.getElementById('theme-btn');
-        const modeIcon = document.getElementById('mode-icon');
-        themeBtn.onclick = () => {
-            document.body.classList.toggle('light-mode');
-            const isLight = document.body.classList.contains('light-mode');
-            modeIcon.className = isLight ? 'fa-solid fa-sun text-xl' : 'fa-solid fa-moon text-xl';
-            localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        };
-        if (localStorage.getItem('theme') === 'light') {
-            document.body.classList.add('light-mode');
-            modeIcon.className = 'fa-solid fa-sun text-xl';
-        }
+            const container = document.getElementById('registry-container');
 
-        async function init() {
-            try {
-                const response = await fetch('./data.json'); // 強制使用相對路徑
-                if (!response.ok) throw new Error('Data Load Error');
-                const data = await response.json();
+            // 1. Computing Systems Table
+            container.innerHTML += `<div class="section-title">Computing & AI Systems</div>`;
+            let systemsTable = `<table class="data-table">
+                <thead>
+                    <tr>
+                        <th>System Name</th>
+                        <th>Processor (CPU)</th>
+                        <th>Memory (RAM)</th>
+                        <th>Storage (SSD)</th>
+                        <th>Graphics (GPU)</th>
+                        <th>Power / Case</th>
+                        <th>Upgrade & Maintenance Notes</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            data.hardware_registry.forEach(item => {
+                const ramDisplay = item.ram.spec ? item.ram.spec : `${item.ram.config} (${item.ram.type})`;
+                const psuDisplay = item.power_supply ? `${item.power_supply.model}` : "N/A";
                 
-                document.getElementById('update-info').innerText = `Sync: ${data.last_updated} | samhuang68@gmail.com`;
-                const container = document.getElementById('main-content');
+                systemsTable += `
+                    <tr>
+                        <td class="font-bold text-white">${item.name}<br><span class="text-[10px] text-gray-500">${item.id}</span></td>
+                        <td>${item.cpu.model}<br><span class="text-[10px]">${item.cpu.architecture}</span></td>
+                        <td>${ramDisplay.includes('MoP') ? `<span class="tag-mop">MoP</span> ` + ramDisplay : ramDisplay}</td>
+                        <td>${item.storage.primary}</td>
+                        <td>${item.gpu ? item.gpu.model : (item.gpu_external ? item.gpu_external.model : item.gpu_internal.model)}</td>
+                        <td>${psuDisplay}</td>
+                        <td class="text-orange-400 text-xs">${item.upgrade_notes}</td>
+                    </tr>`;
+            });
+            systemsTable += `</tbody></table>`;
+            container.innerHTML += systemsTable;
 
-                // 渲染硬體
-                data.hardware.forEach((item, idx) => {
-                    const card = document.createElement('div');
-                    card.className = "glass-card p-8 col-span-12 md:col-span-6 lg:col-span-4";
-                    card.setAttribute('data-aos', 'fade-up');
-                    card.setAttribute('data-aos-delay', idx * 100);
-                    
-                    let specsHtml = '';
-                    for (const [k, v] of Object.entries(item.details)) {
-                        specsHtml += `<div class="flex justify-between text-xs py-2 border-b border-white/5"><span class="text-gray-500 font-medium">${k}</span><span class="text-white text-right ml-4">${v}</span></div>`;
-                    }
+            // 2. Displays Table
+            container.innerHTML += `<div class="section-title">Visual Ecosystem (Display Wall)</div>`;
+            let displayTable = `<table class="data-table">
+                <thead><tr><th>Monitor Model</th><th>Panel Specs</th><th>Key Features</th><th>Primary Role</th></tr></thead>
+                <tbody>`;
+            data.display_assets.forEach(d => {
+                displayTable += `<tr>
+                    <td class="font-bold text-blue-400">${d.name}</td>
+                    <td>${d.panel}</td>
+                    <td class="text-xs">${d.features.join(' | ')}</td>
+                    <td>${d.role}</td>
+                </tr>`;
+            });
+            displayTable += `</tbody></table>`;
+            container.innerHTML += displayTable;
 
-                    card.innerHTML = `
-                        <div class="flex justify-between items-start mb-6">
-                            <span class="text-blue-500 text-[10px] font-black uppercase tracking-widest">${item.category}</span>
-                            <div class="flex gap-1">${item.tags.map(t => `<span class="bg-white/5 text-[9px] px-2 py-0.5 rounded text-gray-400">${t}</span>`).join('')}</div>
-                        </div>
-                        <h2 class="text-2xl font-bold mb-1">${item.title}</h2>
-                        <p class="text-gray-500 text-xs mb-8 italic">${item.spec_summary}</p>
-                        <div class="space-y-1">${specsHtml}</div>`;
-                    container.appendChild(card);
-                });
-
-                // 渲染顯示器專區 (修正顯示邏輯)
-                const displayCard = document.createElement('div');
-                displayCard.className = "glass-card p-10 col-span-12 mt-4 bg-gradient-to-br from-blue-600/5 to-transparent border-blue-500/20";
-                displayCard.setAttribute('data-aos', 'zoom-in');
-                
-                const displayItemsHtml = data.display.items.map(item => `
-                    <div class="border-l-2 border-blue-500/30 pl-6">
-                        <p class="text-blue-500 font-bold mb-2 text-sm uppercase">${item.name}</p>
-                        <ul class="text-xs text-gray-500 space-y-1">${item.specs.map(s => `<li>• ${s}</li>`).join('')}</ul>
-                    </div>`).join('');
-
-                displayCard.innerHTML = `<h2 class="text-2xl font-bold mb-10 text-white italic tracking-tighter">DISPLAY ECOSYSTEM</h2><div class="grid grid-cols-1 md:grid-cols-3 gap-10">${displayItemsHtml}</div>`;
-                container.appendChild(displayCard);
-
-            } catch (err) {
-                console.error(err);
-                document.getElementById('main-content').innerHTML = `<p class="col-span-12 text-center text-red-500 p-20">資料讀取失敗，請確認 data.json 格式與路徑。</p>`;
-            }
+            // 3. Appliances
+            container.innerHTML += `<div class="section-title">Household Tech</div>`;
+            let applianceList = `<ul class="space-y-2 mb-20">`;
+            data.household_tech.forEach(h => {
+                applianceList += `<li class="text-gray-400"><strong>${h.name}</strong> - ${h.type} <span class="status-active ml-4">[STATUS: ${h.status}]</span></li>`;
+            });
+            applianceList += `</ul>`;
+            container.innerHTML += applianceList;
         }
-        init();
+        loadInventory();
     </script>
 </body>
 </html>
