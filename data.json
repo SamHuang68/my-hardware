@@ -20,12 +20,12 @@
       "id": "msi-claw",
       "category": "Gaming Handheld",
       "title": "MSI Claw 8 AI+",
-      "spec_summary": "Ultra 7 268V | 32GB | 80Wh",
+      "spec_summary": "Ultra 7 268V | 32GB | 1TB",
       "details": {
         "CPU": "Intel Core Ultra 7 268V (Lunar Lake)",
-        "RAM": "32GB LPDDR5X-8533 (MoP)",
+        "RAM": "32GB LPDDR5X-8533 (Memory on Package)",
         "GPU": "Intel Arc 140V Graphics",
-	"SSD": "1TB KIOXIA BG6 PCIe Gen4 NVMe (6000MB/s)",
+        "SSD": "1TB KIOXIA BG6 PCIe Gen4 NVMe (6000MB/s)",
         "Battery": "80Whr High Capacity",
         "Screen": "8-inch 120Hz FHD+"
       },
@@ -41,7 +41,7 @@
         "CPU": "Intel Core Ultra 7 268V (Lunar Lake)",
         "RAM": "32GB LPDDR5X-8533 (MoP)",
         "GPU": "Intel Arc 140V Graphics",
-	"SSD": "512GB PCIe Gen4 NVMe",
+        "SSD": "512GB PCIe Gen4 NVMe",
         "FormFactor": "Latitude series / PB14250",
         "Features": "Intel vPro Enterprise"
       },
@@ -59,13 +59,13 @@
         "RAM": "32GB Micron Crucial Pro DDR5",
         "GPU": "EVGA GeForce RTX 3060 XC GAMING",
         "SSD": "1TB Crucial T500 PCIe Gen4",
-	"Case": "Phanteks Evolv Shift 2 Air"
+        "Case": "Phanteks Evolv Shift 2 Air"
       },
       "tags": ["AM5", "X3D", "Workstation"],
       "color": "orange"
     }
   ],
-"display": {
+  "display": {
     "items": [
       {
         "name": "JVC 65XM",
@@ -80,5 +80,5 @@
         "specs": ["32\" FHD", "170Hz", "SS IPS Panel"]
       }
     ]
-
   }
+}
