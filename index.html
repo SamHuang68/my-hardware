@@ -8,14 +8,14 @@
         body { background: #0a0a0a; color: #d1d5db; font-family: 'Consolas', monospace; }
         .data-table { width: 100%; border-collapse: collapse; margin-bottom: 2.5rem; background: #111; }
         .data-table th, .data-table td { border: 1px solid #333; padding: 14px; text-align: left; font-size: 0.85rem; vertical-align: top; }
-        .data-table th { background: #1a1a1a; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.05em; }
+        .data-table th { background: #1a1a1a; color: #3b82f6; text-transform: uppercase; }
         .tag-mop { background: #1e3a8a; color: #60a5fa; padding: 2px 5px; border-radius: 4px; font-weight: bold; font-size: 10px; }
         .section-title { font-size: 1.3rem; font-weight: bold; color: #fff; margin: 2.5rem 0 1rem 0; border-left: 5px solid #3b82f6; padding-left: 1.2rem; }
     </style>
 </head>
 <body class="p-8 lg:p-16">
-    <header class="mb-12 border-b border-gray-800 pb-6 text-center lg:text-left">
-        <h1 class="text-3xl font-black text-white uppercase tracking-tighter italic">Hardware <span class="text-blue-500 font-sans">Command Center</span></h1>
+    <header class="mb-12 border-b border-gray-800 pb-6">
+        <h1 class="text-3xl font-black text-white uppercase italic">Hardware <span class="text-blue-500 font-sans">Command Center</span></h1>
         <p id="meta-info" class="text-gray-500 text-sm mt-2 font-mono"></p>
     </header>
 
@@ -24,52 +24,47 @@
     <script>
         async function init() {
             try {
-                const res = await fetch('./data.json');
-                if (!res.ok) throw new Error('Network response was not ok');
+                // 強制讀取當前目錄下的 data.json 並停用快取
+                const res = await fetch('./data.json?t=' + new Date().getTime());
+                if (!res.ok) throw new Error('Load Error');
                 const data = await res.json();
                 
                 document.getElementById('meta-info').innerText = `LAST SYNC: ${data.last_updated} | OWNER: ${data.inventory_owner}`;
                 const container = document.getElementById('registry-container');
 
-                // 系統清單
-                container.innerHTML += `<div class="section-title italic uppercase">I. Computing & AI Systems</div>`;
+                // 系統表格
+                container.innerHTML += `<div class="section-title uppercase">Computing Systems</div>`;
                 let table = `<table class="data-table"><thead><tr>
-                    <th>System</th><th>Processor / Arch</th><th>Memory (MoP)</th><th>Storage / SSD</th><th>GPU / PSU / Details</th><th>Future Upgrade Notes</th>
+                    <th>System</th><th>CPU / Arch</th><th>RAM (MoP)</th><th>Storage</th><th>Details (GPU/PSU/Case)</th><th>Upgrade Notes</th>
                 </tr></thead><tbody>`;
 
                 data.hardware_registry.forEach(h => {
                     const ramDisplay = h.ram.spec.includes('MoP') ? `<span class="tag-mop">MoP</span> ${h.ram.spec}` : h.ram.spec;
                     const gpuDisplay = h.gpu.external ? `Ext: ${h.gpu.external}<br>Int: ${h.gpu.internal}` : (typeof h.gpu === 'object' ? h.gpu.model : h.gpu);
-                    const psuInfo = h.power_supply || "N/A";
-
+                    
                     table += `<tr>
-                        <td class="font-bold text-white text-base">${h.name}</td>
+                        <td class="font-bold text-white">${h.name}</td>
                         <td>${h.cpu.model}<br><span class="text-gray-600 text-xs">${h.cpu.architecture}</span></td>
                         <td>${ramDisplay}</td>
                         <td>${h.storage.primary}</td>
-                        <td>GPU: ${gpuDisplay}<br>PSU: ${psuInfo}${h.motherboard ? `<br>Mobo: ${h.motherboard}` : ""}${h.case ? `<br>Case: ${h.case}` : ""}</td>
-                        <td class="text-orange-400 font-medium italic">${h.upgrade_notes}</td>
+                        <td>GPU: ${gpuDisplay}<br>PSU: ${h.power_supply}${h.motherboard ? `<br>Mobo: ${h.motherboard}` : ""}${h.case ? `<br>Case: ${h.case}` : ""}</td>
+                        <td class="text-orange-400 italic">${h.upgrade_notes}</td>
                     </tr>`;
                 });
                 table += `</tbody></table>`;
                 container.innerHTML += table;
 
-                // 顯示器清單
-                container.innerHTML += `<div class="section-title italic uppercase">II. Visual Ecosystem</div>`;
-                let dTable = `<table class="data-table"><thead><tr><th>Model</th><th>Panel Technology</th><th>Detailed Specifications</th></tr></thead><tbody>`;
+                // 顯示器表格
+                container.innerHTML += `<div class="section-title uppercase">Visual Ecosystem</div>`;
+                let dTable = `<table class="data-table"><thead><tr><th>Model</th><th>Panel</th><th>Specifications</th></tr></thead><tbody>`;
                 data.display_assets.forEach(d => {
-                    dTable += `<tr><td class="font-bold text-blue-400 text-base">${d.name}</td><td>${d.panel}</td><td>${d.specs}</td></tr>`;
+                    dTable += `<tr><td class="font-bold text-blue-400">${d.name}</td><td>${d.panel}</td><td>${d.specs}</td></tr>`;
                 });
                 dTable += `</tbody></table>`;
                 container.innerHTML += dTable;
 
             } catch (e) {
-                console.error('Failed to load JSON:', e);
-                document.getElementById('registry-container').innerHTML = `
-                    <div class="bg-red-900/20 border border-red-500 p-8 rounded-xl text-red-400">
-                        <h3 class="font-bold mb-2 uppercase">Critical Error: Database Load Failed</h3>
-                        <p class="text-sm">Please verify 'data.json' exists in the same directory and contains valid JSON syntax.</p>
-                    </div>`;
+                document.getElementById('registry-container').innerHTML = `<p class="text-red-500 font-bold">CRITICAL: Database Load Failed. Verify 'data.json' syntax.</p>`;
             }
         }
         init();
