@@ -9,8 +9,8 @@
       "details": {
         "CPU": "Intel Core Ultra 9 285H (16C/22T, up to 5.4GHz)",
         "RAM": "96GB Micron 5600MHz DDR5 SODIMM (48GB x2)",
-        "SSD": "2TB Lexar NM790 PCIe Gen4 (7400MB/s)",
         "GPU": "Intel Arc 140T (Integrated)",
+        "SSD": "2TB Lexar NQ790 PCIe Gen4 (7400MB/s)",
         "eGPU": "PNY RTX 5080 OC 16GB (via Minisforum DEG2 OCuLink)"
       },
       "tags": ["Arrow Lake", "AI Development", "OCuLink"],
@@ -23,8 +23,9 @@
       "spec_summary": "Ultra 7 268V | 32GB | 80Wh",
       "details": {
         "CPU": "Intel Core Ultra 7 268V (Lunar Lake)",
-        "RAM": "32GB LPDDR5X-8533 (On-Package)",
+        "RAM": "32GB LPDDR5X-8533 (MoP)",
         "GPU": "Intel Arc 140V Graphics",
+	"SSD": "1TB KIOXIA BG6 PCIe Gen4 NVMe (6000MB/s)",
         "Battery": "80Whr High Capacity",
         "Screen": "8-inch 120Hz FHD+"
       },
@@ -38,8 +39,9 @@
       "spec_summary": "Ultra 7 268V | 32GB | 512GB",
       "details": {
         "CPU": "Intel Core Ultra 7 268V (Lunar Lake)",
-        "RAM": "32GB LPDDR5X (MoP)",
-        "SSD": "512GB PCIe Gen4 NVMe",
+        "RAM": "32GB LPDDR5X-8533 (MoP)",
+        "GPU": "Intel Arc 140V Graphics",
+	"SSD": "512GB PCIe Gen4 NVMe",
         "FormFactor": "Latitude series / PB14250",
         "Features": "Intel vPro Enterprise"
       },
@@ -55,7 +57,9 @@
         "CPU": "AMD Ryzen 7 7800X3D (3D V-Cache)",
         "Mobo": "ASUS ROG STRIX X670E-I Gaming WiFi",
         "RAM": "32GB Micron Crucial Pro DDR5",
-        "SSD": "1TB Crucial T500 PCIe Gen4"
+        "GPU": "EVGA GeForce RTX 3060 XC GAMING",
+        "SSD": "1TB Crucial T500 PCIe Gen4",
+	"Case": "Phanteks Evolv Shift 2 Air"
       },
       "tags": ["AM5", "X3D", "Workstation"],
       "color": "orange"
@@ -64,5 +68,9 @@
   "display": {
     "model": "JVC 65XM",
     "specs": ["65\" 4K HDR", "QD-Mini LED", "Native 144Hz", "HDMI 2.1"]
+    "mode2": "AORUS FV43U Gaming Monitor",
+    "specs": ["43\" 4K HDR", "QD-Display", "UHD 144Hz", "HDR-1000", "HDMI 2.1"]
+    "mode3": "AORUS FI32Q Gaming Monitor",
+    "specs": ["32\" FHD", "170Hz"]
   }
 }
