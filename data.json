@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-02-15",
+  "last_updated": "2026-02-18",
   "hardware": [
     {
       "id": "ai-rig",
@@ -80,4 +80,5 @@
         "specs": ["32\" FHD", "170Hz", "SS IPS Panel"]
       }
     ]
+
   }
