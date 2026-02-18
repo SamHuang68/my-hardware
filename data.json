@@ -3,15 +3,15 @@
   "inventory_owner": "Sam Huang",
   "hardware_registry": [
     {
-      "id": "AI_WORKSTATION_01",
-      "name": "GMKtec EVO-T1 AI Station",
+      "id": "AI_STATION_01",
+      "name": "GMKtec EVO-T1 AI Rig",
       "lifecycle_status": "Active / Development",
-      "cpu": { "model": "Intel Core Ultra 9 285H", "architecture": "Arrow Lake-H", "cores": "16C/22T" },
+      "cpu": { "model": "Intel Core Ultra 9 285H", "architecture": "Arrow Lake-H" },
       "ram": { "capacity": "96GB", "spec": "Micron 5600MHz DDR5 SODIMM (48GB x2)" },
       "storage": { "primary": "2TB Lexar NQ790 PCIe Gen4 (7400MB/s)" },
       "gpu": { "internal": "Intel Arc 140T", "external": "PNY GeForce RTX 5080 OC 16GB (via Minisforum DEG2)" },
-      "power_supply": "ASUS ROG Thor 1000W Platinum III (Powers DEG2 & Type-C to Mini PC)",
-      "upgrade_notes": "Monitor RTX 5080 GDDR7 thermals; Check OCuLink stability."
+      "power_supply": "ASUS ROG Thor 1000W Platinum III (Type-C PD to Mini PC via DEG2)",
+      "upgrade_notes": "Monitor RTX 5080 thermals; Check OCuLink stability."
     },
     {
       "id": "DESKTOP_PC_01",
@@ -24,33 +24,33 @@
       "gpu": "EVGA GeForce RTX 3060 XC GAMING",
       "power_supply": "Seasonic FOCUS SGX-550 Gold (SFX-L)",
       "case": "Phanteks Evolv Shift 2 Air",
-      "upgrade_notes": "Monitor 550W PSU headroom if GPU upgrades."
+      "upgrade_notes": "Plan for GPU upgrade; Monitor 550W PSU limit."
     },
     {
-      "id": "HANDHELD_AI_01",
+      "id": "HANDHELD_01",
       "name": "MSI Claw 8 AI+",
       "lifecycle_status": "Active / Portable AI",
       "cpu": { "model": "Intel Core Ultra 7 268V", "architecture": "Lunar Lake" },
-      "ram": { "capacity": "32GB MoP", "spec": "LPDDR5X-8533 MoP" },
+      "ram": { "capacity": "32GB MoP", "spec": "32GB LPDDR5X-8533 MoP" },
       "storage": { "primary": "1TB KIOXIA BG6 PCIe Gen4" },
       "gpu": "Intel Arc 140V Graphics",
       "battery": "80Whr High Capacity",
-      "upgrade_notes": "Primary handheld AI testing platform."
+      "upgrade_notes": "Primary portable inference testbed."
     },
     {
-      "id": "LAPTOP_PRO_01",
+      "id": "LAPTOP_01",
       "name": "Dell Pro 14 Plus (7450 / PB14250)",
-      "lifecycle_status": "Active / Productivity",
+      "lifecycle_status": "Active / Work",
       "cpu": { "model": "Intel Core Ultra 7 268V", "architecture": "Lunar Lake" },
-      "ram": { "capacity": "32GB MoP", "spec": "LPDDR5X-8533 MoP" },
+      "ram": { "capacity": "32GB MoP", "spec": "32GB LPDDR5X-8533 MoP" },
       "storage": { "primary": "512GB PCIe Gen4 NVMe" },
       "features": "Intel vPro Enterprise",
-      "upgrade_notes": "Planned SSD upgrade to 2TB."
+      "upgrade_notes": "SSD upgrade planned (2TB)."
     }
   ],
   "display_assets": [
     { "name": "JVC 65XM", "panel": "65\" 4K QD-Mini LED", "specs": "144Hz Native / HDMI 2.1" },
-    { "name": "AORUS FV43U", "panel": "43\" 4K VA QD", "specs": "144Hz / HDR-1000 / HDMI 2.1" },
+    { "name": "AORUS FV43U", "panel": "43\" 4K VA", "specs": "144Hz / HDR-1000 / HDMI 2.1" },
     { "name": "AORUS FI32Q", "panel": "32\" SS IPS", "specs": "170Hz OC / QHD / KVM" }
   ]
 }
