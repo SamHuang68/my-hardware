@@ -66,18 +66,25 @@
                 let table = `<table class="data-table"><thead><tr><th class="text-center">Form Factor</th><th>System</th><th>CPU / Arch</th><th>RAM (MoP)</th><th>Storage</th><th>GPU / PSU Detail</th></tr></thead><tbody>`;
 
                 data.hardware_registry.forEach(h => {
-                    // 直接從 JSON 讀取設定，不再依賴 ID 判斷
                     const formFactor = h.form_factor || "Unknown";
                     const imgPath = h.image_path || "images/default.png";
-
-                    // 防呆機制：若本地端無圖片，顯示深色佔位圖案
                     const fallbackImg = "https://placehold.co/72x72/1a1a1a/3b82f6?text=IMG";
                     const imgTag = `<img src="${imgPath}" alt="${formFactor}" class="device-thumb" onerror="this.onerror=null; this.src='${fallbackImg}';">`;
 
-                    const ramDisplay = h.ram.spec.includes('MoP') ? `<span class="tag-mop">MoP</span> ${h.ram.spec}` : h.ram.spec;
+                    // 1. CPU 防呆機制
+                    const cpuModel = h.cpu?.model || "Unknown CPU";
+                    const cpuArch = h.cpu?.architecture || "";
+
+                    // 2. RAM 防呆機制 (確保是字串才能用 includes)
+                    const ramSpec = h.ram?.spec || "Unknown RAM";
+                    const ramDisplay = ramSpec.includes('MoP') ? `<span class="tag-mop">MoP</span> ${ramSpec}` : ramSpec;
                     
-                    let gpuDisplay = "N/A"; // 預設值
-                    if (h.gpu) { // 先確認 gpu 欄位存在
+                    // 3. Storage 防呆機制
+                    const storagePrimary = h.storage?.primary || "Unknown Storage";
+
+                    // 4. GPU 防呆機制 (結合前一次的修復)
+                    let gpuDisplay = "N/A";
+                    if (h.gpu) {
                         if (h.gpu.external) {
                             gpuDisplay = `Ext: ${h.gpu.external}<br>Int: ${h.gpu.internal}`;
                         } else if (typeof h.gpu === 'object') {
@@ -95,9 +102,9 @@
                             <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">${formFactor}</div>
                         </td>
                         <td class="font-bold text-blue-400 text-base">${h.name}</td>
-                        <td><span class="font-bold text-gray-200">${h.cpu.model}</span><br><span class="text-gray-500 text-xs">${h.cpu.architecture}</span></td>
+                        <td><span class="font-bold text-gray-200">${cpuModel}</span><br><span class="text-gray-500 text-xs">${cpuArch}</span></td>
                         <td>${ramDisplay}</td>
-                        <td>${h.storage.primary}</td>
+                        <td>${storagePrimary}</td>
                         <td class="text-gray-300">
                             <span class="text-blue-300">GPU:</span> ${gpuDisplay}<br>
                             ${psuDisplay ? `<span class="text-emerald-400">PSU:</span> ${h.power_supply}` : ""}
@@ -124,5 +131,6 @@
     </script>
 </body>
 </html>
+
 
 
