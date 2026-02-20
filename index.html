@@ -76,13 +76,15 @@
 
                     const ramDisplay = h.ram.spec.includes('MoP') ? `<span class="tag-mop">MoP</span> ${h.ram.spec}` : h.ram.spec;
                     
-                    let gpuDisplay = "";
-                    if (h.gpu.external) {
-                        gpuDisplay = `Ext: ${h.gpu.external}<br>Int: ${h.gpu.internal}`;
-                    } else if (typeof h.gpu === 'object') {
-                        gpuDisplay = h.gpu.model;
-                    } else {
-                        gpuDisplay = h.gpu;
+                    let gpuDisplay = "N/A"; // 預設值
+                    if (h.gpu) { // 先確認 gpu 欄位存在
+                        if (h.gpu.external) {
+                            gpuDisplay = `Ext: ${h.gpu.external}<br>Int: ${h.gpu.internal}`;
+                        } else if (typeof h.gpu === 'object') {
+                            gpuDisplay = h.gpu.model || "Unknown";
+                        } else {
+                            gpuDisplay = h.gpu;
+                        }
                     }
 
                     let psuDisplay = h.power_supply ? `PSU: ${h.power_supply}` : "";
@@ -122,4 +124,5 @@
     </script>
 </body>
 </html>
+
 
