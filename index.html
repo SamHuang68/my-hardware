@@ -5,66 +5,111 @@
     <title>Hardware Asset Registry | Sam Huang</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #0a0a0a; color: #d1d5db; font-family: 'Consolas', monospace; }
+        body { background: #0a0a0a; color: #d1d5db; font-family: 'Consolas', monospace; overflow-x: hidden; }
         .data-table { width: 100%; border-collapse: collapse; margin-bottom: 2.5rem; background: #111; }
         .data-table th, .data-table td { border: 1px solid #333; padding: 14px; text-align: left; font-size: 0.85rem; vertical-align: top; }
         .data-table th { background: #1a1a1a; color: #3b82f6; text-transform: uppercase; }
         .tag-mop { background: #1e3a8a; color: #60a5fa; padding: 2px 5px; border-radius: 4px; font-weight: bold; font-size: 10px; }
         .section-title { font-size: 1.3rem; font-weight: bold; color: #fff; margin: 2rem 0 1rem 0; border-left: 5px solid #3b82f6; padding-left: 1.2rem; }
+        
+        /* Highlight Glow Effect Styles */
+        .data-table tbody tr {
+            transition: all 0.3s ease;
+        }
+        .data-table tbody tr:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+            transform: scale(1.01);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+            /* Creating a pseudo-border glow without breaking border-collapse */
+            outline: 2px solid #3b82f6; 
+            outline-offset: -1px;
+            z-index: 10;
+            position: relative;
+        }
+        .data-table tbody tr:hover td {
+            color: #ffffff;
+            border-color: transparent; /* Hides internal borders on hover for a cleaner block effect */
+        }
     </style>
 </head>
 <body class="p-8 lg:p-16">
-    <header class="mb-12 border-b border-gray-800 pb-6 text-center lg:text-left">
-        <h1 class="text-3xl font-black text-white uppercase italic tracking-tighter italic">Hardware <span class="text-blue-500 font-sans">Command Center</span></h1>
+    <header class="mb-12 border-b border-gray-800 pb-6">
+        <h1 class="text-3xl font-black text-white uppercase italic tracking-tighter">Hardware <span class="text-blue-500 font-sans">Command Center</span></h1>
         <p id="meta-info" class="text-gray-500 text-sm mt-2 font-mono"></p>
     </header>
     <div id="registry-container"></div>
     <script>
         async function init() {
             try {
-                const res = await fetch('data.json?cb=' + Date.now());
-                if (!res.ok) throw new Error('Network Error: data.json missing');
+                // 使用快取消除機制確保讀取最新 data.json
+                const res = await fetch('data.json?cache_bust=' + Date.now());
+                if (!res.ok) throw new Error('Data file not found');
                 const data = await res.json();
                 
                 document.getElementById('meta-info').innerText = `LAST SYNC: ${data.last_updated} | OWNER: ${data.inventory_owner}`;
                 const container = document.getElementById('registry-container');
 
-                container.innerHTML += `<div class="section-title italic">I. COMPUTING ASSETS (UPGRADE TRACKER)</div>`;
-                let table = `<table class="data-table"><thead><tr><th>System</th><th>CPU / Architecture</th><th>RAM (MoP)</th><th>Storage</th><th>GPU / PSU / Case</th><th>Lifecycle & Upgrade Notes</th></tr></thead><tbody>`;
+                container.innerHTML += `<div class="section-title">I. COMPUTING SYSTEMS</div>`;
+                // REMOVED: Lifecycle Notes
+                // ADDED: Form Factor
+                let table = `<table class="data-table"><thead><tr><th>Form Factor</th><th>System</th><th>CPU / Arch</th><th>RAM (MoP)</th><th>Storage</th><th>GPU / PSU Detail</th></tr></thead><tbody>`;
 
                 data.hardware_registry.forEach(h => {
+                    // Logic to determine form factor and icon based on ID
+                    let formFactor = "Unknown";
+                    let icon = "📦";
+                    if (h.id.includes("DESKTOP")) {
+                        formFactor = "Desktop"; icon = "🖥️";
+                    } else if (h.id.includes("HANDHELD")) {
+                        formFactor = "Handheld"; icon = "🎮";
+                    } else if (h.id.includes("LAPTOP")) {
+                        formFactor = "Laptop"; icon = "💻";
+                    } else if (h.id.includes("STATION") || h.id.includes("MINI")) {
+                        formFactor = "Mini PC"; icon = "🖲️";
+                    }
+
                     const ramDisplay = h.ram.spec.includes('MoP') ? `<span class="tag-mop">MoP</span> ${h.ram.spec}` : h.ram.spec;
                     
-                    // 修正 GPU 顯示邏輯，防止 undefined
-                    let gpuText = `Primary: ${h.gpu.main}`;
-                    if (h.gpu.sub && h.gpu.sub !== "N/A") gpuText += `<br>Sub: ${h.gpu.sub}`;
-                    if (h.gpu.note) gpuText += `<br><span class="text-blue-400 text-[10px] underline">${h.gpu.note}</span>`;
+                    let gpuDisplay = "";
+                    if (h.gpu.external) {
+                        gpuDisplay = `Ext: ${h.gpu.external}<br>Int: ${h.gpu.internal}`;
+                    } else if (typeof h.gpu === 'object') {
+                        gpuDisplay = h.gpu.model;
+                    } else {
+                        gpuDisplay = h.gpu;
+                    }
+
+                    let psuDisplay = h.power_supply ? `PSU: ${h.power_supply}` : "";
 
                     table += `<tr>
-                        <td class="font-bold text-white text-base">${h.name}</td>
-                        <td>${h.cpu.model}<br><span class="text-gray-600 text-xs">${h.cpu.architecture}</span></td>
+                        <td class="text-center">
+                            <div class="text-3xl mb-1" style="filter: drop-shadow(0 0 8px rgba(255,255,255,0.2));">${icon}</div>
+                            <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">${formFactor}</div>
+                        </td>
+                        <td class="font-bold text-blue-400 text-base">${h.name}</td>
+                        <td><span class="font-bold text-gray-200">${h.cpu.model}</span><br><span class="text-gray-500 text-xs">${h.cpu.architecture}</span></td>
                         <td>${ramDisplay}</td>
                         <td>${h.storage.primary}</td>
-                        <td>GPU: ${gpuText}<br>PSU: ${h.power_supply}${h.motherboard ? `<br>Mobo: ${h.motherboard}` : ""}${h.case ? `<br>Case: ${h.case}` : ""}</td>
-                        <td class="text-orange-400 italic font-medium">${h.upgrade_notes}</td>
+                        <td class="text-gray-300">
+                            <span class="text-blue-300">GPU:</span> ${gpuDisplay}<br>
+                            ${psuDisplay ? `<span class="text-emerald-400">PSU:</span> ${h.power_supply}` : ""}
+                            ${h.motherboard ? `<br><span class="text-purple-400">Mobo:</span> ${h.motherboard}` : ""}
+                            ${h.case ? `<br><span class="text-gray-400">Case:</span> ${h.case}` : ""}
+                        </td>
                     </tr>`;
                 });
                 table += `</tbody></table>`;
                 container.innerHTML += table;
 
-                container.innerHTML += `<div class="section-title italic">II. VISUAL ASSETS</div>`;
-                let dTable = `<table class="data-table"><thead><tr><th>Model</th><th>Panel Technology</th><th>Detailed Specifications</th></tr></thead><tbody>`;
+                container.innerHTML += `<div class="section-title">II. VISUAL ASSETS</div>`;
+                let dTable = `<table class="data-table"><thead><tr><th>Model</th><th>Panel</th><th>Specifications</th></tr></thead><tbody>`;
                 data.display_assets.forEach(d => {
-                    dTable += `<tr><td class="font-bold text-blue-400 text-base">${d.name}</td><td>${d.panel}</td><td>${d.specs}</td></tr>`;
+                    dTable += `<tr><td class="font-bold text-blue-400">${d.name}</td><td>${d.panel}</td><td>${d.specs}</td></tr>`;
                 });
                 dTable += `</tbody></table>`;
                 container.innerHTML += dTable;
             } catch (e) {
-                document.getElementById('registry-container').innerHTML = `
-                <div class="bg-red-900/20 border border-red-500 p-8 rounded-xl text-red-400 font-bold">
-                    [DATABASE ERROR]: ${e.message}<br>
-                    <span class="text-xs font-normal text-gray-400 underline italic mt-2 block">Action Required: Verify JSON syntax and check GitHub Actions deployment status.</span>
-                </div>`;
+                document.getElementById('registry-container').innerHTML = `<p class="text-red-500 font-bold p-4 bg-red-900/20 border border-red-500 rounded">DATABASE ERROR: ${e.message}. Please check data.json file format or server status.</p>`;
             }
         }
         init();
