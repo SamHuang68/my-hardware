@@ -7,7 +7,7 @@
     <style>
         body { background: #0a0a0a; color: #d1d5db; font-family: 'Consolas', monospace; overflow-x: hidden; }
         .data-table { width: 100%; border-collapse: collapse; margin-bottom: 2.5rem; background: #111; }
-        .data-table th, .data-table td { border: 1px solid #333; padding: 14px; text-align: left; font-size: 0.85rem; vertical-align: top; }
+        .data-table th, .data-table td { border: 1px solid #333; padding: 14px; text-align: left; font-size: 0.85rem; vertical-align: middle; }
         .data-table th { background: #1a1a1a; color: #3b82f6; text-transform: uppercase; }
         .tag-mop { background: #1e3a8a; color: #60a5fa; padding: 2px 5px; border-radius: 4px; font-weight: bold; font-size: 10px; }
         .section-title { font-size: 1.3rem; font-weight: bold; color: #fff; margin: 2rem 0 1rem 0; border-left: 5px solid #3b82f6; padding-left: 1.2rem; }
@@ -20,7 +20,6 @@
             background-color: rgba(59, 130, 246, 0.1);
             transform: scale(1.01);
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
-            /* Creating a pseudo-border glow without breaking border-collapse */
             outline: 2px solid #3b82f6; 
             outline-offset: -1px;
             z-index: 10;
@@ -28,7 +27,20 @@
         }
         .data-table tbody tr:hover td {
             color: #ffffff;
-            border-color: transparent; /* Hides internal borders on hover for a cleaner block effect */
+            border-color: transparent;
+        }
+
+        /* Device Thumbnail Styles */
+        .device-thumb {
+            width: 72px;
+            height: 72px;
+            object-fit: contain;
+            margin: 0 auto;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.8));
+            transition: transform 0.3s ease;
+        }
+        .data-table tbody tr:hover .device-thumb {
+            transform: scale(1.15);
         }
     </style>
 </head>
@@ -50,23 +62,31 @@
                 const container = document.getElementById('registry-container');
 
                 container.innerHTML += `<div class="section-title">I. COMPUTING SYSTEMS</div>`;
-                // REMOVED: Lifecycle Notes
-                // ADDED: Form Factor
-                let table = `<table class="data-table"><thead><tr><th>Form Factor</th><th>System</th><th>CPU / Arch</th><th>RAM (MoP)</th><th>Storage</th><th>GPU / PSU Detail</th></tr></thead><tbody>`;
+                
+                let table = `<table class="data-table"><thead><tr><th class="text-center">Form Factor</th><th>System</th><th>CPU / Arch</th><th>RAM (MoP)</th><th>Storage</th><th>GPU / PSU Detail</th></tr></thead><tbody>`;
 
                 data.hardware_registry.forEach(h => {
-                    // Logic to determine form factor and icon based on ID
                     let formFactor = "Unknown";
-                    let icon = "📦";
+                    let imgFileName = "default.png";
+
+                    // 依照設備 ID 分配對應的圖片檔名
                     if (h.id.includes("DESKTOP")) {
-                        formFactor = "Desktop"; icon = "🖥️";
+                        formFactor = "Desktop"; 
+                        imgFileName = "desktop.png";
                     } else if (h.id.includes("HANDHELD")) {
-                        formFactor = "Handheld"; icon = "🎮";
+                        formFactor = "Handheld"; 
+                        imgFileName = "msi_claw.png";
                     } else if (h.id.includes("LAPTOP")) {
-                        formFactor = "Laptop"; icon = "💻";
+                        formFactor = "Laptop"; 
+                        imgFileName = "dell_laptop.png";
                     } else if (h.id.includes("STATION") || h.id.includes("MINI")) {
-                        formFactor = "Mini PC"; icon = "🖲️";
+                        formFactor = "Mini PC"; 
+                        imgFileName = "gmk_evo_t1.png";
                     }
+
+                    // 防呆機制：若本地端無圖片，顯示深色佔位圖案
+                    const fallbackImg = "https://placehold.co/72x72/1a1a1a/3b82f6?text=IMG";
+                    const imgTag = `<img src="images/${imgFileName}" alt="${formFactor}" class="device-thumb" onerror="this.onerror=null; this.src='${fallbackImg}';">`;
 
                     const ramDisplay = h.ram.spec.includes('MoP') ? `<span class="tag-mop">MoP</span> ${h.ram.spec}` : h.ram.spec;
                     
@@ -82,8 +102,8 @@
                     let psuDisplay = h.power_supply ? `PSU: ${h.power_supply}` : "";
 
                     table += `<tr>
-                        <td class="text-center">
-                            <div class="text-3xl mb-1" style="filter: drop-shadow(0 0 8px rgba(255,255,255,0.2));">${icon}</div>
+                        <td class="text-center w-32">
+                            <div class="mb-2">${imgTag}</div>
                             <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">${formFactor}</div>
                         </td>
                         <td class="font-bold text-blue-400 text-base">${h.name}</td>
