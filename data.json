@@ -51,7 +51,7 @@
       "cpu": { "model": "Intel Core Ultra 7 268V", "architecture": "Lunar Lake" },
       "ram": { "capacity": "32GB MoP", "spec": "32GB LPDDR5X-8533 MoP" },
       "storage": { "primary": "512GB PCIe Gen4 NVMe" },
-      "gpu": "Intel Arc 140V Graphics",  // <--- 加上這一行
+      "gpu": "Intel Arc 140V Graphics",
       "features": "Intel vPro Enterprise",
       "upgrade_notes": "SSD upgrade planned (2TB)."
     }
@@ -62,4 +62,5 @@
     { "name": "AORUS FI32Q", "panel": "32\" SS IPS", "specs": "170Hz OC / QHD / KVM" }
   ]
 }
+
 
