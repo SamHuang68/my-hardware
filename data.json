@@ -23,7 +23,7 @@
       "lifecycle_status": "Active / Main Station",
       "cpu": { "model": "AMD Ryzen 7 7800X3D", "architecture": "Zen 4 3D V-Cache" },
       "motherboard": "ASUS ROG STRIX X670E-I GAMING WIFI",
-      "ram": { "capacity": "32GB", "spec": "Micron Crucial Pro DDR5" },
+      "ram": { "capacity": "32GB", "spec": "Micron Crucial Pro DDR5 (16GB x2)" },
       "storage": { "primary": "1TB Crucial T500 PCIe Gen4 NVMe" },
       "gpu": "EVGA GeForce RTX 3060 XC GAMING",
       "power_supply": "Seasonic FOCUS SGX-550 Gold (SFX-L)",
@@ -62,5 +62,3 @@
     { "name": "AORUS FI32Q", "panel": "32\" SS IPS", "specs": "170Hz OC / QHD / KVM" }
   ]
 }
-
-
