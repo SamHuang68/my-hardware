@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-02-20",
+  "last_updated": "2026-02-21",
   "inventory_owner": "Sam Huang",
   "hardware_registry": [
     {
@@ -57,8 +57,19 @@
     }
   ],
   "display_assets": [
-    { "name": "JVC 65XM", "panel": "65\" 4K QD-Mini LED", "specs": "144Hz Native / HDMI 2.1" },
-    { "name": "AORUS FV43U", "panel": "43\" 4K VA", "specs": "144Hz / HDR-1000 / HDMI 2.1" },
-    { "name": "AORUS FI32Q", "panel": "32\" SS IPS", "specs": "170Hz OC / QHD / KVM" }
+    { "name": "JVC 65XM", "panel": "65\" 4K QD-Mini LED, 144Hz Native / HDMI 2.1" },
+    { "name": "AORUS FV43U", "panel": "43\" 4K VA, 144Hz / HDR-1000 / HDMI 2.1" },
+    { "name": "AORUS FI32Q", "panel": "32\" SS IPS, 170Hz OC / QHD / KVM" }
+  ],
+  "peripherals": [
+    { "name": "羅技 MX Master 4", "category": "Mouse" },
+    { "name": "Razer Pro Type Ultra", "category": "Keyboard" },
+    { "name": "Razer Kishi Ultra", "category": "Gamepad" },
+    { "name": "Apple AirPods Pro 3", "category": "Audio" },
+    { "name": "BOSE QuietComfort Earbuds", "category": "Audio" }
+  ],
+  "power_assets": [
+    { "name": "UGREEN Nexode 500W GaN Fast Charging Station", "category": "Charging Station" },
+    { "name": "280W Zeus USB-C GaN Charger", "category": "Charger" }
   ]
 }
