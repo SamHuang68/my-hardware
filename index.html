@@ -5,28 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sam Huang's Hardware Registry</title>
     <style>
-        /* 全域設定與滾動吸附 (Scroll Snapping) */
+        /* 全域設定與滾動吸附 */
         html, body { 
             margin: 0; 
             padding: 0; 
             height: 100%; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: #0a0a0a; 
             color: #eee; 
-            overflow: hidden; /* 隱藏原生整頁捲軸，改由 scroll-container 控制 */
+            overflow: hidden; 
+            background-color: #030613; /* 深邃科技藍底色 */
+        }
+
+        /* 純 CSS 科技網格背景 */
+        .tech-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: 
+                linear-gradient(rgba(0, 200, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 200, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center center;
+            z-index: -2;
+        }
+
+        /* 背景暗角聚焦效果 */
+        .tech-vignette {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at 50% 50%, transparent 20%, #010206 100%);
+            z-index: -1;
+            pointer-events: none;
         }
 
         .scroll-container {
             height: 100vh;
             overflow-y: scroll;
-            scroll-snap-type: y mandatory; /* Y軸強制吸附 */
+            scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
+            position: relative;
+            z-index: 1;
         }
 
         /* 每個區塊滿版顯示 */
         .section {
             height: 100vh;
-            scroll-snap-align: start; /* 滾動時對齊區塊頂部 */
+            scroll-snap-align: start;
             display: flex;
             flex-direction: column;
             padding: 40px 20px;
@@ -39,11 +62,15 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(135deg, #121212 0%, #1a1a2e 100%);
         }
-        .hero-section h1 { font-size: 3em; margin-bottom: 10px; letter-spacing: 2px; }
-        .hero-section p { font-size: 1.2em; color: #888; }
-        .scroll-hint { margin-top: 40px; font-size: 0.9em; color: #555; animation: bounce 2s infinite; }
+        .hero-section h1 { 
+            font-size: 3.5em; 
+            margin-bottom: 10px; 
+            letter-spacing: 3px; 
+            text-shadow: 0 0 20px rgba(0, 200, 255, 0.4);
+        }
+        .hero-section p { font-size: 1.2em; color: #aaa; }
+        .scroll-hint { margin-top: 40px; font-size: 0.9em; color: #00c8ff; animation: bounce 2s infinite; letter-spacing: 2px; }
 
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
@@ -63,15 +90,15 @@
 
         .section-title { 
             font-size: 2em; 
-            border-bottom: 2px solid #333; 
+            border-bottom: 2px solid rgba(0, 200, 255, 0.3); 
             padding-bottom: 15px; 
             margin-bottom: 30px; 
             color: #fff; 
             text-align: center;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0, 200, 255, 0.2);
         }
 
-        /* 讓卡片區域可以內部滾動，防止卡片太多超出螢幕 */
         .grid-wrapper {
             flex-grow: 1;
             overflow-y: auto;
@@ -79,10 +106,9 @@
             padding-bottom: 20px;
         }
 
-        /* 美化內部滾動條 */
         .grid-wrapper::-webkit-scrollbar { width: 6px; }
         .grid-wrapper::-webkit-scrollbar-track { background: transparent; }
-        .grid-wrapper::-webkit-scrollbar-thumb { background-color: #333; border-radius: 10px; }
+        .grid-wrapper::-webkit-scrollbar-thumb { background-color: rgba(0, 200, 255, 0.3); border-radius: 10px; }
 
         .grid { 
             display: grid; 
@@ -90,19 +116,22 @@
             gap: 25px; 
         }
 
-        /* 卡片設計微調，增加質感 */
+        /* 磨砂玻璃卡片設計 (Glassmorphism) */
         .card { 
-            background: #161616; 
+            background: rgba(15, 20, 35, 0.6); /* 半透明底色 */
+            backdrop-filter: blur(12px); /* 毛玻璃模糊效果 */
+            -webkit-backdrop-filter: blur(12px);
             border-radius: 12px; 
             padding: 25px; 
             transition: all 0.3s ease; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5); 
-            border: 1px solid #222; 
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); 
+            border: 1px solid rgba(255, 255, 255, 0.08); /* 微微發光的邊框 */
         }
         .card:hover { 
             transform: translateY(-8px); 
-            border-color: #555; 
-            box-shadow: 0 15px 30px rgba(0,0,0,0.8);
+            border-color: rgba(0, 200, 255, 0.5); 
+            box-shadow: 0 15px 30px rgba(0, 200, 255, 0.15);
+            background: rgba(20, 25, 45, 0.7);
         }
         .card img { 
             width: 100%; 
@@ -114,28 +143,32 @@
         }
         .tag { 
             display: inline-block; 
-            background: #2a2a35; 
-            color: #a0a0d0; 
+            background: rgba(0, 200, 255, 0.15); 
+            color: #66d9ff; 
             padding: 5px 10px; 
             border-radius: 6px; 
             font-size: 0.75em; 
             font-weight: bold;
             margin-bottom: 15px; 
             text-transform: uppercase;
+            border: 1px solid rgba(0, 200, 255, 0.2);
         }
-        h3 { margin-top: 0; color: #e0e0e0; font-size: 1.4em; border-bottom: 1px solid #222; padding-bottom: 10px; }
-        p { margin: 8px 0; font-size: 0.95em; color: #bbb; line-height: 1.5; }
-        .spec-label { color: #777; font-weight: bold; margin-right: 6px; display: inline-block; min-width: 60px; }
+        h3 { margin-top: 0; color: #f0f0f0; font-size: 1.4em; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        p { margin: 8px 0; font-size: 0.95em; color: #c8c8c8; line-height: 1.5; }
+        .spec-label { color: #00c8ff; font-weight: bold; margin-right: 6px; display: inline-block; min-width: 60px; opacity: 0.8; }
     </style>
 </head>
 <body>
+    <div class="tech-bg"></div>
+    <div class="tech-vignette"></div>
+
     <div class="scroll-container">
         
         <section class="section hero-section">
-            <h1>Hardware Registry</h1>
+            <h1>HARDWARE REGISTRY</h1>
             <p>Sam Huang's Personal Asset Database</p>
-            <p style="font-size: 0.9em; margin-top: 20px;">Last Updated: <span id="last-updated" style="color: #fff;"></span></p>
-            <div class="scroll-hint">▼ SCROLL TO EXPLORE ▼</div>
+            <p style="font-size: 0.9em; margin-top: 20px; color: #666;">Last Updated: <span id="last-updated" style="color: #aaa;"></span></p>
+            <div class="scroll-hint">▼ INITIATE SCROLL ▼</div>
         </section>
 
         <section class="section">
@@ -193,9 +226,8 @@
                         gpuText = typeof sys.gpu === 'string' ? sys.gpu : (sys.gpu.external || sys.gpu.internal || 'N/A');
                     }
 
-                    // 確保所有詳細規格皆顯示，無預留文字背景
                     card.innerHTML = `
-                        <img src="${sys?.image_path || 'images/default.png'}" alt="${sys?.name || 'Device'}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'300\\' height=\\'200\\'><text x=\\'50%\\' y=\\'50%\\' fill=\\'%23444\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' font-family=\\'sans-serif\\' font-size=\\'14\\'>No Image Available</text></svg>'">
+                        <img src="${sys?.image_path || 'images/default.png'}" alt="${sys?.name || 'Device'}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'300\\' height=\\'200\\'><text x=\\'50%\\' y=\\'50%\\' fill=\\'%23555\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' font-family=\\'sans-serif\\' font-size=\\'14\\'>NO IMAGE RECORD</text></svg>'">
                         <span class="tag">${sys?.form_factor || 'Unknown'}</span>
                         <h3>${sys?.name || 'Unknown Device'}</h3>
                         ${sys?.cpu?.model ? `<p><span class="spec-label">CPU:</span> ${sys.cpu.model}</p>` : ''}
@@ -249,7 +281,7 @@
             })
             .catch(err => {
                 console.error('Error loading data:', err);
-                document.getElementById('systems-grid').innerHTML = '<p style="color: #ff5555;">Failed to load data.json. Please ensure it is in the same directory.</p>';
+                document.getElementById('systems-grid').innerHTML = '<p style="color: #ff5555;">[SYS_ERROR] Failed to load data.json registry.</p>';
             });
     </script>
 </body>
