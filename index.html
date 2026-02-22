@@ -13,19 +13,26 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             color: #eee; 
             overflow: hidden; 
-            background-color: #030613; /* 深邃科技藍底色 */
+            background-color: transparent; /* 修正：將 body 背景改為透明，避免蓋住下方網格 */
         }
 
-        /* 純 CSS 科技網格背景 */
+        /* 純 CSS 科技網格背景 + 緩慢移動動畫 */
         .tech-bg {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: #030613; /* 修正：深邃科技藍底色移到這裡 */
             background-image: 
-                linear-gradient(rgba(0, 200, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 200, 255, 0.05) 1px, transparent 1px);
+                linear-gradient(rgba(0, 200, 255, 0.15) 1px, transparent 1px), /* 提高透明度讓網格更明顯 */
+                linear-gradient(90deg, rgba(0, 200, 255, 0.15) 1px, transparent 1px);
             background-size: 40px 40px;
-            background-position: center center;
             z-index: -2;
+            animation: moveGrid 4s linear infinite; /* 新增：線性無限播放的移動動畫 */
+        }
+
+        /* 網格移動的關鍵影格 (距離需對齊 background-size 以達成完美循環) */
+        @keyframes moveGrid {
+            0% { background-position: 0px 0px; }
+            100% { background-position: 40px 40px; }
         }
 
         /* 背景暗角聚焦效果 */
@@ -43,7 +50,7 @@
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
             position: relative;
-            z-index: 1;
+            z-index: 1; /* 確保內容層在背景之上 */
         }
 
         /* 每個區塊滿版顯示 */
@@ -116,16 +123,16 @@
             gap: 25px; 
         }
 
-        /* 磨砂玻璃卡片設計 (Glassmorphism) */
+        /* 磨砂玻璃卡片設計 */
         .card { 
-            background: rgba(15, 20, 35, 0.6); /* 半透明底色 */
-            backdrop-filter: blur(12px); /* 毛玻璃模糊效果 */
+            background: rgba(15, 20, 35, 0.6); 
+            backdrop-filter: blur(12px); 
             -webkit-backdrop-filter: blur(12px);
             border-radius: 12px; 
             padding: 25px; 
             transition: all 0.3s ease; 
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); 
-            border: 1px solid rgba(255, 255, 255, 0.08); /* 微微發光的邊框 */
+            border: 1px solid rgba(255, 255, 255, 0.08); 
         }
         .card:hover { 
             transform: translateY(-8px); 
