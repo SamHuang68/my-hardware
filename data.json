@@ -12,8 +12,7 @@
       "ram": { "capacity": "96GB", "spec": "Micron 5600MHz DDR5 SODIMM (48GB x2)" },
       "storage": { "primary": "2TB Lexar NQ790 PCIe Gen4" },
       "gpu": { "internal": "Intel Arc 140T", "external": "PNY GeForce RTX 5080 OC 16GB (via Minisforum DEG2)" },
-      "power_supply": "ASUS ROG Thor 1000W Platinum III (Type-C PD to Mini PC via DEG2)",
-      "upgrade_notes": "Monitor RTX 5080 thermals; Check OCuLink stability."
+      "power_supply": "ASUS ROG Thor 1000W Platinum III (Type-C PD to Mini PC via DEG2)"
     },
     {
       "id": "DESKTOP_PC_01",
@@ -27,8 +26,7 @@
       "storage": { "primary": "1TB Crucial T500 PCIe Gen4 NVMe" },
       "gpu": "EVGA GeForce RTX 3060 XC GAMING",
       "power_supply": "Seasonic FOCUS SGX-550 Gold (SFX-L)",
-      "case": "Phanteks Evolv Shift 2 Air",
-      "upgrade_notes": "Monitor 550W PSU headroom if GPU upgrades."
+      "case": "Phanteks Evolv Shift 2 Air"
     },
     {
       "id": "HANDHELD_01",
@@ -39,8 +37,7 @@
       "cpu": { "model": "Intel Core Ultra 7 268V", "architecture": "Lunar Lake" },
       "ram": { "capacity": "32GB MoP", "spec": "32GB LPDDR5X-8533 MoP" },
       "storage": { "primary": "1TB KIOXIA BG6 PCIe Gen4" },
-      "gpu": "Intel Arc 140V Graphics",
-      "upgrade_notes": "Primary portable inference testbed."
+      "gpu": "Intel Arc 140V Graphics"
     },
     {
       "id": "LAPTOP_01",
@@ -52,8 +49,7 @@
       "ram": { "capacity": "32GB MoP", "spec": "32GB LPDDR5X-8533 MoP" },
       "storage": { "primary": "512GB PCIe Gen4 NVMe" },
       "gpu": "Intel Arc 140V Graphics",
-      "features": "Intel vPro Enterprise",
-      "upgrade_notes": "SSD upgrade planned (2TB)."
+      "features": "Intel vPro Enterprise"
     }
   ],
   "display_assets": [
