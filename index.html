@@ -13,23 +13,22 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             color: #eee; 
             overflow: hidden; 
-            background-color: transparent; /* 修正：將 body 背景改為透明，避免蓋住下方網格 */
+            background-color: transparent; 
         }
 
         /* 純 CSS 科技網格背景 + 緩慢移動動畫 */
         .tech-bg {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #030613; /* 修正：深邃科技藍底色移到這裡 */
+            background-color: #030613; 
             background-image: 
-                linear-gradient(rgba(0, 200, 255, 0.15) 1px, transparent 1px), /* 提高透明度讓網格更明顯 */
+                linear-gradient(rgba(0, 200, 255, 0.15) 1px, transparent 1px), 
                 linear-gradient(90deg, rgba(0, 200, 255, 0.15) 1px, transparent 1px);
             background-size: 40px 40px;
             z-index: -2;
-            animation: moveGrid 4s linear infinite; /* 新增：線性無限播放的移動動畫 */
+            animation: moveGrid 4s linear infinite; 
         }
 
-        /* 網格移動的關鍵影格 (距離需對齊 background-size 以達成完美循環) */
         @keyframes moveGrid {
             0% { background-position: 0px 0px; }
             100% { background-position: 40px 40px; }
@@ -50,10 +49,9 @@
             scroll-snap-type: y mandatory;
             scroll-behavior: smooth;
             position: relative;
-            z-index: 1; /* 確保內容層在背景之上 */
+            z-index: 1; 
         }
 
-        /* 每個區塊滿版顯示 */
         .section {
             height: 100vh;
             scroll-snap-align: start;
@@ -64,7 +62,6 @@
             position: relative;
         }
 
-        /* 首頁打招呼區塊 */
         .hero-section {
             justify-content: center;
             align-items: center;
@@ -85,7 +82,6 @@
             60% { transform: translateY(-7px); }
         }
 
-        /* 內容區塊容器 */
         .container {
             max-width: 1200px; 
             margin: 0 auto; 
@@ -123,7 +119,6 @@
             gap: 25px; 
         }
 
-        /* 磨砂玻璃卡片設計 */
         .card { 
             background: rgba(15, 20, 35, 0.6); 
             backdrop-filter: blur(12px); 
@@ -217,6 +212,8 @@
     </div>
 
     <script>
+        const fallbackSVG = `data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'300\\' height=\\'200\\'><text x=\\'50%\\' y=\\'50%\\' fill=\\'%23555\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' font-family=\\'sans-serif\\' font-size=\\'14\\'>NO IMAGE RECORD</text></svg>`;
+
         fetch('data.json')
             .then(res => res.json())
             .then(data => {
@@ -227,14 +224,12 @@
                 data?.hardware_registry?.forEach(sys => {
                     const card = document.createElement('div');
                     card.className = 'card';
-                    
                     let gpuText = 'N/A';
                     if (sys?.gpu) {
                         gpuText = typeof sys.gpu === 'string' ? sys.gpu : (sys.gpu.external || sys.gpu.internal || 'N/A');
                     }
-
                     card.innerHTML = `
-                        <img src="${sys?.image_path || 'images/default.png'}" alt="${sys?.name || 'Device'}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'300\\' height=\\'200\\'><text x=\\'50%\\' y=\\'50%\\' fill=\\'%23555\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' font-family=\\'sans-serif\\' font-size=\\'14\\'>NO IMAGE RECORD</text></svg>'">
+                        <img src="${sys?.image_path || 'images/default.png'}" alt="${sys?.name || 'Device'}" onerror="this.src='${fallbackSVG}'">
                         <span class="tag">${sys?.form_factor || 'Unknown'}</span>
                         <h3>${sys?.name || 'Unknown Device'}</h3>
                         ${sys?.cpu?.model ? `<p><span class="spec-label">CPU:</span> ${sys.cpu.model}</p>` : ''}
@@ -255,6 +250,7 @@
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
+                        <img src="${disp?.image_path || 'images/default.png'}" alt="${disp?.name || 'Device'}" onerror="this.src='${fallbackSVG}'">
                         <span class="tag">Display</span>
                         <h3>${disp?.name || 'Unknown Display'}</h3>
                         ${disp?.panel ? `<p><span class="spec-label">Panel:</span> ${disp.panel}</p>` : ''}
@@ -268,6 +264,7 @@
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
+                        <img src="${p?.image_path || 'images/default.png'}" alt="${p?.name || 'Device'}" onerror="this.src='${fallbackSVG}'">
                         <span class="tag">${p?.category || 'Accessory'}</span>
                         <h3>${p?.name || 'Unknown Peripheral'}</h3>
                     `;
@@ -280,6 +277,7 @@
                     const card = document.createElement('div');
                     card.className = 'card';
                     card.innerHTML = `
+                        <img src="${p?.image_path || 'images/default.png'}" alt="${p?.name || 'Device'}" onerror="this.src='${fallbackSVG}'">
                         <span class="tag">${p?.category || 'Power'}</span>
                         <h3>${p?.name || 'Unknown Power Device'}</h3>
                     `;
