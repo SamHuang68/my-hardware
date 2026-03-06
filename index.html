@@ -3,21 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sam Huang's Hardware Registry - TECH IMPACT</title>
+    <title>Sam Huang's Hardware Registry - CHROMA TECH</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <style>
         :root {
+            /* 時尚科技色譜 */
             --neon-cyan: #00f3ff;
             --neon-purple: #bc13fe;
-            --dark-bg: #030305;
-            --glass-bg: rgba(10, 12, 20, 0.7);
+            --tech-pink: #ff007f;
+            --deep-space: #050510; /* 深藍紫底色 */
+            --glass-bg: rgba(15, 18, 30, 0.6);
         }
 
         html, body { 
             margin: 0; padding: 0; height: 100%; 
-            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif; 
-            background-color: var(--dark-bg); color: #fff;
+            font-family: 'Syne', 'Segoe UI', Roboto, Helvetica, sans-serif; /* 使用更具時尚感的字體 */
+            color: #fff;
             overflow: hidden; 
+            /* 修正：全域底色改為深藍紫漸層，增強深度感 */
+            background: radial-gradient(circle at 50% 50%, #1a1a35 0%, var(--deep-space) 100%);
         }
 
         /* WebGL 背景容器 */
@@ -26,11 +30,19 @@
             z-index: -2; pointer-events: none;
         }
 
-        /* 暗角聚焦與流體遮罩 */
-        .cinematic-overlay {
+        /* 時尚科技背景疊加層 (增加視覺饗宴感) */
+        .tech-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at center, transparent 0%, #000000 120%);
             z-index: -1; pointer-events: none;
+            /* 幾何線條網格 */
+            background-image: 
+                linear-gradient(rgba(100, 100, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(100, 100, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            /* 時尚暗角聚焦 */
+            background-color: transparent;
+            mask-image: radial-gradient(circle at center, black 30%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 100%);
         }
 
         /* 側邊導覽列 (Sidebar) */
@@ -40,91 +52,95 @@
         }
 
         .nav-item {
-            width: 12px; height: 12px; border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
+            width: 14px; height: 14px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
             border: 2px solid transparent; cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
             position: relative;
         }
 
-        /* 磁吸互動 (Magnetic) 觸發範圍放大 */
+        /* 磁吸互動觸發範圍 */
         .nav-item::before {
             content: ''; position: absolute;
             top: -15px; left: -15px; right: -15px; bottom: -15px;
         }
 
         .nav-item.active {
-            background: var(--neon-cyan);
-            border-color: rgba(0, 243, 255, 0.5);
-            box-shadow: 0 0 15px var(--neon-cyan);
-            transform: scale(1.5);
+            background: #fff;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-purple);
+            transform: scale(1.6);
         }
 
         .nav-tooltip {
-            position: absolute; left: 30px; top: 50%; transform: translateY(-50%);
-            background: var(--glass-bg); backdrop-filter: blur(10px);
-            padding: 5px 15px; border-radius: 4px; font-size: 0.85em;
-            letter-spacing: 2px; text-transform: uppercase;
-            color: var(--neon-cyan); border: 1px solid rgba(0, 243, 255, 0.3);
+            position: absolute; left: 35px; top: 50%; transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px);
+            padding: 6px 16px; border-radius: 20px; font-size: 0.8em;
+            letter-spacing: 2px; text-transform: uppercase; font-weight: bold;
+            color: #fff; border: 1px solid rgba(255, 255, 255, 0.1);
             opacity: 0; pointer-events: none; transition: all 0.3s ease;
             white-space: nowrap;
         }
-        .nav-item:hover .nav-tooltip { opacity: 1; left: 40px; }
+        .nav-item:hover .nav-tooltip { opacity: 1; left: 45px; }
 
         /* 主視窗滾動區 */
         .scroll-container {
-            height: 100vh; width: 100vw; padding-left: 80px; box-sizing: border-box;
+            height: 100vh; width: 100vw; padding-left: 90px; box-sizing: border-box;
             overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth;
         }
-        .scroll-container::-webkit-scrollbar { display: none; } /* 隱藏捲軸增加電影感 */
+        .scroll-container::-webkit-scrollbar { display: none; } 
 
         .section {
             height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column;
-            padding: 50px 40px 50px 20px; box-sizing: border-box; position: relative;
+            padding: 60px 50px 60px 20px; box-sizing: border-box; position: relative;
         }
 
         /* 英雄區塊 */
-        .hero-section { justify-content: center; align-items: flex-start; padding-left: 10%; }
+        .hero-section { justify-content: center; align-items: flex-start; padding-left: 8%; }
         .hero-title {
-            font-size: 5vw; font-weight: 900; margin: 0; line-height: 1.1;
-            background: linear-gradient(90deg, #fff, var(--neon-cyan));
+            font-size: 6vw; font-weight: 900; margin: 0; line-height: 1.0;
+            background: linear-gradient(135deg, #fff 30%, var(--neon-cyan) 70%, var(--neon-purple) 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-transform: uppercase; letter-spacing: 5px;
-            filter: drop-shadow(0 0 20px rgba(0, 243, 255, 0.3));
+            text-transform: uppercase; letter-spacing: 6px;
+            filter: drop-shadow(0 0 30px rgba(0, 243, 255, 0.4));
         }
-        .hero-subtitle { font-size: 1.5vw; color: #888; margin-top: 10px; letter-spacing: 3px; }
+        .hero-subtitle { font-size: 1.6vw; color: rgba(255, 255, 255, 0.6); margin-top: 15px; letter-spacing: 4px; font-weight: 300; }
 
-        .container { max-width: 1400px; width: 100%; height: 100%; display: flex; flex-direction: column; }
+        .container { max-width: 1500px; width: 100%; height: 100%; display: flex; flex-direction: column; }
         .section-title {
-            font-size: 2.5em; color: #fff; margin-bottom: 30px; padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1); text-transform: uppercase;
-            letter-spacing: 3px; position: relative;
+            font-size: 2.8em; color: #fff; margin-bottom: 35px; padding-bottom: 15px;
+            font-weight: 800; text-transform: uppercase; letter-spacing: 4px; position: relative;
         }
+        /* 時尚霓虹下劃線 */
         .section-title::after {
-            content: ''; position: absolute; left: 0; bottom: -1px;
-            width: 100px; height: 2px; background: var(--neon-cyan);
-            box-shadow: 0 0 10px var(--neon-cyan);
+            content: ''; position: absolute; left: 0; bottom: -2px;
+            width: 120px; height: 3px; 
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+            box-shadow: 0 0 15px var(--neon-cyan);
+            border-radius: 3px;
         }
 
-        .grid-wrapper { flex-grow: 1; overflow-y: auto; padding-right: 20px; padding-bottom: 40px; }
-        .grid-wrapper::-webkit-scrollbar { width: 4px; }
+        .grid-wrapper { flex-grow: 1; overflow-y: auto; padding-right: 20px; padding-bottom: 50px; }
+        .grid-wrapper::-webkit-scrollbar { width: 5px; }
         .grid-wrapper::-webkit-scrollbar-track { background: transparent; }
-        .grid-wrapper::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.3); border-radius: 4px; }
+        .grid-wrapper::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 5px; }
+        .grid-wrapper:hover::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.3); }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 35px; }
 
         /* 卡片光束動畫 (Border Beam) */
         .card-wrapper {
-            position: relative; border-radius: 12px; overflow: hidden;
-            background: rgba(255, 255, 255, 0.03); padding: 1px; /* 1px 為邊框寬度 */
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            position: relative; border-radius: 16px; overflow: hidden;
+            background: rgba(255, 255, 255, 0.04); padding: 1px;
+            transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
         .card-wrapper::before {
             content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: conic-gradient(transparent, transparent, transparent, var(--neon-cyan));
-            animation: borderBeam 4s linear infinite; opacity: 0; transition: opacity 0.3s ease;
+            background: conic-gradient(transparent, transparent, var(--neon-cyan), transparent, var(--neon-purple), transparent);
+            animation: borderBeam 6s linear infinite; opacity: 0; transition: opacity 0.4s ease;
         }
-        .card-wrapper:hover { transform: translateY(-10px); z-index: 2; }
+        .card-wrapper:hover { transform: translateY(-12px) scale(1.02); z-index: 2; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5); border-color: rgba(255, 255, 255, 0.1); }
         .card-wrapper:hover::before { opacity: 1; }
 
         @keyframes borderBeam {
@@ -134,26 +150,30 @@
 
         /* 卡片內容 (磨砂玻璃) */
         .card {
-            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-radius: 11px; padding: 25px; height: 100%; box-sizing: border-box; position: relative; z-index: 1;
+            background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border-radius: 15px; padding: 30px; height: 100%; box-sizing: border-box; position: relative; z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        .card img { width: 100%; height: 200px; object-fit: contain; margin-bottom: 20px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); transition: transform 0.5s ease; }
-        .card-wrapper:hover img { transform: scale(1.05); }
+        .card img { width: 100%; height: 220px; object-fit: contain; margin-bottom: 25px; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6)); transition: transform 0.6s ease; }
+        .card-wrapper:hover img { transform: scale(1.08); }
 
         .tag {
-            display: inline-block; background: rgba(188, 19, 254, 0.1); color: var(--neon-purple);
-            padding: 4px 10px; border-radius: 4px; font-size: 0.75em; font-weight: bold;
-            margin-bottom: 15px; border: 1px solid rgba(188, 19, 254, 0.3); letter-spacing: 1px;
+            display: inline-block; background: rgba(255, 255, 255, 0.05); color: #fff;
+            padding: 5px 12px; border-radius: 20px; font-size: 0.7em; font-weight: 700;
+            margin-bottom: 18px; border: 1px solid rgba(255, 255, 255, 0.1); letter-spacing: 1.5px; text-transform: uppercase;
         }
-        h3 { margin-top: 0; font-size: 1.3em; letter-spacing: 1px; margin-bottom: 15px; }
-        p { margin: 6px 0; font-size: 0.9em; color: #bbb; }
-        .spec-label { color: var(--neon-cyan); font-weight: bold; margin-right: 6px; display: inline-block; min-width: 50px; }
+        h3 { margin-top: 0; font-size: 1.4em; letter-spacing: 1px; margin-bottom: 18px; font-weight: 700; }
+        p { margin: 8px 0; font-size: 0.95em; color: rgba(255, 255, 255, 0.7); line-height: 1.6; }
+        .spec-label { color: var(--neon-cyan); font-weight: 700; margin-right: 8px; display: inline-block; min-width: 55px; opacity: 0.9; }
     </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="webgl-canvas"></div>
-    <div class="cinematic-overlay"></div>
+    <div class="tech-overlay"></div>
 
     <aside class="sidebar">
         <div class="nav-item magnetic active" data-target="section-hero"><span class="nav-tooltip">Initialization</span></div>
@@ -165,9 +185,9 @@
 
     <div class="scroll-container" id="main-scroll">
         <section class="section hero-section" id="section-hero">
-            <h1 class="hero-title">Tech Impact<br>Registry</h1>
+            <h1 class="hero-title">Registry<br>Hub</h1>
             <p class="hero-subtitle">SYSTEM ARCHITECTURE & HARDWARE ASSETS</p>
-            <p style="color: #555; margin-top: 30px; letter-spacing: 2px;">LAST SYNC: <span id="last-updated" style="color: var(--neon-purple);"></span></p>
+            <p style="color: rgba(255,255,255,0.3); margin-top: 40px; letter-spacing: 3px; font-weight: 700;">LAST SYNC: <span id="last-updated" style="color: #fff;"></span></p>
         </section>
 
         <section class="section" id="section-systems">
@@ -209,12 +229,11 @@
                 const rect = btn.getBoundingClientRect();
                 const x = e.clientX - rect.left - rect.width / 2;
                 const y = e.clientY - rect.top - rect.height / 2;
-                btn.style.transform = `translate(${x * 0.4}px, ${y * 0.4}px)`;
+                btn.style.transform = `translate(${x * 0.45}px, ${y * 0.45}px)`; // 增加一點磁吸幅度
             });
             btn.addEventListener('mouseout', function() {
-                btn.style.transform = ''; // 恢復預設
+                btn.style.transform = ''; 
             });
-            // 點擊導航滾動
             btn.addEventListener('click', function() {
                 const targetId = this.getAttribute('data-target');
                 document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
@@ -237,59 +256,94 @@
         sections.forEach(sec => observer.observe(sec));
 
         /* ==========================================
-           3. Three.js 液態流體粒子背景
+           3. Three.js 炫彩霓虹粒子流體 (Chroma Fluid)
            ========================================== */
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
-        camera.position.z = 1000;
+        const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000); // 調整視角增強拉伸感
+        camera.position.z = 1200;
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio); // 修正：提升高解析度螢幕的畫質
         document.getElementById('webgl-canvas').appendChild(renderer.domElement);
 
-        const particleCount = 2500;
+        const particleCount = 3000; // 增加粒子數量
         const geometry = new THREE.BufferGeometry();
         const positions = new Float32Array(particleCount * 3);
+        const colors = new Float32Array(particleCount * 3); // 新增：粒子色彩屬性
         const scales = new Float32Array(particleCount);
 
-        let i = 0, j = 0;
-        // 建立網格狀的粒子點陣
-        const amountX = 50, amountY = 50, separation = 100;
+        let i = 0, j = 0, k = 0;
+        const amountX = 60, amountY = 50, separation = 110;
         for ( let ix = 0; ix < amountX; ix ++ ) {
             for ( let iy = 0; iy < amountY; iy ++ ) {
                 positions[ i ] = ix * separation - ( ( amountX * separation ) / 2 ); // x
-                positions[ i + 1 ] = 0; // y (由動畫控制波浪)
+                positions[ i + 1 ] = 0; // y
                 positions[ i + 2 ] = iy * separation - ( ( amountY * separation ) / 2 ); // z
+                
+                // 初始化色彩 (預設青色)
+                colors[ k ] = 0; // R
+                colors[ k + 1 ] = 0.95; // G
+                colors[ k + 2 ] = 1; // B
+
                 scales[ j ] = 1;
-                i += 3; j ++;
+                i += 3; j ++; k += 3;
             }
         }
         geometry.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+        geometry.setAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) ); // 啟用頂點色彩
         geometry.setAttribute( 'scale', new THREE.BufferAttribute( scales, 1 ) );
 
-        // 粒子材質 (科技藍)
+        // 時尚霓虹粒子材質 (ShaderMaterial)
         const material = new THREE.ShaderMaterial({
-            uniforms: { color: { value: new THREE.Color(0x00f3ff) } },
+            uniforms: {
+                time: { value: 0 },
+                colorCyan: { value: new THREE.Color(0x00f3ff) },
+                colorPurple: { value: new THREE.Color(0xbc13fe) }
+            },
             vertexShader: `
+                uniform float time;
                 attribute float scale;
+                attribute vec3 color; // 接收自定義色彩
+                varying vec3 vColor; // 傳遞給 fragment shader
+                varying float vAlpha;
+
                 void main() {
-                    vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-                    gl_PointSize = scale * ( 300.0 / - mvPosition.z );
+                    vColor = color;
+                    vec3 pos = position;
+                    // 修正：更複雜的波浪運算，增加層次感
+                    pos.y = (sin((pos.x + time * 50.0) * 0.01) * 60.0) +
+                            (cos((pos.z + time * 30.0) * 0.01) * 60.0);
+                    
+                    // 根據 Y 軸高度微調色彩 (青色與紫色漸變)
+                    float colorMix = (pos.y + 120.0) / 240.0;
+                    vColor = mix(vColor, vec3(0.74, 0.07, 1.0), colorMix); // 漸變到紫色
+
+                    vec4 mvPosition = modelViewMatrix * vec4( pos, 1.0 );
+                    // 粒子大小隨距離衰減，並隨時間微微閃爍
+                    gl_PointSize = scale * (Separation * 3.5 / - mvPosition.z) * (1.0 + sin(time + pos.x) * 0.1);
                     gl_Position = projectionMatrix * mvPosition;
+                    // 深度霧化效果
+                    vAlpha = 1.0 - (mvPosition.z + 1000.0) / 2000.0;
                 }
             `,
             fragmentShader: `
-                uniform vec3 color;
+                varying vec3 vColor;
+                varying float vAlpha;
                 void main() {
-                    if ( length( gl_PointCoord - vec2( 0.5, 0.5 ) ) > 0.475 ) discard;
-                    gl_FragColor = vec4( color, 0.6 );
+                    // 圓形粒子，帶有柔和邊緣
+                    float dist = length( gl_PointCoord - vec2( 0.5, 0.5 ) );
+                    if ( dist > 0.5 ) discard;
+                    float glow = 1.0 - smoothstep(0.0, 0.5, dist);
+                    gl_FragColor = vec4( vColor, vAlpha * glow * 0.7 );
                 }
             `,
-            transparent: true
+            transparent: true,
+            blending: THREE.AdditiveBlending, // 啟用疊加混合，增強發光感
+            depthTest: false // 禁用深度測試，避免近處粒子遮擋遠處粒子的光芒
         });
 
         const particles = new THREE.Points( geometry, material );
-        // 旋轉讓粒子海呈現傾斜視角
-        particles.rotation.x = 0.5;
+        particles.rotation.x = 0.6; // 調整視角
         scene.add( particles );
 
         // 滑鼠追蹤互動
@@ -302,33 +356,21 @@
             mouseY = event.clientY - windowHalfY;
         });
 
-        let count = 0;
+        let clock = new THREE.Clock(); // 使用 Clock 取得平滑的時間增量
         function animate() {
             requestAnimationFrame( animate );
             
-            // 鏡頭緩動跟隨滑鼠 (電影感運鏡)
-            targetX = mouseX * 0.5;
-            targetY = mouseY * 0.5;
-            camera.position.x += ( targetX - camera.position.x ) * 0.05;
-            camera.position.y += ( - targetY - camera.position.y + 300) * 0.05;
+            let delta = clock.getDelta();
+            material.uniforms.time.value += delta; // 更新 Shader 時間
+
+            // 鏡頭緩動跟隨滑鼠 (時尚沉浸感運鏡)
+            targetX = mouseX * 0.4;
+            targetY = mouseY * 0.3;
+            camera.position.x += ( targetX - camera.position.x ) * 0.04;
+            camera.position.y += ( - targetY - camera.position.y + 350) * 0.04;
             camera.lookAt( scene.position );
 
-            // 液態波浪運算
-            const positions = particles.geometry.attributes.position.array;
-            const scales = particles.geometry.attributes.scale.array;
-            let i = 0, j = 0;
-            for ( let ix = 0; ix < amountX; ix ++ ) {
-                for ( let iy = 0; iy < amountY; iy ++ ) {
-                    positions[ i + 1 ] = ( Math.sin( ( ix + count ) * 0.3 ) * 50 ) +
-                                         ( Math.sin( ( iy + count ) * 0.5 ) * 50 );
-                    scales[ j ] = ( Math.sin( ( ix + count ) * 0.3 ) + 1 ) * 2 +
-                                  ( Math.sin( ( iy + count ) * 0.5 ) + 1 ) * 2;
-                    i += 3; j ++;
-                }
-            }
-            particles.geometry.attributes.position.needsUpdate = true;
-            particles.geometry.attributes.scale.needsUpdate = true;
-            count += 0.05;
+            // 修正：將波浪運算移至 Vertex Shader 以提升效能
 
             renderer.render( scene, camera );
         }
@@ -343,7 +385,7 @@
         }
 
         /* ==========================================
-           4. 載入資料庫 (data.json) 並生成光束卡片
+           4. 載入資料庫 (data.json) 並生成時尚卡片
            ========================================== */
         const fallbackSVG = `data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'300\\' height=\\'200\\'><text x=\\'50%\\' y=\\'50%\\' fill=\\'%23555\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' font-family=\\'sans-serif\\' font-size=\\'14\\'>NO SIGNAL</text></svg>`;
 
@@ -367,10 +409,9 @@
                     
                     sysGrid.appendChild(createCard(`
                         <img src="${sys?.image_path || 'images/default.png'}" onerror="this.src='${fallbackSVG}'">
-                        <span class="tag">${sys?.form_factor || 'SYS'}</span>
+                        <span class="tag">SYS Core</span>
                         <h3>${sys?.name || 'Unknown Device'}</h3>
                         ${sys?.cpu?.model ? `<p><span class="spec-label">CPU</span> ${sys.cpu.model}</p>` : ''}
-                        ${sys?.motherboard ? `<p><span class="spec-label">MOBO</span> ${sys.motherboard}</p>` : ''}
                         ${sys?.ram?.capacity ? `<p><span class="spec-label">RAM</span> ${sys.ram.capacity} ${sys.ram.spec ? `(${sys.ram.spec})` : ''}</p>` : ''}
                         ${gpuText !== 'N/A' ? `<p><span class="spec-label">GPU</span> ${gpuText}</p>` : ''}
                         ${sys?.storage?.primary ? `<p><span class="spec-label">DISK</span> ${sys.storage.primary}</p>` : ''}
@@ -382,7 +423,7 @@
                 data?.display_assets?.forEach(disp => {
                     dispGrid.appendChild(createCard(`
                         <img src="${disp?.image_path || 'images/default.png'}" onerror="this.src='${fallbackSVG}'">
-                        <span class="tag" style="background: rgba(0, 243, 255, 0.1); color: var(--neon-cyan); border-color: rgba(0, 243, 255, 0.3);">DISPLAY</span>
+                        <span class="tag" style="border-color: rgba(0, 243, 255, 0.2);">Visual</span>
                         <h3>${disp?.name || 'Unknown Display'}</h3>
                         ${disp?.panel ? `<p><span class="spec-label">PANEL</span> ${disp.panel}</p>` : ''}
                     `));
@@ -392,7 +433,7 @@
                 data?.peripherals?.forEach(p => {
                     periphGrid.appendChild(createCard(`
                         <img src="${p?.image_path || 'images/default.png'}" onerror="this.src='${fallbackSVG}'">
-                        <span class="tag">${p?.category || 'ACC'}</span>
+                        <span class="tag" style="border-color: rgba(188, 19, 254, 0.2);">Tactile</span>
                         <h3>${p?.name || 'Unknown Peripheral'}</h3>
                     `));
                 });
@@ -401,7 +442,7 @@
                 data?.power_assets?.forEach(p => {
                     powerGrid.appendChild(createCard(`
                         <img src="${p?.image_path || 'images/default.png'}" onerror="this.src='${fallbackSVG}'">
-                        <span class="tag" style="background: rgba(255, 204, 0, 0.1); color: #ffcc00; border-color: rgba(255, 204, 0, 0.3);">PWR</span>
+                        <span class="tag" style="border-color: rgba(255, 0, 127, 0.2);">Energy</span>
                         <h3>${p?.name || 'Unknown Power Device'}</h3>
                     `));
                 });
