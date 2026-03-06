@@ -25,7 +25,7 @@
       "ram": { "capacity": "32GB", "spec": "Micron Crucial Pro DDR5 (16GB x2)" },
       "storage": { "primary": "1TB Crucial T500 PCIe Gen4 NVMe" },
       "gpu": "EVGA GeForce RTX 3060 XC GAMING",
-      "power_supply": "Seasonic FOCUS SGX-550 Gold (SFX-L)",
+      "power_supply": "Seasonic FOCUS SGX-650 Gold (SFX-L)",
       "case": "Phanteks Evolv Shift 2 Air"
     },
     {
