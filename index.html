@@ -1,61 +1,50 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sam Huang's Hardware Registry</title>
-    <style>
-        /* 啟用平滑滾動 */
-        html { scroll-behavior: smooth; }
-        
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: #121212; 
-            color: #eee; 
-            margin: 0; 
-            display: flex; /* 使用 flexbox 切分左右版面 */
-        }
+    <meta name="description" content="Professional Hardware Showcase for Sam Huang's Computing Assets">
+    <title>Sam Huang | Hardware Showcase</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
 
-        /* 左側固定側邊欄 */
-        .sidebar {
-            position: fixed;
-            top: 0; 
-            left: 0;
-            width: 240px;
-            height: 100vh;
-            background: #181818;
-            border-right: 1px solid #2a2a2a;
-            padding: 40px 20px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 100;
-        }
+<body>
+    <div class="app-container">
+        <header>
+            <h1>HARDWARE REGISTRY</h1>
+            <p>High Performance Asset Database</p>
+        </header>
 
-        .sidebar .brand {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #fff;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #333;
-            letter-spacing: 1px;
-        }
+        <section id="computing">
+            <h2>Computing Systems</h2>
+            <div class="hardware-grid" id="systems-grid"></div>
+        </section>
 
-        .sidebar a {
-            color: #aaa;
-            text-decoration: none;
-            font-size: 0.95em;
-            padding: 10px 15px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-        }
+        <section id="visual">
+            <h2>Visual Assets</h2>
+            <div class="hardware-grid" id="displays-grid"></div>
+        </section>
 
-        .sidebar a:hover {
-            background: #252525;
-            color: #fff;
-        }
+        <section id="peripherals">
+            <h2>Peripherals & Audio</h2>
+            <div class="hardware-grid" id="peripherals-grid"></div>
+        </section>
 
-        /* 目前所在段落的高亮樣式 */
-        .sidebar a.
+        <section id="power">
+            <h2>Power Stations</h2>
+            <div class="hardware-grid" id="power-grid"></div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 Sam Huang. System Sync Active. Last Updated: <span id="last-updated"></span></p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
