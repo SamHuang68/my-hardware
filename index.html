@@ -3,290 +3,412 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sam Huang's Hardware Registry</title>
+    <title>Sam Huang's Hardware Registry - TECH IMPACT</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <style>
-        /* 全域設定與滾動吸附 */
+        :root {
+            --neon-cyan: #00f3ff;
+            --neon-purple: #bc13fe;
+            --dark-bg: #030305;
+            --glass-bg: rgba(10, 12, 20, 0.7);
+        }
+
         html, body { 
-            margin: 0; 
-            padding: 0; 
-            height: 100%; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            color: #eee; 
+            margin: 0; padding: 0; height: 100%; 
+            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif; 
+            background-color: var(--dark-bg); color: #fff;
             overflow: hidden; 
-            background-color: transparent; 
         }
 
-        /* 純 CSS 科技網格背景 + 緩慢移動動畫 */
-        .tech-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #030613; 
-            background-image: 
-                linear-gradient(rgba(0, 200, 255, 0.15) 1px, transparent 1px), 
-                linear-gradient(90deg, rgba(0, 200, 255, 0.15) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: -2;
-            animation: moveGrid 4s linear infinite; 
+        /* WebGL 背景容器 */
+        #webgl-canvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; pointer-events: none;
         }
 
-        @keyframes moveGrid {
-            0% { background-position: 0px 0px; }
-            100% { background-position: 40px 40px; }
+        /* 暗角聚焦與流體遮罩 */
+        .cinematic-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at center, transparent 0%, #000000 120%);
+            z-index: -1; pointer-events: none;
         }
 
-        /* 背景暗角聚焦效果 */
-        .tech-vignette {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at 50% 50%, transparent 20%, #010206 100%);
-            z-index: -1;
-            pointer-events: none;
+        /* 側邊導覽列 (Sidebar) */
+        .sidebar {
+            position: fixed; left: 30px; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; gap: 20px; z-index: 10;
         }
 
-        .scroll-container {
-            height: 100vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
+        .nav-item {
+            width: 12px; height: 12px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid transparent; cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
             position: relative;
-            z-index: 1; 
         }
+
+        /* 磁吸互動 (Magnetic) 觸發範圍放大 */
+        .nav-item::before {
+            content: ''; position: absolute;
+            top: -15px; left: -15px; right: -15px; bottom: -15px;
+        }
+
+        .nav-item.active {
+            background: var(--neon-cyan);
+            border-color: rgba(0, 243, 255, 0.5);
+            box-shadow: 0 0 15px var(--neon-cyan);
+            transform: scale(1.5);
+        }
+
+        .nav-tooltip {
+            position: absolute; left: 30px; top: 50%; transform: translateY(-50%);
+            background: var(--glass-bg); backdrop-filter: blur(10px);
+            padding: 5px 15px; border-radius: 4px; font-size: 0.85em;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: var(--neon-cyan); border: 1px solid rgba(0, 243, 255, 0.3);
+            opacity: 0; pointer-events: none; transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .nav-item:hover .nav-tooltip { opacity: 1; left: 40px; }
+
+        /* 主視窗滾動區 */
+        .scroll-container {
+            height: 100vh; width: 100vw; padding-left: 80px; box-sizing: border-box;
+            overflow-y: scroll; scroll-snap-type: y mandatory; scroll-behavior: smooth;
+        }
+        .scroll-container::-webkit-scrollbar { display: none; } /* 隱藏捲軸增加電影感 */
 
         .section {
-            height: 100vh;
-            scroll-snap-align: start;
-            display: flex;
-            flex-direction: column;
-            padding: 40px 20px;
-            box-sizing: border-box;
-            position: relative;
+            height: 100vh; scroll-snap-align: start; display: flex; flex-direction: column;
+            padding: 50px 40px 50px 20px; box-sizing: border-box; position: relative;
         }
 
-        .hero-section {
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+        /* 英雄區塊 */
+        .hero-section { justify-content: center; align-items: flex-start; padding-left: 10%; }
+        .hero-title {
+            font-size: 5vw; font-weight: 900; margin: 0; line-height: 1.1;
+            background: linear-gradient(90deg, #fff, var(--neon-cyan));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-transform: uppercase; letter-spacing: 5px;
+            filter: drop-shadow(0 0 20px rgba(0, 243, 255, 0.3));
         }
-        .hero-section h1 { 
-            font-size: 3.5em; 
-            margin-bottom: 10px; 
-            letter-spacing: 3px; 
-            text-shadow: 0 0 20px rgba(0, 200, 255, 0.4);
-        }
-        .hero-section p { font-size: 1.2em; color: #aaa; }
-        .scroll-hint { margin-top: 40px; font-size: 0.9em; color: #00c8ff; animation: bounce 2s infinite; letter-spacing: 2px; }
+        .hero-subtitle { font-size: 1.5vw; color: #888; margin-top: 10px; letter-spacing: 3px; }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-15px); }
-            60% { transform: translateY(-7px); }
+        .container { max-width: 1400px; width: 100%; height: 100%; display: flex; flex-direction: column; }
+        .section-title {
+            font-size: 2.5em; color: #fff; margin-bottom: 30px; padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); text-transform: uppercase;
+            letter-spacing: 3px; position: relative;
         }
-
-        .container {
-            max-width: 1200px; 
-            margin: 0 auto; 
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
+        .section-title::after {
+            content: ''; position: absolute; left: 0; bottom: -1px;
+            width: 100px; height: 2px; background: var(--neon-cyan);
+            box-shadow: 0 0 10px var(--neon-cyan);
         }
 
-        .section-title { 
-            font-size: 2em; 
-            border-bottom: 2px solid rgba(0, 200, 255, 0.3); 
-            padding-bottom: 15px; 
-            margin-bottom: 30px; 
-            color: #fff; 
-            text-align: center;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 200, 255, 0.2);
-        }
-
-        .grid-wrapper {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding-right: 10px;
-            padding-bottom: 20px;
-        }
-
-        .grid-wrapper::-webkit-scrollbar { width: 6px; }
+        .grid-wrapper { flex-grow: 1; overflow-y: auto; padding-right: 20px; padding-bottom: 40px; }
+        .grid-wrapper::-webkit-scrollbar { width: 4px; }
         .grid-wrapper::-webkit-scrollbar-track { background: transparent; }
-        .grid-wrapper::-webkit-scrollbar-thumb { background-color: rgba(0, 200, 255, 0.3); border-radius: 10px; }
+        .grid-wrapper::-webkit-scrollbar-thumb { background: rgba(0, 243, 255, 0.3); border-radius: 4px; }
 
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-            gap: 25px; 
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+
+        /* 卡片光束動畫 (Border Beam) */
+        .card-wrapper {
+            position: relative; border-radius: 12px; overflow: hidden;
+            background: rgba(255, 255, 255, 0.03); padding: 1px; /* 1px 為邊框寬度 */
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .card-wrapper::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: conic-gradient(transparent, transparent, transparent, var(--neon-cyan));
+            animation: borderBeam 4s linear infinite; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .card-wrapper:hover { transform: translateY(-10px); z-index: 2; }
+        .card-wrapper:hover::before { opacity: 1; }
+
+        @keyframes borderBeam {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .card { 
-            background: rgba(15, 20, 35, 0.6); 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 12px; 
-            padding: 25px; 
-            transition: all 0.3s ease; 
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
+        /* 卡片內容 (磨砂玻璃) */
+        .card {
+            background: var(--glass-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-radius: 11px; padding: 25px; height: 100%; box-sizing: border-box; position: relative; z-index: 1;
         }
-        .card:hover { 
-            transform: translateY(-8px); 
-            border-color: rgba(0, 200, 255, 0.5); 
-            box-shadow: 0 15px 30px rgba(0, 200, 255, 0.15);
-            background: rgba(20, 25, 45, 0.7);
+
+        .card img { width: 100%; height: 200px; object-fit: contain; margin-bottom: 20px; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); transition: transform 0.5s ease; }
+        .card-wrapper:hover img { transform: scale(1.05); }
+
+        .tag {
+            display: inline-block; background: rgba(188, 19, 254, 0.1); color: var(--neon-purple);
+            padding: 4px 10px; border-radius: 4px; font-size: 0.75em; font-weight: bold;
+            margin-bottom: 15px; border: 1px solid rgba(188, 19, 254, 0.3); letter-spacing: 1px;
         }
-        .card img { 
-            width: 100%; 
-            border-radius: 6px; 
-            height: 220px; 
-            margin-bottom: 20px; 
-            object-fit: contain; 
-            background: transparent; 
-        }
-        .tag { 
-            display: inline-block; 
-            background: rgba(0, 200, 255, 0.15); 
-            color: #66d9ff; 
-            padding: 5px 10px; 
-            border-radius: 6px; 
-            font-size: 0.75em; 
-            font-weight: bold;
-            margin-bottom: 15px; 
-            text-transform: uppercase;
-            border: 1px solid rgba(0, 200, 255, 0.2);
-        }
-        h3 { margin-top: 0; color: #f0f0f0; font-size: 1.4em; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        p { margin: 8px 0; font-size: 0.95em; color: #c8c8c8; line-height: 1.5; }
-        .spec-label { color: #00c8ff; font-weight: bold; margin-right: 6px; display: inline-block; min-width: 60px; opacity: 0.8; }
+        h3 { margin-top: 0; font-size: 1.3em; letter-spacing: 1px; margin-bottom: 15px; }
+        p { margin: 6px 0; font-size: 0.9em; color: #bbb; }
+        .spec-label { color: var(--neon-cyan); font-weight: bold; margin-right: 6px; display: inline-block; min-width: 50px; }
     </style>
 </head>
 <body>
-    <div class="tech-bg"></div>
-    <div class="tech-vignette"></div>
+    <div id="webgl-canvas"></div>
+    <div class="cinematic-overlay"></div>
 
-    <div class="scroll-container">
-        
-        <section class="section hero-section">
-            <h1>HARDWARE REGISTRY</h1>
-            <p>Sam Huang's Personal Asset Database</p>
-            <p style="font-size: 0.9em; margin-top: 20px; color: #666;">Last Updated: <span id="last-updated" style="color: #aaa;"></span></p>
-            <div class="scroll-hint">▼ INITIATE SCROLL ▼</div>
+    <aside class="sidebar">
+        <div class="nav-item magnetic active" data-target="section-hero"><span class="nav-tooltip">Initialization</span></div>
+        <div class="nav-item magnetic" data-target="section-systems"><span class="nav-tooltip">Systems</span></div>
+        <div class="nav-item magnetic" data-target="section-displays"><span class="nav-tooltip">Displays</span></div>
+        <div class="nav-item magnetic" data-target="section-peripherals"><span class="nav-tooltip">Peripherals</span></div>
+        <div class="nav-item magnetic" data-target="section-power"><span class="nav-tooltip">Power Grid</span></div>
+    </aside>
+
+    <div class="scroll-container" id="main-scroll">
+        <section class="section hero-section" id="section-hero">
+            <h1 class="hero-title">Tech Impact<br>Registry</h1>
+            <p class="hero-subtitle">SYSTEM ARCHITECTURE & HARDWARE ASSETS</p>
+            <p style="color: #555; margin-top: 30px; letter-spacing: 2px;">LAST SYNC: <span id="last-updated" style="color: var(--neon-purple);"></span></p>
         </section>
 
-        <section class="section">
+        <section class="section" id="section-systems">
             <div class="container">
-                <h2 class="section-title">COMPUTING SYSTEMS</h2>
-                <div class="grid-wrapper">
-                    <div class="grid" id="systems-grid"></div>
-                </div>
+                <h2 class="section-title">Computing Core</h2>
+                <div class="grid-wrapper"><div class="grid" id="systems-grid"></div></div>
             </div>
         </section>
 
-        <section class="section">
+        <section class="section" id="section-displays">
             <div class="container">
-                <h2 class="section-title">VISUAL ASSETS</h2>
-                <div class="grid-wrapper">
-                    <div class="grid" id="displays-grid"></div>
-                </div>
+                <h2 class="section-title">Visual Terminals</h2>
+                <div class="grid-wrapper"><div class="grid" id="displays-grid"></div></div>
             </div>
         </section>
 
-        <section class="section">
+        <section class="section" id="section-peripherals">
             <div class="container">
-                <h2 class="section-title">PERIPHERALS & AUDIO</h2>
-                <div class="grid-wrapper">
-                    <div class="grid" id="peripherals-grid"></div>
-                </div>
+                <h2 class="section-title">Tactile & Audio</h2>
+                <div class="grid-wrapper"><div class="grid" id="peripherals-grid"></div></div>
             </div>
         </section>
 
-        <section class="section">
+        <section class="section" id="section-power">
             <div class="container">
-                <h2 class="section-title">POWER ASSETS</h2>
-                <div class="grid-wrapper">
-                    <div class="grid" id="power-grid"></div>
-                </div>
+                <h2 class="section-title">Power Delivery</h2>
+                <div class="grid-wrapper"><div class="grid" id="power-grid"></div></div>
             </div>
         </section>
-
     </div>
 
     <script>
-        const fallbackSVG = `data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'300\\' height=\\'200\\'><text x=\\'50%\\' y=\\'50%\\' fill=\\'%23555\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' font-family=\\'sans-serif\\' font-size=\\'14\\'>NO IMAGE RECORD</text></svg>`;
+        /* ==========================================
+           1. 磁吸效果 (Magnetic Pull)
+           ========================================== */
+        const magnetics = document.querySelectorAll('.magnetic');
+        magnetics.forEach(btn => {
+            btn.addEventListener('mousemove', function(e) {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.4}px, ${y * 0.4}px)`;
+            });
+            btn.addEventListener('mouseout', function() {
+                btn.style.transform = ''; // 恢復預設
+            });
+            // 點擊導航滾動
+            btn.addEventListener('click', function() {
+                const targetId = this.getAttribute('data-target');
+                document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        /* ==========================================
+           2. 滾動監聽 (更新 Sidebar 狀態)
+           ========================================== */
+        const sections = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                    const activeNav = document.querySelector(`.nav-item[data-target="${entry.target.id}"]`);
+                    if(activeNav) activeNav.classList.add('active');
+                }
+            });
+        }, { threshold: 0.5 });
+        sections.forEach(sec => observer.observe(sec));
+
+        /* ==========================================
+           3. Three.js 液態流體粒子背景
+           ========================================== */
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+        camera.position.z = 1000;
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('webgl-canvas').appendChild(renderer.domElement);
+
+        const particleCount = 2500;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const scales = new Float32Array(particleCount);
+
+        let i = 0, j = 0;
+        // 建立網格狀的粒子點陣
+        const amountX = 50, amountY = 50, separation = 100;
+        for ( let ix = 0; ix < amountX; ix ++ ) {
+            for ( let iy = 0; iy < amountY; iy ++ ) {
+                positions[ i ] = ix * separation - ( ( amountX * separation ) / 2 ); // x
+                positions[ i + 1 ] = 0; // y (由動畫控制波浪)
+                positions[ i + 2 ] = iy * separation - ( ( amountY * separation ) / 2 ); // z
+                scales[ j ] = 1;
+                i += 3; j ++;
+            }
+        }
+        geometry.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+        geometry.setAttribute( 'scale', new THREE.BufferAttribute( scales, 1 ) );
+
+        // 粒子材質 (科技藍)
+        const material = new THREE.ShaderMaterial({
+            uniforms: { color: { value: new THREE.Color(0x00f3ff) } },
+            vertexShader: `
+                attribute float scale;
+                void main() {
+                    vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+                    gl_PointSize = scale * ( 300.0 / - mvPosition.z );
+                    gl_Position = projectionMatrix * mvPosition;
+                }
+            `,
+            fragmentShader: `
+                uniform vec3 color;
+                void main() {
+                    if ( length( gl_PointCoord - vec2( 0.5, 0.5 ) ) > 0.475 ) discard;
+                    gl_FragColor = vec4( color, 0.6 );
+                }
+            `,
+            transparent: true
+        });
+
+        const particles = new THREE.Points( geometry, material );
+        // 旋轉讓粒子海呈現傾斜視角
+        particles.rotation.x = 0.5;
+        scene.add( particles );
+
+        // 滑鼠追蹤互動
+        let mouseX = 0, mouseY = 0;
+        let targetX = 0, targetY = 0;
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+        document.addEventListener( 'mousemove', (event) => {
+            mouseX = event.clientX - windowHalfX;
+            mouseY = event.clientY - windowHalfY;
+        });
+
+        let count = 0;
+        function animate() {
+            requestAnimationFrame( animate );
+            
+            // 鏡頭緩動跟隨滑鼠 (電影感運鏡)
+            targetX = mouseX * 0.5;
+            targetY = mouseY * 0.5;
+            camera.position.x += ( targetX - camera.position.x ) * 0.05;
+            camera.position.y += ( - targetY - camera.position.y + 300) * 0.05;
+            camera.lookAt( scene.position );
+
+            // 液態波浪運算
+            const positions = particles.geometry.attributes.position.array;
+            const scales = particles.geometry.attributes.scale.array;
+            let i = 0, j = 0;
+            for ( let ix = 0; ix < amountX; ix ++ ) {
+                for ( let iy = 0; iy < amountY; iy ++ ) {
+                    positions[ i + 1 ] = ( Math.sin( ( ix + count ) * 0.3 ) * 50 ) +
+                                         ( Math.sin( ( iy + count ) * 0.5 ) * 50 );
+                    scales[ j ] = ( Math.sin( ( ix + count ) * 0.3 ) + 1 ) * 2 +
+                                  ( Math.sin( ( iy + count ) * 0.5 ) + 1 ) * 2;
+                    i += 3; j ++;
+                }
+            }
+            particles.geometry.attributes.position.needsUpdate = true;
+            particles.geometry.attributes.scale.needsUpdate = true;
+            count += 0.05;
+
+            renderer.render( scene, camera );
+        }
+        animate();
+
+        // 視窗縮放適應
+        window.addEventListener( 'resize', onWindowResize, false );
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize( window.innerWidth, window.innerHeight );
+        }
+
+        /* ==========================================
+           4. 載入資料庫 (data.json) 並生成光束卡片
+           ========================================== */
+        const fallbackSVG = `data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'300\\' height=\\'200\\'><text x=\\'50%\\' y=\\'50%\\' fill=\\'%23555\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' font-family=\\'sans-serif\\' font-size=\\'14\\'>NO SIGNAL</text></svg>`;
+
+        // 封裝卡片產生的邏輯，加上 card-wrapper 達成光束效果
+        function createCard(contentHTML) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'card-wrapper';
+            wrapper.innerHTML = `<div class="card">${contentHTML}</div>`;
+            return wrapper;
+        }
 
         fetch('data.json')
             .then(res => res.json())
             .then(data => {
                 document.getElementById('last-updated').textContent = data?.last_updated || 'Unknown';
 
-                // Render Computing Systems
                 const sysGrid = document.getElementById('systems-grid');
                 data?.hardware_registry?.forEach(sys => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
                     let gpuText = 'N/A';
-                    if (sys?.gpu) {
-                        gpuText = typeof sys.gpu === 'string' ? sys.gpu : (sys.gpu.external || sys.gpu.internal || 'N/A');
-                    }
-                    card.innerHTML = `
-                        <img src="${sys?.image_path || 'images/default.png'}" alt="${sys?.name || 'Device'}" onerror="this.src='${fallbackSVG}'">
-                        <span class="tag">${sys?.form_factor || 'Unknown'}</span>
+                    if (sys?.gpu) gpuText = typeof sys.gpu === 'string' ? sys.gpu : (sys.gpu.external || sys.gpu.internal || 'N/A');
+                    
+                    sysGrid.appendChild(createCard(`
+                        <img src="${sys?.image_path || 'images/default.png'}" onerror="this.src='${fallbackSVG}'">
+                        <span class="tag">${sys?.form_factor || 'SYS'}</span>
                         <h3>${sys?.name || 'Unknown Device'}</h3>
-                        ${sys?.cpu?.model ? `<p><span class="spec-label">CPU:</span> ${sys.cpu.model}</p>` : ''}
-                        ${sys?.motherboard ? `<p><span class="spec-label">Mobo:</span> ${sys.motherboard}</p>` : ''}
-                        ${sys?.ram?.capacity ? `<p><span class="spec-label">RAM:</span> ${sys.ram.capacity} ${sys.ram.spec ? `(${sys.ram.spec})` : ''}</p>` : ''}
-                        ${gpuText !== 'N/A' ? `<p><span class="spec-label">GPU:</span> ${gpuText}</p>` : ''}
-                        ${sys?.storage?.primary ? `<p><span class="spec-label">Disk:</span> ${sys.storage.primary}</p>` : ''}
-                        ${sys?.power_supply ? `<p><span class="spec-label">PSU:</span> ${sys.power_supply}</p>` : ''}
-                        ${sys?.case ? `<p><span class="spec-label">Case:</span> ${sys.case}</p>` : ''}
-                        ${sys?.features ? `<p><span class="spec-label">Extra:</span> ${sys.features}</p>` : ''}
-                    `;
-                    sysGrid.appendChild(card);
+                        ${sys?.cpu?.model ? `<p><span class="spec-label">CPU</span> ${sys.cpu.model}</p>` : ''}
+                        ${sys?.motherboard ? `<p><span class="spec-label">MOBO</span> ${sys.motherboard}</p>` : ''}
+                        ${sys?.ram?.capacity ? `<p><span class="spec-label">RAM</span> ${sys.ram.capacity} ${sys.ram.spec ? `(${sys.ram.spec})` : ''}</p>` : ''}
+                        ${gpuText !== 'N/A' ? `<p><span class="spec-label">GPU</span> ${gpuText}</p>` : ''}
+                        ${sys?.storage?.primary ? `<p><span class="spec-label">DISK</span> ${sys.storage.primary}</p>` : ''}
+                        ${sys?.power_supply ? `<p><span class="spec-label">PSU</span> ${sys.power_supply}</p>` : ''}
+                    `));
                 });
 
-                // Render Displays
                 const dispGrid = document.getElementById('displays-grid');
                 data?.display_assets?.forEach(disp => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <img src="${disp?.image_path || 'images/default.png'}" alt="${disp?.name || 'Device'}" onerror="this.src='${fallbackSVG}'">
-                        <span class="tag">Display</span>
+                    dispGrid.appendChild(createCard(`
+                        <img src="${disp?.image_path || 'images/default.png'}" onerror="this.src='${fallbackSVG}'">
+                        <span class="tag" style="background: rgba(0, 243, 255, 0.1); color: var(--neon-cyan); border-color: rgba(0, 243, 255, 0.3);">DISPLAY</span>
                         <h3>${disp?.name || 'Unknown Display'}</h3>
-                        ${disp?.panel ? `<p><span class="spec-label">Panel:</span> ${disp.panel}</p>` : ''}
-                    `;
-                    dispGrid.appendChild(card);
+                        ${disp?.panel ? `<p><span class="spec-label">PANEL</span> ${disp.panel}</p>` : ''}
+                    `));
                 });
 
-                // Render Peripherals & Audio
                 const periphGrid = document.getElementById('peripherals-grid');
                 data?.peripherals?.forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <img src="${p?.image_path || 'images/default.png'}" alt="${p?.name || 'Device'}" onerror="this.src='${fallbackSVG}'">
-                        <span class="tag">${p?.category || 'Accessory'}</span>
+                    periphGrid.appendChild(createCard(`
+                        <img src="${p?.image_path || 'images/default.png'}" onerror="this.src='${fallbackSVG}'">
+                        <span class="tag">${p?.category || 'ACC'}</span>
                         <h3>${p?.name || 'Unknown Peripheral'}</h3>
-                    `;
-                    periphGrid.appendChild(card);
+                    `));
                 });
 
-                // Render Power Assets
                 const powerGrid = document.getElementById('power-grid');
                 data?.power_assets?.forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <img src="${p?.image_path || 'images/default.png'}" alt="${p?.name || 'Device'}" onerror="this.src='${fallbackSVG}'">
-                        <span class="tag">${p?.category || 'Power'}</span>
+                    powerGrid.appendChild(createCard(`
+                        <img src="${p?.image_path || 'images/default.png'}" onerror="this.src='${fallbackSVG}'">
+                        <span class="tag" style="background: rgba(255, 204, 0, 0.1); color: #ffcc00; border-color: rgba(255, 204, 0, 0.3);">PWR</span>
                         <h3>${p?.name || 'Unknown Power Device'}</h3>
-                    `;
-                    powerGrid.appendChild(card);
+                    `));
                 });
             })
             .catch(err => {
-                console.error('Error loading data:', err);
-                document.getElementById('systems-grid').innerHTML = '<p style="color: #ff5555;">[SYS_ERROR] Failed to load data.json registry.</p>';
+                console.error('Data sync failed:', err);
+                document.getElementById('systems-grid').innerHTML = '<p style="color: #ff3333;">[CRITICAL ERROR] DATALINK SEVERED.</p>';
             });
     </script>
 </body>
