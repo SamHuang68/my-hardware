@@ -5,291 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sam Huang's Hardware Registry</title>
     <style>
-        /* 全域設定與滾動吸附 */
-        html, body { 
-            margin: 0; 
-            padding: 0; 
-            height: 100%; 
+        /* 啟用平滑滾動 */
+        html { scroll-behavior: smooth; }
+        
+        body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #121212; 
             color: #eee; 
-            overflow: hidden; 
-            background-color: transparent; /* 修正：將 body 背景改為透明，避免蓋住下方網格 */
+            margin: 0; 
+            display: flex; /* 使用 flexbox 切分左右版面 */
         }
 
-        /* 純 CSS 科技網格背景 + 緩慢移動動畫 */
-        .tech-bg {
+        /* 左側固定側邊欄 */
+        .sidebar {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background-color: #030613; /* 修正：深邃科技藍底色移到這裡 */
-            background-image: 
-                linear-gradient(rgba(0, 200, 255, 0.15) 1px, transparent 1px), /* 提高透明度讓網格更明顯 */
-                linear-gradient(90deg, rgba(0, 200, 255, 0.15) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: -2;
-            animation: moveGrid 4s linear infinite; /* 新增：線性無限播放的移動動畫 */
-        }
-
-        /* 網格移動的關鍵影格 (距離需對齊 background-size 以達成完美循環) */
-        @keyframes moveGrid {
-            0% { background-position: 0px 0px; }
-            100% { background-position: 40px 40px; }
-        }
-
-        /* 背景暗角聚焦效果 */
-        .tech-vignette {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: radial-gradient(circle at 50% 50%, transparent 20%, #010206 100%);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .scroll-container {
+            top: 0; 
+            left: 0;
+            width: 240px;
             height: 100vh;
-            overflow-y: scroll;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-            position: relative;
-            z-index: 1; /* 確保內容層在背景之上 */
-        }
-
-        /* 每個區塊滿版顯示 */
-        .section {
-            height: 100vh;
-            scroll-snap-align: start;
-            display: flex;
-            flex-direction: column;
+            background: #181818;
+            border-right: 1px solid #2a2a2a;
             padding: 40px 20px;
             box-sizing: border-box;
-            position: relative;
-        }
-
-        /* 首頁打招呼區塊 */
-        .hero-section {
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        .hero-section h1 { 
-            font-size: 3.5em; 
-            margin-bottom: 10px; 
-            letter-spacing: 3px; 
-            text-shadow: 0 0 20px rgba(0, 200, 255, 0.4);
-        }
-        .hero-section p { font-size: 1.2em; color: #aaa; }
-        .scroll-hint { margin-top: 40px; font-size: 0.9em; color: #00c8ff; animation: bounce 2s infinite; letter-spacing: 2px; }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-15px); }
-            60% { transform: translateY(-7px); }
-        }
-
-        /* 內容區塊容器 */
-        .container {
-            max-width: 1200px; 
-            margin: 0 auto; 
-            width: 100%;
-            height: 100%;
             display: flex;
             flex-direction: column;
+            gap: 10px;
+            z-index: 100;
         }
 
-        .section-title { 
-            font-size: 2em; 
-            border-bottom: 2px solid rgba(0, 200, 255, 0.3); 
-            padding-bottom: 15px; 
-            margin-bottom: 30px; 
-            color: #fff; 
-            text-align: center;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(0, 200, 255, 0.2);
-        }
-
-        .grid-wrapper {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding-right: 10px;
-            padding-bottom: 20px;
-        }
-
-        .grid-wrapper::-webkit-scrollbar { width: 6px; }
-        .grid-wrapper::-webkit-scrollbar-track { background: transparent; }
-        .grid-wrapper::-webkit-scrollbar-thumb { background-color: rgba(0, 200, 255, 0.3); border-radius: 10px; }
-
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-            gap: 25px; 
-        }
-
-        /* 磨砂玻璃卡片設計 */
-        .card { 
-            background: rgba(15, 20, 35, 0.6); 
-            backdrop-filter: blur(12px); 
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 12px; 
-            padding: 25px; 
-            transition: all 0.3s ease; 
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5); 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
-        }
-        .card:hover { 
-            transform: translateY(-8px); 
-            border-color: rgba(0, 200, 255, 0.5); 
-            box-shadow: 0 15px 30px rgba(0, 200, 255, 0.15);
-            background: rgba(20, 25, 45, 0.7);
-        }
-        .card img { 
-            width: 100%; 
-            border-radius: 6px; 
-            height: 220px; 
-            margin-bottom: 20px; 
-            object-fit: contain; 
-            background: transparent; 
-        }
-        .tag { 
-            display: inline-block; 
-            background: rgba(0, 200, 255, 0.15); 
-            color: #66d9ff; 
-            padding: 5px 10px; 
-            border-radius: 6px; 
-            font-size: 0.75em; 
+        .sidebar .brand {
+            font-size: 1.1em;
             font-weight: bold;
-            margin-bottom: 15px; 
-            text-transform: uppercase;
-            border: 1px solid rgba(0, 200, 255, 0.2);
+            color: #fff;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #333;
+            letter-spacing: 1px;
         }
-        h3 { margin-top: 0; color: #f0f0f0; font-size: 1.4em; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        p { margin: 8px 0; font-size: 0.95em; color: #c8c8c8; line-height: 1.5; }
-        .spec-label { color: #00c8ff; font-weight: bold; margin-right: 6px; display: inline-block; min-width: 60px; opacity: 0.8; }
-    </style>
-</head>
-<body>
-    <div class="tech-bg"></div>
-    <div class="tech-vignette"></div>
 
-    <div class="scroll-container">
-        
-        <section class="section hero-section">
-            <h1>HARDWARE REGISTRY</h1>
-            <p>Sam Huang's Personal Asset Database</p>
-            <p style="font-size: 0.9em; margin-top: 20px; color: #666;">Last Updated: <span id="last-updated" style="color: #aaa;"></span></p>
-            <div class="scroll-hint">▼ INITIATE SCROLL ▼</div>
-        </section>
+        .sidebar a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 0.95em;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
 
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">COMPUTING SYSTEMS</h2>
-                <div class="grid-wrapper">
-                    <div class="grid" id="systems-grid"></div>
-                </div>
-            </div>
-        </section>
+        .sidebar a:hover {
+            background: #252525;
+            color: #fff;
+        }
 
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">VISUAL ASSETS</h2>
-                <div class="grid-wrapper">
-                    <div class="grid" id="displays-grid"></div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">PERIPHERALS & AUDIO</h2>
-                <div class="grid-wrapper">
-                    <div class="grid" id="peripherals-grid"></div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="container">
-                <h2 class="section-title">POWER ASSETS</h2>
-                <div class="grid-wrapper">
-                    <div class="grid" id="power-grid"></div>
-                </div>
-            </div>
-        </section>
-
-    </div>
-
-    <script>
-        fetch('data.json')
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('last-updated').textContent = data?.last_updated || 'Unknown';
-
-                // Render Computing Systems
-                const sysGrid = document.getElementById('systems-grid');
-                data?.hardware_registry?.forEach(sys => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    
-                    let gpuText = 'N/A';
-                    if (sys?.gpu) {
-                        gpuText = typeof sys.gpu === 'string' ? sys.gpu : (sys.gpu.external || sys.gpu.internal || 'N/A');
-                    }
-
-                    card.innerHTML = `
-                        <img src="${sys?.image_path || 'images/default.png'}" alt="${sys?.name || 'Device'}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'300\\' height=\\'200\\'><text x=\\'50%\\' y=\\'50%\\' fill=\\'%23555\\' dominant-baseline=\\'middle\\' text-anchor=\\'middle\\' font-family=\\'sans-serif\\' font-size=\\'14\\'>NO IMAGE RECORD</text></svg>'">
-                        <span class="tag">${sys?.form_factor || 'Unknown'}</span>
-                        <h3>${sys?.name || 'Unknown Device'}</h3>
-                        ${sys?.cpu?.model ? `<p><span class="spec-label">CPU:</span> ${sys.cpu.model}</p>` : ''}
-                        ${sys?.motherboard ? `<p><span class="spec-label">Mobo:</span> ${sys.motherboard}</p>` : ''}
-                        ${sys?.ram?.capacity ? `<p><span class="spec-label">RAM:</span> ${sys.ram.capacity} ${sys.ram.spec ? `(${sys.ram.spec})` : ''}</p>` : ''}
-                        ${gpuText !== 'N/A' ? `<p><span class="spec-label">GPU:</span> ${gpuText}</p>` : ''}
-                        ${sys?.storage?.primary ? `<p><span class="spec-label">Disk:</span> ${sys.storage.primary}</p>` : ''}
-                        ${sys?.power_supply ? `<p><span class="spec-label">PSU:</span> ${sys.power_supply}</p>` : ''}
-                        ${sys?.case ? `<p><span class="spec-label">Case:</span> ${sys.case}</p>` : ''}
-                        ${sys?.features ? `<p><span class="spec-label">Extra:</span> ${sys.features}</p>` : ''}
-                    `;
-                    sysGrid.appendChild(card);
-                });
-
-                // Render Displays
-                const dispGrid = document.getElementById('displays-grid');
-                data?.display_assets?.forEach(disp => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <span class="tag">Display</span>
-                        <h3>${disp?.name || 'Unknown Display'}</h3>
-                        ${disp?.panel ? `<p><span class="spec-label">Panel:</span> ${disp.panel}</p>` : ''}
-                    `;
-                    dispGrid.appendChild(card);
-                });
-
-                // Render Peripherals & Audio
-                const periphGrid = document.getElementById('peripherals-grid');
-                data?.peripherals?.forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <span class="tag">${p?.category || 'Accessory'}</span>
-                        <h3>${p?.name || 'Unknown Peripheral'}</h3>
-                    `;
-                    periphGrid.appendChild(card);
-                });
-
-                // Render Power Assets
-                const powerGrid = document.getElementById('power-grid');
-                data?.power_assets?.forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <span class="tag">${p?.category || 'Power'}</span>
-                        <h3>${p?.name || 'Unknown Power Device'}</h3>
-                    `;
-                    powerGrid.appendChild(card);
-                });
-            })
-            .catch(err => {
-                console.error('Error loading data:', err);
-                document.getElementById('systems-grid').innerHTML = '<p style="color: #ff5555;">[SYS_ERROR] Failed to load data.json registry.</p>';
-            });
-    </script>
-</body>
-</html>
+        /* 目前所在段落的高亮樣式 */
+        .sidebar a.
