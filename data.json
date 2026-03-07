@@ -6,7 +6,7 @@
       "id": "AI_STATION_01",
       "name": "GMKtec EVO-T1 AI Rig",
       "form_factor": "Mini PC",
-      "image_path": "images/gmk_evo_t1.png",
+      "image_path": "images/gmk_evo_t1.jpg",
       "lifecycle_status": "Active / Development",
       "cpu": { "model": "Intel Core Ultra 9 285H", "architecture": "Arrow Lake-H" },
       "ram": { "capacity": "96GB", "spec": "Micron 5600MHz DDR5 SODIMM (48GB x2)" },
@@ -69,3 +69,4 @@
     { "name": "280W Zeus USB-C GaN Charger", "category": "Charger", "image_path": "images/zeus_280w.png" }
   ]
 }
+
