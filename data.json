@@ -18,7 +18,7 @@
       "id": "DESKTOP_PC_01",
       "name": "AMD Performance Gaming Rig",
       "form_factor": "Desktop",
-      "image_path": "images/desktop.png",
+      "image_path": "images/Shift 2 Air Grey 02.jpg",
       "lifecycle_status": "Active / Main Station",
       "cpu": { "model": "AMD Ryzen 7 7800X3D", "architecture": "Zen 4 3D V-Cache" },
       "motherboard": "ASUS ROG STRIX X670E-I GAMING WIFI",
@@ -69,4 +69,5 @@
     { "name": "280W Zeus USB-C GaN Charger", "category": "Charger", "image_path": "images/zeus_280w.png" }
   ]
 }
+
 
