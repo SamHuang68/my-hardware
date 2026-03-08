@@ -9,10 +9,10 @@
       "image_path": "images/gmk_evo_t1.jpg",
       "lifecycle_status": "Active / Development",
       "cpu": { "model": "Intel Core Ultra 9 285H", "architecture": "Arrow Lake-H" },
-      "ram": { "capacity": "96GB", "spec": "Micron 5600MHz DDR5 SODIMM (48GB x2)" },
+      "ram": { "capacity": "96GB", "spec": "Micron DDR5 5600MHz SODIMM (48GB x2)" },
       "storage": { "primary": "2TB Lexar NQ790 PCIe Gen4" },
       "gpu": { "internal": "Intel Arc 140T", "external": "PNY GeForce RTX 5080 OC 16GB (via Minisforum DEG2)" },
-      "power_supply": "ASUS ROG Thor 1000W Platinum III (Type-C PD to Mini PC via DEG2)"
+      "power_supply": "ASUS ROG Thor III 1000W Platinum  (Type-C PD to Mini PC via DEG2)"
     },
     {
       "id": "DESKTOP_PC_01",
@@ -22,7 +22,7 @@
       "lifecycle_status": "Active / Main Station",
       "cpu": { "model": "AMD Ryzen 7 7800X3D", "architecture": "Zen 4 3D V-Cache" },
       "motherboard": "ASUS ROG STRIX X670E-I GAMING WIFI",
-      "ram": { "capacity": "32GB", "spec": "Micron Crucial Pro DDR5 (16GB x2)" },
+      "ram": { "capacity": "32GB", "spec": "Micron Crucial Pro DDR5 5600MHz (16GB x2)" },
       "storage": { "primary": "1TB Crucial T500 PCIe Gen4 NVMe" },
       "gpu": "EVGA GeForce RTX 3060 XC GAMING",
       "power_supply": "Seasonic FOCUS SGX-650 Gold (SFX-L)",
@@ -69,6 +69,7 @@
     { "name": "280W Zeus USB-C GaN Charger", "category": "Charger", "image_path": "images/zeus_280w.png" }
   ]
 }
+
 
 
 
