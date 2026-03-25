@@ -59,7 +59,9 @@
   ],
   "peripherals": [
     { "name": "羅技 MX Master 4", "category": "Mouse", "image_path": "images/mx_master_4.png" },
+    { "name": "Viper V4 PRO", "category": "Mouse", "image_path": "images/Viper V4 PRO.png" },
     { "name": "Razer Pro Type Ultra", "category": "Keyboard", "image_path": "images/razer_pro_type.png" },
+    { "name": "BlackWidow V4 TKL HyperSpeed", "category": "Keyboard", "image_path": "images/BlackWidow V4 TKL HyperSpeed.png" },
     { "name": "Razer Kishi Ultra", "category": "Gamepad", "image_path": "images/razer_kishi.png" },
     { "name": "Apple AirPods Pro 3", "category": "Audio", "image_path": "images/airpods_pro_3.png" },
     { "name": "BOSE QuietComfort Earbuds", "category": "Audio", "image_path": "images/bose_qc_earbuds.png" }
