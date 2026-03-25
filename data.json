@@ -23,10 +23,24 @@
       "cpu": { "model": "AMD Ryzen 7 7800X3D", "architecture": "Zen 4 3D V-Cache" },
       "motherboard": "ASUS ROG STRIX X670E-I GAMING WIFI",
       "ram": { "capacity": "32GB", "spec": "Micron Crucial Pro DDR5 5600MHz (16GB x2)" },
-      "storage": { "primary": "1TB Crucial T500 PCIe Gen4 NVMe" },
-      "gpu": "EVGA GeForce RTX 3060 XC GAMING",
+      "storage": { "primary": "Kingston A2000 512GB PCIe Gen3 NVMe" },
+      "gpu": "GIGABYTE GeForce RTX 5060 Ti WINDFORCE OC 16GB",
       "power_supply": "Seasonic FOCUS SGX-650 Gold (SFX-L)",
       "case": "Phanteks Evolv Shift 2 Air"
+    },
+    {
+      "id": "DESKTOP_PC_02",
+      "name": "AMD Ryzen 7",
+      "form_factor": "Desktop",
+      "image_path": "images/mag-011c.png",
+      "lifecycle_status": "InActive / Obslete Station",
+      "cpu": { "model": "AMD Ryzen 7 3700X", "architecture": "Zen 2" },
+      "motherboard": "MSI X570-A PRO",
+      "ram": { "capacity": "32GB", "spec": "Kingston DDR4 3200MHz RGB (8GB x4)" },
+      "storage": { "primary": "Micron Crucial T500 1TB PCIe Gen4 NVMe" },
+      "gpu": "EVGA GeForce RTX 3060 XC GAMING 12GB",
+      "power_supply": "FSP IPC 1200W Gold",
+      "case": "MSI MAG VAMPIRIC 011C"
     },
     {
       "id": "HANDHELD_01",
@@ -58,7 +72,7 @@
     { "name": "AORUS FI32Q", "panel": "32\" SS IPS, 170Hz OC / QHD / KVM", "image_path": "images/aorus_fi32q.png" }
   ],
   "peripherals": [
-    { "name": "羅技 MX Master 4", "category": "Mouse", "image_path": "images/mx_master_4.png" },
+    { "name": "Logitech MX Master 4", "category": "Mouse", "image_path": "images/mx_master_4.png" },
     { "name": "Viper V4 PRO", "category": "Mouse", "image_path": "images/Viper V4 PRO.png" },
     { "name": "Razer Pro Type Ultra", "category": "Keyboard", "image_path": "images/razer_pro_type.png" },
     { "name": "BlackWidow V4 TKL HyperSpeed", "category": "Keyboard", "image_path": "images/BlackWidow V4 TKL HyperSpeed.png" },
