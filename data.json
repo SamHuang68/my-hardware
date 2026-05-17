@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-03-07",
+  "last_updated": "2026-05-18",
   "inventory_owner": "Sam Huang",
   "hardware_registry": [
     {
@@ -25,8 +25,8 @@
       "ram": { "capacity": "32GB", "spec": "Micron Crucial Pro DDR5 5600MHz (16GB x2)" },
       "storage": { "primary": "Kingston A2000 512GB PCIe Gen3 NVMe" },
       "gpu": "GIGABYTE GeForce RTX 5060 Ti WINDFORCE OC 16GB",
-      "power_supply": "Seasonic FOCUS SGX-650 Gold (SFX-L)",
-      "case": "Phanteks Evolv Shift 2 Air"
+      "power_supply": "ROG Strix 850W Platinum",
+      "case": "Phanteks XT View Matrix"
     },
     {
       "id": "DESKTOP_PC_02",
