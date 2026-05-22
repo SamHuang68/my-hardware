@@ -69,7 +69,8 @@
   "display_assets": [
     { "name": "JVC 65XM", "panel": "65\" 4K QD-Mini LED, 144Hz Native / HDMI 2.1", "image_path": "images/jvc_65xm.png" },
     { "name": "AORUS FV43U", "panel": "43\" 4K VA, 144Hz / HDR-1000 / HDMI 2.1", "image_path": "images/aorus_fv43u.png" },
-    { "name": "AORUS FI32Q", "panel": "32\" SS IPS, 170Hz OC / QHD / KVM", "image_path": "images/aorus_fi32q.png" }
+    { "name": "AORUS FI32Q", "panel": "32\" SS IPS, 170Hz OC / QHD / KVM", "image_path": "images/aorus_fi32q.png" },
+    { "name": "MSI MPG 491CQP", "panel": "49\" QD-OLED, 144Hz / DQHD / HDR400 / 1800R", "image_path": "images/MSI MPG 491CQP.png" }
   ],
   "peripherals": [
     { "name": "Logitech MX Master 4", "category": "Mouse", "image_path": "images/mx_master_4.png" },
