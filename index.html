@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-language="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,11 +36,9 @@
 
       <div class="header-actions">
         <p class="header-status" id="header-status"><span class="status-dot" aria-hidden="true"></span><span id="header-status-text">2 nodes ready</span></p>
-        <div class="lang-switch" role="group" aria-label="Language selection / 語言切換">
-          <button type="button" class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
-          <span class="lang-sep" aria-hidden="true">/</span>
-          <button type="button" class="lang-btn" data-lang="zh" aria-pressed="false">中文</button>
-        </div>
+        <button class="language-toggle" id="languageToggle" type="button" aria-label="Switch to Traditional Chinese (切換至繁體中文)">
+          <b data-lang-option="zh">中</b><i>/</i><b data-lang-option="en">EN</b>
+        </button>
       </div>
     </div>
   </header>

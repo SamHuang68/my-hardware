@@ -73,10 +73,12 @@ test("responsive and accessibility CSS has required gates", () => {
   assert.ok(css.includes("minmax(0, 1fr)"));
 });
 
-test("language switcher and default English contract are present", () => {
-  assert.ok(html.includes('class="lang-switch"'));
-  assert.ok(html.includes('data-lang="en"'));
-  assert.ok(html.includes('data-lang="zh"'));
+test("language toggle HUD and default English contract are present", () => {
+  assert.ok(html.includes('id="languageToggle"'));
+  assert.ok(html.includes('class="language-toggle"'));
+  assert.ok(html.includes('data-lang-option="en"'));
+  assert.ok(html.includes('data-lang-option="zh"'));
+  assert.ok(html.includes('data-language="en"'));
   assert.ok(js.includes('switchLanguage'));
   assert.ok(js.includes('currentLang'));
 });

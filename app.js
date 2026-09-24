@@ -67,6 +67,7 @@ const I18N = {
     nav_boundaries: "Asset Boundaries",
     nav_workspace: "Displays & Controls",
     nav_evidence: "Evidence Note",
+    lang_toggle_aria: "Switch to Traditional Chinese (切換至繁體中文)",
     header_status: "{n} nodes ready",
     hero_eyebrow: "PERSONAL COMPUTE INVENTORY",
     hero_reviewed: "REVIEWED 2026.09",
@@ -138,6 +139,7 @@ const I18N = {
     nav_boundaries: "資產邊界",
     nav_workspace: "顯示與控制",
     nav_evidence: "資料說明",
+    lang_toggle_aria: "Switch to English (切換至英文)",
     header_status: "{n} 個節點就緒",
     hero_eyebrow: "PERSONAL COMPUTE INVENTORY",
     hero_reviewed: "REVIEWED 2026.09",
@@ -415,6 +417,7 @@ function makePowerCard(item) {
 function updateStaticTexts(lang) {
   const dict = I18N[lang] || I18N.en;
   document.documentElement.lang = dict.lang_code;
+  document.documentElement.setAttribute("data-language", lang);
   document.title = dict.page_title;
 
   const metaDesc = document.querySelector('meta[name="description"]');
@@ -482,11 +485,10 @@ function updateStaticTexts(lang) {
     );
   }
 
-  // Update switcher button pressed states
-  for (const btn of document.querySelectorAll(".lang-btn")) {
-    const isActive = btn.dataset.lang === lang;
-    btn.classList.toggle("active", isActive);
-    btn.setAttribute("aria-pressed", String(isActive));
+  // Update language toggle HUD button accessible label
+  const toggleBtn = byId("languageToggle");
+  if (toggleBtn) {
+    toggleBtn.setAttribute("aria-label", dict.lang_toggle_aria);
   }
 }
 
@@ -607,7 +609,7 @@ function switchLanguage(targetLang) {
 }
 
 /**
- * Initialize language switcher buttons.
+ * Initialize language toggle HUD button.
  */
 function initLanguageSwitch() {
   // Check persisted language preference, defaulting to English
@@ -622,15 +624,13 @@ function initLanguageSwitch() {
     currentLang = "en";
   }
 
-  const buttons = document.querySelectorAll(".lang-btn");
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const target = btn.dataset.lang;
-      if (target && target !== currentLang) {
-        switchLanguage(target);
-      }
+  const toggleBtn = byId("languageToggle");
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      const nextLang = currentLang === "en" ? "zh" : "en";
+      switchLanguage(nextLang);
     });
-  });
+  }
 
   updateStaticTexts(currentLang);
 }
