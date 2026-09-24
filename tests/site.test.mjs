@@ -79,6 +79,10 @@ test("language toggle HUD and default English contract are present", () => {
   assert.ok(html.includes('data-lang-option="en"'));
   assert.ok(html.includes('data-lang-option="zh"'));
   assert.ok(html.includes('data-language="en"'));
+  assert.ok(js.includes('languageToggle'));
+  assert.ok(js.includes('data-language'));
+  assert.ok(js.includes('hardware_registry_lang'));
+  assert.ok(js.includes('renderRegistry'));
   assert.ok(js.includes('switchLanguage'));
   assert.ok(js.includes('currentLang'));
 });
