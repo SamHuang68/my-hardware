@@ -10,6 +10,7 @@
   <meta property="og:type" content="website">
   <meta property="og:image" content="images/gmk_evo_t1.jpg">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; base-uri 'none'; object-src 'none'">
+  <link rel="manifest" href="manifest.webmanifest">
   <title>Sam Huang · Hardware Capability Registry</title>
   <style>
     button.language-toggle {
@@ -46,8 +47,8 @@
     html[data-language="zh"] button.language-toggle [data-lang-option="en"],
     html[lang="zh-Hant"] button.language-toggle [data-lang-option="en"] { color: #a9bac4 !important; }
   </style>
-  <link rel="stylesheet" href="styles.css?v=20260925-hud-v4">
-  <script defer src="app.js?v=20260925-hud-v4"></script>
+  <link rel="stylesheet" href="styles.css?v=20260925-cockpit-v5">
+  <script defer src="app.js?v=20260925-cockpit-v5"></script>
 </head>
 <body>
   <a class="skip-link" id="skip-link" href="#main-content">Skip to main content</a>
@@ -107,8 +108,33 @@
       <div class="page-shell hero-metrics" aria-label="Available resource metrics">
         <div><strong id="metric-active">2</strong><span id="metric-label-active">Active Nodes</span></div>
         <div><strong id="metric-memory">128<small>GB</small></strong><span id="metric-label-memory">Total Installed RAM</span></div>
-        <div><strong id="metric-vram">28<small>GB</small></strong><span id="metric-label-vram">Dedicated GPU VRAM*</span></div>
+        <div class="metric-vram-card" id="metric-vram-card">
+          <strong id="metric-vram">28<small>GB</small></strong>
+          <span id="metric-label-vram">Dedicated GPU VRAM*</span>
+          <div class="vram-hover-pill" id="vram-hover-pill" aria-hidden="true">
+            <span>16GB (5080) + 12GB (3060) · Discrete Pools</span>
+          </div>
+        </div>
         <div><strong>5080<span aria-hidden="true"> → </span>3060</strong><span id="metric-label-routing">Interactive / Background</span></div>
+      </div>
+    </section>
+
+    <!-- Interactive Filter & Live Search HUD Bar -->
+    <section class="filter-console" id="filter-console" aria-label="Asset filters and search">
+      <div class="page-shell filter-inner">
+        <div class="filter-chips" role="tablist" aria-label="Asset category filters" id="filter-chips">
+          <button class="filter-chip active" type="button" role="tab" aria-selected="true" data-filter="all" id="chip-all">All Assets <span class="chip-count" id="count-all">22</span></button>
+          <button class="filter-chip" type="button" role="tab" aria-selected="false" data-filter="compute" id="chip-compute">Compute Nodes <span class="chip-count" id="count-compute">2</span></button>
+          <button class="filter-chip" type="button" role="tab" aria-selected="false" data-filter="boundaries" id="chip-boundaries">Boundaries <span class="chip-count" id="count-boundaries">3</span></button>
+          <button class="filter-chip" type="button" role="tab" aria-selected="false" data-filter="displays" id="chip-displays">Displays <span class="chip-count" id="count-displays">4</span></button>
+          <button class="filter-chip" type="button" role="tab" aria-selected="false" data-filter="peripherals" id="chip-peripherals">Controls <span class="chip-count" id="count-peripherals">10</span></button>
+          <button class="filter-chip" type="button" role="tab" aria-selected="false" data-filter="power" id="chip-power">Power Layer <span class="chip-count" id="count-power">3</span></button>
+        </div>
+        <div class="search-box">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input type="search" id="asset-search" class="search-input" placeholder="Search 22 assets (e.g. RTX, 49&quot;, GaN, DDR5)..." aria-label="Search hardware assets">
+          <button type="button" id="search-clear" class="search-clear" aria-label="Clear search" hidden>×</button>
+        </div>
       </div>
     </section>
 
@@ -162,6 +188,21 @@
           </div>
           <p id="workspace-desc">From a 49-inch DQHD timeline to a 32-inch high-refresh KVM panel, each display serves distinct density and control requirements.</p>
         </header>
+
+        <!-- Topology Flow & KVM Matrix -->
+        <div class="topology-matrix" id="topology-matrix" aria-labelledby="topology-title">
+          <div class="topology-heading">
+            <div>
+              <p class="eyebrow" id="topology-eyebrow">WORKSPACE & SIGNAL TOPOLOGY</p>
+              <h3 id="topology-title">Dual-Host Display Routing & KVM Control Matrix</h3>
+            </div>
+            <p id="topology-desc">Dedicated display pipelines for ultra-wide timeline density and living room QA, connected through a hardware KVM hub for seamless peripheral sharing.</p>
+          </div>
+          <div class="topology-lanes" id="topology-lanes" role="list" aria-label="Signal routing list">
+            <p class="loading-state loading-state-dark">Loading workspace topology…</p>
+          </div>
+        </div>
+
         <div class="display-grid" id="display-assets" aria-live="polite">
           <p class="loading-state loading-state-dark">Loading displays…</p>
         </div>
@@ -211,9 +252,15 @@
     <div class="page-shell footer-inner">
       <p><strong>SAM HUANG</strong><span id="footer-brand-sub">Compute Capability Registry</span></p>
       <p id="footer-summary">Active 2 · Transferred 2 · Excluded 1 · Supporting 17</p>
-      <a href="#top" id="back-to-top">Back to top <span aria-hidden="true">↑</span></a>
+      <div class="footer-actions">
+        <button type="button" class="export-btn" id="export-json-btn">Export JSON</button>
+        <button type="button" class="export-btn" id="export-md-btn">Export Markdown</button>
+        <a href="#top" id="back-to-top">Back to top <span aria-hidden="true">↑</span></a>
+      </div>
     </div>
   </footer>
+
+  <div class="toast-hub" id="toast-hub" role="status" aria-live="polite"></div>
 
   <noscript>
     <div class="noscript-message">This page requires JavaScript to load data.json. / 此頁需要 JavaScript 讀取 data.json。</div>

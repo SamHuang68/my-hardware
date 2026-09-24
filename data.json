@@ -7,7 +7,27 @@
     "installed_gpu_vram_gb": 28,
     "vram_note": "兩張獨立 GPU 的安裝容量合計，不能合併為單一 28GB VRAM。",
     "supporting_assets": 17,
-    "vram_note_en": "Combined capacity of two discrete GPUs; cannot be pooled into a single 28GB VRAM pool."
+    "vram_note_en": "Combined capacity of two discrete GPUs; cannot be pooled into a single 28GB VRAM pool.",
+    "vram_breakdown": [
+      {
+        "node_id": "AI_STATION_01",
+        "node_name": "GMKtec EVO-T1",
+        "gpu_name": "RTX 5080 OC 16GB",
+        "vram_gb": 16,
+        "type": "GDDR7",
+        "role": "Primary Interactive",
+        "role_zh": "主力互動"
+      },
+      {
+        "node_id": "DESKTOP_PC_02",
+        "node_name": "Ryzen 7 3700X",
+        "gpu_name": "RTX 3060 12GB",
+        "vram_gb": 12,
+        "type": "GDDR6",
+        "role": "Background & CI",
+        "role_zh": "背景分流"
+      }
+    ]
   },
   "hardware_registry": [
     {
@@ -47,7 +67,19 @@
       "role_label_en": "Primary Interactive Node",
       "status_note_en": "Ready for Work",
       "summary_en": "Handles AI/CUDA, visual QA, heavy compilation, and data pipelines requiring 96GB RAM.",
-      "constraint_en": "Single-GPU VRAM 16GB; eGPU link bandwidth depends on workload profiling."
+      "constraint_en": "Single-GPU VRAM 16GB; eGPU link bandwidth depends on workload profiling.",
+      "ai_inference": {
+        "gpu_native": "Qwen 2.5 14B/32B (Q4_K_M), Mistral NeMo 12B, Llama 3.1 8B (FP16)",
+        "cpu_offload": "Llama 3.3 70B (Q4_K_M offloaded across 96GB DDR5)",
+        "vision_gen": "Flux.1 Schnell, Stable Diffusion XL"
+      },
+      "environment": {
+        "os": "Windows 11 Pro / WSL2 Ubuntu 24.04",
+        "runtime": "CUDA 12.8 · PyTorch 2.6 · Ollama (localhost:11434)",
+        "networking": "2.5GbE LAN · Tailscale Mesh VPN"
+      },
+      "link_interface": "PCIe 4.0 x4 (OCuLink / USB4 40Gbps via Minisforum DEG2 dock)",
+      "link_interface_en": "PCIe 4.0 x4 (OCuLink / USB4 40Gbps via Minisforum DEG2 dock)"
     },
     {
       "id": "DESKTOP_PC_02",
@@ -85,7 +117,17 @@
       "role_label_en": "Background & Standby Node",
       "status_note_en": "Ready for Work",
       "summary_en": "Dedicated to CI/tests, batch jobs, background services, and secondary QA to preserve primary interactivity.",
-      "constraint_en": "Legacy CPU, GPU, and DDR4; best suited for persistent non-interactive jobs."
+      "constraint_en": "Legacy CPU, GPU, and DDR4; best suited for persistent non-interactive jobs.",
+      "ai_inference": {
+        "gpu_native": "Llama 3.1 8B (Q4_K_M / Q8), BGE / Nomic Embedding",
+        "services": "Automated CI/Test Runner, Background Cron Services",
+        "services_zh": "自動化 CI/測試 Runner、背景排程與常駐服務"
+      },
+      "environment": {
+        "os": "Windows 11 / WSL2",
+        "runtime": "Docker Desktop · Node.js 22 · Python 3.12 (uv)",
+        "networking": "1GbE LAN · Tailscale Mesh VPN"
+      }
     },
     {
       "id": "DESKTOP_PC_01",
@@ -338,7 +380,9 @@
       "status": "supporting",
       "schedulable": false,
       "category": "Charging Station",
-      "image_path": "images/ugreen_500w.png"
+      "image_path": "images/ugreen_500w.png",
+      "spec": "500W GaN 氮化鎵桌面電站 · 5 埠 (4C+1A) · 單埠 PD 3.1 140W · 雙筆電+多周邊滿速供電",
+      "spec_en": "500W GaN Desktop Charging Station · 5-Port (4C+1A) · PD 3.1 140W max single-port"
     },
     {
       "id": "POWER_02",
@@ -346,7 +390,9 @@
       "status": "supporting",
       "schedulable": false,
       "category": "Charger",
-      "image_path": "images/zeus_270w.png"
+      "image_path": "images/zeus_270w.png",
+      "spec": "270W 氮化鎵快充 · 即時數位功率顯示 · 3 埠智慧動態分配",
+      "spec_en": "270W GaN Fast Charger · Real-time digital power display · 3-port dynamic allocation"
     },
     {
       "id": "POWER_03",
@@ -354,7 +400,47 @@
       "status": "supporting",
       "schedulable": false,
       "category": "Charger",
-      "image_path": "images/zeus_280w.png"
+      "image_path": "images/zeus_280w.png",
+      "spec": "280W 高密度氮化鎵快充 · 多路大功率輸出 · 支援多裝置並聯快充",
+      "spec_en": "280W High-density GaN · Multi-channel high-output PD"
+    }
+  ],
+  "workspace_topology": [
+    {
+      "source_id": "AI_STATION_01",
+      "source_name": "EVO-T1 (RTX 5080)",
+      "target_id": "DISPLAY_04",
+      "target_name": "MSI 49\" DQHD 144Hz QD-OLED",
+      "interface": "DisplayPort",
+      "purpose": "Primary Ultra-Wide Workspace & Multi-Window Timeline",
+      "purpose_zh": "主力超寬時間軸工作區與多視窗排程"
+    },
+    {
+      "source_id": "AI_STATION_01",
+      "source_name": "EVO-T1 (RTX 5080)",
+      "target_id": "DISPLAY_01",
+      "target_name": "JVC 65\" 4K 144Hz QD-Mini LED",
+      "interface": "HDMI 2.1",
+      "purpose": "Living Room Showcase, Visual Inspection & Gaming",
+      "purpose_zh": "客廳展示、大畫面視覺品質檢查與遊戲"
+    },
+    {
+      "source_id": "AI_STATION_01 + DESKTOP_PC_02",
+      "source_name": "EVO-T1 + Ryzen 7 (Dual Host)",
+      "target_id": "DISPLAY_03",
+      "target_name": "AORUS FI32Q (32\" 170Hz KVM)",
+      "interface": "KVM Switch (DP + HDMI + USB Hub)",
+      "purpose": "Seamless KVM Peripheral Switching (Razer & Logitech)",
+      "purpose_zh": "KVM 樞紐：一鍵跨主機無縫切換鍵鼠與周邊"
+    },
+    {
+      "source_id": "DESKTOP_PC_02",
+      "source_name": "Ryzen 7 (RTX 3060)",
+      "target_id": "DISPLAY_02",
+      "target_name": "AORUS FV43U (43\" 4K HDR 144Hz)",
+      "interface": "DisplayPort / HDMI 2.1",
+      "purpose": "4K HDR Media Inspection & Secondary Display",
+      "purpose_zh": "4K HDR 內容檢查與背景狀態監控"
     }
   ]
 }

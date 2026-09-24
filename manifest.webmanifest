@@ -1,0 +1,16 @@
+{
+  "name": "Sam Huang · Compute Capability Registry",
+  "short_name": "Compute Hub",
+  "description": "Personal compute nodes and supporting devices managed by real schedulable capacity.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#051622",
+  "theme_color": "#061b29",
+  "icons": [
+    {
+      "src": "images/gmk_evo_t1.jpg",
+      "sizes": "1024x768",
+      "type": "image/jpeg"
+    }
+  ]
+}

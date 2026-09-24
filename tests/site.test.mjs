@@ -86,3 +86,20 @@ test("language toggle HUD and default English contract are present", () => {
   assert.ok(js.includes('switchLanguage'));
   assert.ok(js.includes('currentLang'));
 });
+
+test("cockpit dark console, topology matrix, and export capabilities are present", () => {
+  assert.ok(html.includes('id="filter-console"'));
+  assert.ok(html.includes('id="asset-search"'));
+  assert.ok(html.includes('id="topology-matrix"'));
+  assert.ok(html.includes('id="export-json-btn"'));
+  assert.ok(html.includes('id="export-md-btn"'));
+  assert.ok(Array.isArray(data.workspace_topology) && data.workspace_topology.length > 0);
+  assert.ok(Array.isArray(data.registry_summary.vram_breakdown) && data.registry_summary.vram_breakdown.length === 2);
+  assert.ok(js.includes('exportJson'));
+  assert.ok(js.includes('exportMarkdown'));
+  assert.ok(js.includes('applySearchFilter'));
+  assert.ok(js.includes('makeTopologyCard'));
+  assert.ok(css.includes('.filter-console'));
+  assert.ok(css.includes('.topology-matrix'));
+});
+
