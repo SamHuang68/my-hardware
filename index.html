@@ -9,10 +9,45 @@
   <meta property="og:description" content="Manage personal compute nodes and supporting devices by real schedulable capacity.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="images/gmk_evo_t1.jpg">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; object-src 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; base-uri 'none'; object-src 'none'">
   <title>Sam Huang · Hardware Capability Registry</title>
-  <link rel="stylesheet" href="styles.css">
-  <script defer src="app.js"></script>
+  <style>
+    button.language-toggle {
+      appearance: none;
+      -webkit-appearance: none;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 2px !important;
+      height: 32px !important;
+      min-height: 32px !important;
+      max-height: 32px !important;
+      padding: 0 10px !important;
+      border: 1px solid rgba(113, 236, 227, 0.18) !important;
+      border-radius: 2px !important;
+      background: rgba(7, 29, 43, 0.85) !important;
+      color: #a9bac4 !important;
+      font-family: "IBM Plex Mono", Consolas, monospace !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      line-height: 1 !important;
+      cursor: pointer !important;
+      box-sizing: border-box !important;
+      user-select: none !important;
+      vertical-align: middle !important;
+      flex-shrink: 0 !important;
+    }
+    button.language-toggle b { font-weight: 800 !important; }
+    button.language-toggle i { color: rgba(255, 255, 255, 0.3) !important; font-style: normal !important; margin: 0 2px !important; }
+    button.language-toggle [data-lang-option="zh"] { color: #a9bac4 !important; }
+    button.language-toggle [data-lang-option="en"] { color: #11d2d0 !important; }
+    html[data-language="zh"] button.language-toggle [data-lang-option="zh"],
+    html[lang="zh-Hant"] button.language-toggle [data-lang-option="zh"] { color: #11d2d0 !important; }
+    html[data-language="zh"] button.language-toggle [data-lang-option="en"],
+    html[lang="zh-Hant"] button.language-toggle [data-lang-option="en"] { color: #a9bac4 !important; }
+  </style>
+  <link rel="stylesheet" href="styles.css?v=20260925-hud-v4">
+  <script defer src="app.js?v=20260925-hud-v4"></script>
 </head>
 <body>
   <a class="skip-link" id="skip-link" href="#main-content">Skip to main content</a>
