@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Sam Huang 的硬體能力與資產清冊：可投入工作的雙節點運算資源、生命週期邊界，以及顯示與控制設備。">
+  <meta name="description" content="Sam Huang's hardware capability & compute registry: active dual-node compute pool, lifecycle boundaries, and visual workspace.">
   <meta name="theme-color" content="#061b29">
   <meta property="og:title" content="Sam Huang · Compute Capability Registry">
-  <meta property="og:description" content="以真實可調度狀態管理個人運算節點與支援設備。">
+  <meta property="og:description" content="Manage personal compute nodes and supporting devices by real schedulable capacity.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="images/gmk_evo_t1.jpg">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; object-src 'none'">
@@ -15,26 +15,33 @@
   <script defer src="app.js"></script>
 </head>
 <body>
-  <a class="skip-link" href="#main-content">跳到主要內容</a>
+  <a class="skip-link" id="skip-link" href="#main-content">Skip to main content</a>
 
   <header class="site-header" id="top">
     <div class="header-inner">
-      <a class="brand" href="#overview" aria-label="Sam Huang 硬體能力清冊首頁">
+      <a class="brand" id="brand-link" href="#overview" aria-label="Sam Huang Hardware Capability Registry Home">
         <span class="brand-mark" aria-hidden="true">SH</span>
         <span class="brand-copy">
-          <strong>COMPUTE.REGISTRY</strong>
-          <small>Sam Huang / Hardware capability</small>
+          <strong id="brand-title">COMPUTE.REGISTRY</strong>
+          <small id="brand-sub">Sam Huang / Hardware capability</small>
         </span>
       </a>
 
-      <nav class="site-nav" aria-label="主要導覽">
-        <a href="#compute" data-section="compute">工作節點</a>
-        <a href="#boundaries" data-section="boundaries">資產邊界</a>
-        <a href="#workspace" data-section="workspace">顯示與控制</a>
-        <a href="#evidence" data-section="evidence">資料說明</a>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="#compute" data-section="compute" id="nav-compute">Compute Nodes</a>
+        <a href="#boundaries" data-section="boundaries" id="nav-boundaries">Asset Boundaries</a>
+        <a href="#workspace" data-section="workspace" id="nav-workspace">Displays & Controls</a>
+        <a href="#evidence" data-section="evidence" id="nav-evidence">Evidence Note</a>
       </nav>
 
-      <p class="header-status"><span aria-hidden="true"></span>2 nodes ready</p>
+      <div class="header-actions">
+        <p class="header-status" id="header-status"><span class="status-dot" aria-hidden="true"></span><span id="header-status-text">2 nodes ready</span></p>
+        <div class="lang-switch" role="group" aria-label="Language selection / 語言切換">
+          <button type="button" class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
+          <span class="lang-sep" aria-hidden="true">/</span>
+          <button type="button" class="lang-btn" data-lang="zh" aria-pressed="false">中文</button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -43,32 +50,32 @@
       <div class="signal-grid" aria-hidden="true"></div>
       <div class="page-shell hero-layout">
         <div class="hero-copy">
-          <p class="eyebrow"><span>PERSONAL COMPUTE INVENTORY</span><span>REVIEWED 2026.09</span></p>
-          <h1 id="hero-title">我的硬體，<em>按真正可投入的<br>算力管理。</em></h1>
-          <p class="hero-lead">兩個工作節點，各自承擔最合適的任務。RTX 5080 保留給互動與重 GPU 工作；RTX 3060 接手背景、測試與長時間批次。</p>
+          <p class="eyebrow"><span id="hero-eyebrow-text">PERSONAL COMPUTE INVENTORY</span><span id="hero-reviewed-text">REVIEWED 2026.09</span></p>
+          <h1 id="hero-title">My hardware, <em>managed by real,<br>schedulable compute.</em></h1>
+          <p class="hero-lead" id="hero-lead">Two active nodes assigned to their best-fit roles. RTX 5080 reserved for interactive and heavy GPU workloads; RTX 3060 handles background tasks, CI, and batch jobs.</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#compute">查看工作池</a>
-            <a class="button button-quiet" href="#boundaries">了解排除邊界</a>
+            <a class="button button-primary" id="hero-btn-compute" href="#compute">View Compute Pool</a>
+            <a class="button button-quiet" id="hero-btn-boundaries" href="#boundaries">Explore Boundaries</a>
           </div>
-          <p class="hero-note"><span class="note-index">01</span>容量是兩台獨立主機的安裝總量，不代表 RAM 或 VRAM 可以合併。</p>
+          <p class="hero-note"><span class="note-index">01</span><span id="hero-note-text">Capacity reflects separate installed totals and cannot be combined across machines.</span></p>
         </div>
 
         <figure class="hero-visual">
           <div class="hero-image-frame">
-            <img src="images/gmk_evo_t1.jpg" alt="EVO-T1、RTX 5080 與外接 GPU 底座組成的主力運算節點" width="1024" height="768" fetchpriority="high">
+            <img src="images/gmk_evo_t1.jpg" alt="Primary compute node composed of EVO-T1, RTX 5080, and external GPU dock" width="1024" height="768" fetchpriority="high">
           </div>
           <figcaption>
-            <span><i aria-hidden="true"></i>PRIMARY NODE / AVAILABLE</span>
+            <span><i aria-hidden="true"></i><span id="primary-node-chip">PRIMARY NODE / AVAILABLE</span></span>
             <strong>EVO-T1 · RTX 5080 · 96GB RAM</strong>
           </figcaption>
         </figure>
       </div>
 
-      <div class="page-shell hero-metrics" aria-label="可用資源摘要">
-        <div><strong id="metric-active">2</strong><span>可投入節點</span></div>
-        <div><strong id="metric-memory">128<small>GB</small></strong><span>安裝記憶體合計</span></div>
-        <div><strong id="metric-vram">28<small>GB</small></strong><span>獨立 GPU VRAM 合計*</span></div>
-        <div><strong>5080<span aria-hidden="true"> → </span>3060</strong><span>互動主力 / 背景分流</span></div>
+      <div class="page-shell hero-metrics" aria-label="Available resource metrics">
+        <div><strong id="metric-active">2</strong><span id="metric-label-active">Active Nodes</span></div>
+        <div><strong id="metric-memory">128<small>GB</small></strong><span id="metric-label-memory">Total Installed RAM</span></div>
+        <div><strong id="metric-vram">28<small>GB</small></strong><span id="metric-label-vram">Dedicated GPU VRAM*</span></div>
+        <div><strong>5080<span aria-hidden="true"> → </span>3060</strong><span id="metric-label-routing">Interactive / Background</span></div>
       </div>
     </section>
 
@@ -76,25 +83,25 @@
       <div class="page-shell">
         <header class="section-heading">
           <div>
-            <p class="eyebrow eyebrow-dark">01 / ACTIVE COMPUTE POOL</p>
-            <h2 id="compute-title">真正可投入工作的雙節點</h2>
+            <p class="eyebrow eyebrow-dark" id="compute-eyebrow">01 / ACTIVE COMPUTE POOL</p>
+            <h2 id="compute-title">Two Production-Ready Compute Nodes</h2>
           </div>
-          <p>能力先於型號。主力節點負責低延遲與 GPU 密集工作；背景節點吸收可排程負載，避免所有任務都擠在同一台機器。</p>
+          <p id="compute-desc">Capability over model numbers. The primary node handles low-latency, GPU-heavy tasks; the background node absorbs schedulable workloads to prevent bottlenecks.</p>
         </header>
 
         <div class="node-grid" id="active-nodes" aria-live="polite">
-          <p class="loading-state">正在讀取工作節點…</p>
+          <p class="loading-state">Loading compute nodes…</p>
         </div>
 
         <aside class="allocation-map" aria-labelledby="allocation-title">
           <div class="allocation-copy">
-            <p class="eyebrow eyebrow-dark">ROUTING RULE</p>
-            <h3 id="allocation-title">把工作送到最小、但足夠的設備</h3>
+            <p class="eyebrow eyebrow-dark" id="allocation-rule-eyebrow">ROUTING RULE</p>
+            <h3 id="allocation-title">Route Work to the Smallest Sufficient Rig</h3>
           </div>
-          <div class="route-path" role="list" aria-label="任務分流規則">
-            <div role="listitem"><span>互動 / CUDA / 大記憶體</span><strong>EVO-T1 · RTX 5080</strong></div>
+          <div class="route-path" role="list" aria-label="Workload routing rules">
+            <div role="listitem"><span id="route-primary-text">Interactive / CUDA / High-RAM</span><strong>EVO-T1 · RTX 5080</strong></div>
             <span class="route-divider" aria-hidden="true">/</span>
-            <div role="listitem"><span>CI / 批次 / 背景服務</span><strong>3700X · RTX 3060</strong></div>
+            <div role="listitem"><span id="route-secondary-text">CI / Batch / Background Services</span><strong>3700X · RTX 3060</strong></div>
           </div>
         </aside>
       </div>
@@ -103,12 +110,12 @@
     <section class="section section-warm" id="boundaries" aria-labelledby="boundaries-title">
       <div class="page-shell boundary-layout">
         <header class="section-heading section-heading-stacked">
-          <p class="eyebrow eyebrow-copper">02 / ALLOCATION & EXCLUSION LEDGER</p>
-          <h2 id="boundaries-title">保留設備紀錄，也清楚標示工作邊界</h2>
-          <p>已移交或因散熱排除的設備仍屬於歷史清冊，但不會被算進工作池、備援或容量評估。</p>
+          <p class="eyebrow eyebrow-copper" id="boundaries-eyebrow">02 / ALLOCATION & EXCLUSION LEDGER</p>
+          <h2 id="boundaries-title">Preserve Device Records, Clarify Allocation Boundaries</h2>
+          <p id="boundaries-desc">Transferred or heat-constrained devices stay in the historical ledger, but are excluded from active pools, redundancy, or capacity calculations.</p>
         </header>
         <div class="boundary-ledger" id="inactive-nodes" aria-live="polite">
-          <p class="loading-state">正在讀取資產狀態…</p>
+          <p class="loading-state">Loading asset status…</p>
         </div>
       </div>
     </section>
@@ -117,13 +124,13 @@
       <div class="page-shell">
         <header class="section-heading section-heading-on-dark">
           <div>
-            <p class="eyebrow">03 / VISUAL WORKSPACE</p>
-            <h2 id="workspace-title">顯示設備不是裝飾，而是工作介面</h2>
+            <p class="eyebrow" id="workspace-eyebrow">03 / VISUAL WORKSPACE</p>
+            <h2 id="workspace-title">Displays as Workspaces, Not Desktop Ornaments</h2>
           </div>
-          <p>從 49 吋 DQHD 時間軸到 32 吋高幀率 KVM，每一塊畫面都有不同的資訊密度與控制角色。</p>
+          <p id="workspace-desc">From a 49-inch DQHD timeline to a 32-inch high-refresh KVM panel, each display serves distinct density and control requirements.</p>
         </header>
         <div class="display-grid" id="display-assets" aria-live="polite">
-          <p class="loading-state loading-state-dark">正在讀取顯示設備…</p>
+          <p class="loading-state loading-state-dark">Loading displays…</p>
         </div>
       </div>
     </section>
@@ -131,12 +138,12 @@
     <section class="section section-paper" id="controls" aria-labelledby="controls-title">
       <div class="page-shell supporting-layout">
         <header class="supporting-intro">
-          <p class="eyebrow eyebrow-dark">04 / CONTROL SURFACES</p>
-          <h2 id="controls-title">輸入與音訊，維持緊湊但可查</h2>
-          <p>支援設備不與運算節點競爭視覺層級；它們以清楚分類、用途與圖像維持可追蹤性。</p>
+          <p class="eyebrow eyebrow-dark" id="controls-eyebrow">04 / CONTROL SURFACES</p>
+          <h2 id="controls-title">Compact, Trackable Input and Audio</h2>
+          <p id="controls-desc">Supporting peripherals maintain high traceability through clear categories, use cases, and imagery without visual clutter.</p>
         </header>
         <div class="compact-asset-grid" id="peripheral-assets" aria-live="polite">
-          <p class="loading-state">正在讀取控制設備…</p>
+          <p class="loading-state">Loading peripherals…</p>
         </div>
       </div>
     </section>
@@ -144,11 +151,11 @@
     <section class="section section-warm" id="power" aria-labelledby="power-title">
       <div class="page-shell power-layout">
         <header>
-          <p class="eyebrow eyebrow-copper">05 / POWER LAYER</p>
-          <h2 id="power-title">供電與充電資產</h2>
+          <p class="eyebrow eyebrow-copper" id="power-eyebrow">05 / POWER LAYER</p>
+          <h2 id="power-title">Power Stations & Chargers</h2>
         </header>
         <div class="power-grid" id="power-assets" aria-live="polite">
-          <p class="loading-state">正在讀取供電設備…</p>
+          <p class="loading-state">Loading power equipment…</p>
         </div>
       </div>
     </section>
@@ -156,12 +163,12 @@
     <section class="evidence-section" id="evidence" aria-labelledby="evidence-title">
       <div class="page-shell evidence-layout">
         <div>
-          <p class="eyebrow">EVIDENCE NOTE</p>
-          <h2 id="evidence-title">規格、用途與量測，分開表達</h2>
+          <p class="eyebrow" id="evidence-eyebrow">EVIDENCE NOTE</p>
+          <h2 id="evidence-title">Specs, Roles, and Measurements Stated Separately</h2>
         </div>
         <div class="evidence-copy">
-          <p>本頁是硬體 snapshot，不宣稱即時同步。型號與安裝容量來自資產清冊；「適合的工作」是排程角色；未列出的 benchmark 不會被暗示為已驗證效能。</p>
-          <p class="review-date">Inventory reviewed <time id="last-updated" datetime="2026-09-25">2026-09-25</time></p>
+          <p id="evidence-desc">This page is a Hardware snapshot, not real-time telemetry. Models and installed capacities reflect the asset registry; recommended workloads describe scheduling roles; omitted benchmarks are never implied.</p>
+          <p class="review-date"><span id="evidence-reviewed-label">Inventory reviewed</span> <time id="last-updated" datetime="2026-09-25">2026-09-25</time></p>
         </div>
       </div>
     </section>
@@ -169,14 +176,14 @@
 
   <footer class="site-footer">
     <div class="page-shell footer-inner">
-      <p><strong>SAM HUANG</strong><span>Compute Capability Registry</span></p>
+      <p><strong>SAM HUANG</strong><span id="footer-brand-sub">Compute Capability Registry</span></p>
       <p id="footer-summary">Active 2 · Transferred 2 · Excluded 1 · Supporting 17</p>
-      <a href="#top">回到頂端 <span aria-hidden="true">↑</span></a>
+      <a href="#top" id="back-to-top">Back to top <span aria-hidden="true">↑</span></a>
     </div>
   </footer>
 
   <noscript>
-    <div class="noscript-message">此頁需要 JavaScript 讀取同目錄的硬體清冊 data.json。</div>
+    <div class="noscript-message">This page requires JavaScript to load data.json. / 此頁需要 JavaScript 讀取 data.json。</div>
   </noscript>
 </body>
 </html>

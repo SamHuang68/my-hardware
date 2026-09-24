@@ -6,7 +6,8 @@
     "active_memory_gb": 128,
     "installed_gpu_vram_gb": 28,
     "vram_note": "兩張獨立 GPU 的安裝容量合計，不能合併為單一 28GB VRAM。",
-    "supporting_assets": 17
+    "supporting_assets": 17,
+    "vram_note_en": "Combined capacity of two discrete GPUs; cannot be pooled into a single 28GB VRAM pool."
   },
   "hardware_registry": [
     {
@@ -20,13 +21,33 @@
       "role_label": "主力互動節點",
       "status_note": "可投入工作",
       "summary": "承擔 AI／CUDA、視覺 QA、大型編譯，以及需要 96GB RAM 的資料工作。",
-      "workloads": ["Local AI", "CUDA", "Visual QA", "Large builds"],
+      "workloads": [
+        "Local AI",
+        "CUDA",
+        "Visual QA",
+        "Large builds"
+      ],
       "constraint": "單卡 VRAM 16GB；外接 GPU 連線需依工作負載量測頻寬。",
-      "cpu": { "model": "Intel Core Ultra 9 285H", "architecture": "Arrow Lake-H" },
-      "ram": { "capacity": "96GB", "spec": "Micron DDR5 5600MHz SODIMM (48GB x2)" },
-      "storage": { "primary": "2TB Lexar NQ790 PCIe Gen4" },
-      "gpu": { "internal": "Intel Arc 140T", "external": "PNY GeForce RTX 5080 OC 16GB (via Minisforum DEG2)" },
-      "power_supply": "ASUS ROG Thor III 1000W Platinum (Type-C PD to Mini PC via DEG2)"
+      "cpu": {
+        "model": "Intel Core Ultra 9 285H",
+        "architecture": "Arrow Lake-H"
+      },
+      "ram": {
+        "capacity": "96GB",
+        "spec": "Micron DDR5 5600MHz SODIMM (48GB x2)"
+      },
+      "storage": {
+        "primary": "2TB Lexar NQ790 PCIe Gen4"
+      },
+      "gpu": {
+        "internal": "Intel Arc 140T",
+        "external": "PNY GeForce RTX 5080 OC 16GB (via Minisforum DEG2)"
+      },
+      "power_supply": "ASUS ROG Thor III 1000W Platinum (Type-C PD to Mini PC via DEG2)",
+      "role_label_en": "Primary Interactive Node",
+      "status_note_en": "Ready for Work",
+      "summary_en": "Handles AI/CUDA, visual QA, heavy compilation, and data pipelines requiring 96GB RAM.",
+      "constraint_en": "Single-GPU VRAM 16GB; eGPU link bandwidth depends on workload profiling."
     },
     {
       "id": "DESKTOP_PC_02",
@@ -39,15 +60,32 @@
       "role_label": "背景與備援節點",
       "status_note": "可投入工作",
       "summary": "適合 CI／測試、批次工作、服務常駐與次要驗證，保留主力機的互動效能。",
-      "workloads": ["CI & tests", "Batch jobs", "Services", "Secondary QA"],
+      "workloads": [
+        "CI & tests",
+        "Batch jobs",
+        "Services",
+        "Secondary QA"
+      ],
       "constraint": "CPU、GPU 與記憶體世代較舊，優先承接長時間、非互動工作。",
-      "cpu": { "model": "AMD Ryzen 7 3700X", "architecture": "Zen 2" },
+      "cpu": {
+        "model": "AMD Ryzen 7 3700X",
+        "architecture": "Zen 2"
+      },
       "motherboard": "MSI X570-A PRO",
-      "ram": { "capacity": "32GB", "spec": "Kingston DDR4 3200MHz RGB (8GB x4)" },
-      "storage": { "primary": "Micron Crucial T500 1TB PCIe Gen4 NVMe" },
+      "ram": {
+        "capacity": "32GB",
+        "spec": "Kingston DDR4 3200MHz RGB (8GB x4)"
+      },
+      "storage": {
+        "primary": "Micron Crucial T500 1TB PCIe Gen4 NVMe"
+      },
       "gpu": "EVGA GeForce RTX 3060 XC GAMING 12GB",
       "power_supply": "FSP IPC 1200W Gold",
-      "case": "MSI MAG VAMPIRIC 011C"
+      "case": "MSI MAG VAMPIRIC 011C",
+      "role_label_en": "Background & Standby Node",
+      "status_note_en": "Ready for Work",
+      "summary_en": "Dedicated to CI/tests, batch jobs, background services, and secondary QA to preserve primary interactivity.",
+      "constraint_en": "Legacy CPU, GPU, and DDR4; best suited for persistent non-interactive jobs."
     },
     {
       "id": "DESKTOP_PC_01",
@@ -60,13 +98,24 @@
       "role_label": "已移交",
       "status_note": "不在工作池",
       "summary": "設備紀錄保留，但已移交且不納入工作排程、備援或容量估算。",
-      "cpu": { "model": "AMD Ryzen 7 7800X3D", "architecture": "Zen 4 3D V-Cache" },
+      "cpu": {
+        "model": "AMD Ryzen 7 7800X3D",
+        "architecture": "Zen 4 3D V-Cache"
+      },
       "motherboard": "ASUS ROG STRIX X670E-I GAMING WIFI",
-      "ram": { "capacity": "32GB", "spec": "Micron Crucial Pro DDR5 5600MHz (16GB x2)" },
-      "storage": { "primary": "Kingston A2000 512GB PCIe Gen3 NVMe" },
+      "ram": {
+        "capacity": "32GB",
+        "spec": "Micron Crucial Pro DDR5 5600MHz (16GB x2)"
+      },
+      "storage": {
+        "primary": "Kingston A2000 512GB PCIe Gen3 NVMe"
+      },
       "gpu": "GIGABYTE GeForce RTX 5060 Ti WINDFORCE OC 16GB",
       "power_supply": "ROG Strix 850W Platinum",
-      "case": "Phanteks XT View Matrix"
+      "case": "Phanteks XT View Matrix",
+      "role_label_en": "Transferred",
+      "status_note_en": "Out of Pool",
+      "summary_en": "Hardware specs preserved in historical record; transferred and excluded from active scheduling and capacity estimates."
     },
     {
       "id": "LAPTOP_01",
@@ -79,11 +128,22 @@
       "role_label": "已移交",
       "status_note": "不在工作池",
       "summary": "設備紀錄保留，但已移交且不作為行動工作端或備援資源。",
-      "cpu": { "model": "Intel Core Ultra 7 268V", "architecture": "Lunar Lake" },
-      "ram": { "capacity": "32GB MoP", "spec": "32GB LPDDR5X-8533 MoP" },
-      "storage": { "primary": "512GB PCIe Gen4 NVMe" },
+      "cpu": {
+        "model": "Intel Core Ultra 7 268V",
+        "architecture": "Lunar Lake"
+      },
+      "ram": {
+        "capacity": "32GB MoP",
+        "spec": "32GB LPDDR5X-8533 MoP"
+      },
+      "storage": {
+        "primary": "512GB PCIe Gen4 NVMe"
+      },
       "gpu": "Intel Arc 140V Graphics",
-      "features": "Intel vPro Enterprise"
+      "features": "Intel vPro Enterprise",
+      "role_label_en": "Transferred",
+      "status_note_en": "Out of Pool",
+      "summary_en": "Hardware specs preserved in historical record; transferred and no longer in use as a mobile or standby resource."
     },
     {
       "id": "HANDHELD_01",
@@ -96,33 +156,205 @@
       "role_label": "工作池排除",
       "status_note": "散熱考量",
       "summary": "保留設備紀錄；因散熱考量，不安排持續負載、備援或工作排程。",
-      "cpu": { "model": "Intel Core Ultra 7 268V", "architecture": "Lunar Lake" },
-      "ram": { "capacity": "32GB MoP", "spec": "32GB LPDDR5X-8533 MoP" },
-      "storage": { "primary": "1TB KIOXIA BG6 PCIe Gen4" },
-      "gpu": "Intel Arc 140V Graphics"
+      "cpu": {
+        "model": "Intel Core Ultra 7 268V",
+        "architecture": "Lunar Lake"
+      },
+      "ram": {
+        "capacity": "32GB MoP",
+        "spec": "32GB LPDDR5X-8533 MoP"
+      },
+      "storage": {
+        "primary": "1TB KIOXIA BG6 PCIe Gen4"
+      },
+      "gpu": "Intel Arc 140V Graphics",
+      "role_label_en": "Pool Excluded",
+      "status_note_en": "Thermal Limit",
+      "summary_en": "Hardware specs preserved; excluded from sustained background loads, redundancy, or scheduling due to thermal constraints."
     }
   ],
   "display_assets": [
-    { "id": "DISPLAY_01", "name": "JVC 65XM", "status": "supporting", "schedulable": false, "category": "Display", "panel": "65\" 4K QD-Mini LED, 144Hz Native / HDMI 2.1", "use_case": "大畫面檢視、展示與客廳遊戲", "image_path": "images/jvc_65xm.png" },
-    { "id": "DISPLAY_02", "name": "AORUS FV43U", "status": "supporting", "schedulable": false, "category": "Display", "panel": "43\" 4K VA, 144Hz / HDR-1000 / HDMI 2.1", "use_case": "4K HDR 遊戲與內容檢查", "image_path": "images/aorus_fv43u.png" },
-    { "id": "DISPLAY_03", "name": "AORUS FI32Q", "status": "supporting", "schedulable": false, "category": "Display", "panel": "32\" SS IPS, 170Hz OC / QHD / KVM", "use_case": "高幀率競技與多主機 KVM 控制", "image_path": "images/aorus_fi32q.png" },
-    { "id": "DISPLAY_04", "name": "MSI MPG 491CQP", "status": "supporting", "schedulable": false, "category": "Display", "panel": "49\" QD-OLED, 144Hz / DQHD / HDR400 / 1800R", "use_case": "多視窗生產力與寬時間軸", "image_path": "images/MSI MPG 491CQP.png" }
+    {
+      "id": "DISPLAY_01",
+      "name": "JVC 65XM",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Display",
+      "panel": "65\" 4K QD-Mini LED, 144Hz Native / HDMI 2.1",
+      "use_case": "大畫面檢視、展示與客廳遊戲",
+      "image_path": "images/jvc_65xm.png",
+      "use_case_en": "Large-format review, showcase, and living room gaming"
+    },
+    {
+      "id": "DISPLAY_02",
+      "name": "AORUS FV43U",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Display",
+      "panel": "43\" 4K VA, 144Hz / HDR-1000 / HDMI 2.1",
+      "use_case": "4K HDR 遊戲與內容檢查",
+      "image_path": "images/aorus_fv43u.png",
+      "use_case_en": "4K HDR gaming and color/content inspection"
+    },
+    {
+      "id": "DISPLAY_03",
+      "name": "AORUS FI32Q",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Display",
+      "panel": "32\" SS IPS, 170Hz OC / QHD / KVM",
+      "use_case": "高幀率競技與多主機 KVM 控制",
+      "image_path": "images/aorus_fi32q.png",
+      "use_case_en": "High-refresh competitive gaming and multi-host KVM switching"
+    },
+    {
+      "id": "DISPLAY_04",
+      "name": "MSI MPG 491CQP",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Display",
+      "panel": "49\" QD-OLED, 144Hz / DQHD / HDR400 / 1800R",
+      "use_case": "多視窗生產力與寬時間軸",
+      "image_path": "images/MSI MPG 491CQP.png",
+      "use_case_en": "Multi-window productivity and wide timeline editing"
+    }
   ],
   "peripherals": [
-    { "id": "PERIPHERAL_01", "name": "Logitech MX Master 4", "status": "supporting", "schedulable": false, "category": "Mouse", "use_case": "生產力主控", "image_path": "images/mx_master_4.png" },
-    { "id": "PERIPHERAL_02", "name": "Viper V4 PRO", "status": "supporting", "schedulable": false, "category": "Mouse", "use_case": "遊戲主控", "image_path": "images/Viper V4 PRO.png" },
-    { "id": "PERIPHERAL_03", "name": "Razer Pro Type Ultra", "status": "supporting", "schedulable": false, "category": "Keyboard", "use_case": "生產力主控", "image_path": "images/razer_pro_type.png" },
-    { "id": "PERIPHERAL_04", "name": "BlackWidow V4 TKL HyperSpeed", "status": "supporting", "schedulable": false, "category": "Keyboard", "use_case": "遊戲主控", "image_path": "images/BlackWidow V4 TKL HyperSpeed.png" },
-    { "id": "PERIPHERAL_05", "name": "Razer Kishi Ultra", "status": "supporting", "schedulable": false, "category": "Gamepad", "use_case": "行動遊戲控制", "image_path": "images/razer_kishi.png" },
-    { "id": "PERIPHERAL_06", "name": "Apple AirPods Pro 3", "status": "supporting", "schedulable": false, "category": "Audio", "use_case": "個人音訊", "image_path": "images/airpods_pro_3.png" },
-    { "id": "PERIPHERAL_07", "name": "BOSE QuietComfort Earbuds", "status": "supporting", "schedulable": false, "category": "Audio", "use_case": "個人音訊", "image_path": "images/bose_qc_earbuds.png" },
-    { "id": "PERIPHERAL_08", "name": "Steam Controller (#1)", "status": "supporting", "schedulable": false, "category": "Gamepad", "use_case": "PC 遊戲主控 / 雙觸控板與自定義配置", "image_path": "images/steam_controller.png" },
-    { "id": "PERIPHERAL_09", "name": "Steam Controller (#2)", "status": "supporting", "schedulable": false, "category": "Gamepad", "use_case": "雙人合作 / 備援控制器", "image_path": "images/steam_controller.png" },
-    { "id": "PERIPHERAL_10", "name": "ASUS TUF Gaming x 初音未來 MIKU 全套組", "status": "supporting", "schedulable": false, "category": "Peripheral Set", "use_case": "初音聯名電競四件套 (K3 Gen II 鍵盤 + Mini 無線滑鼠 + H1 Gen II 耳機 + P1 鼠墊)", "image_path": "images/asus_tuf_miku_set.png" }
+    {
+      "id": "PERIPHERAL_01",
+      "name": "Logitech MX Master 4",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Mouse",
+      "use_case": "生產力主控",
+      "image_path": "images/mx_master_4.png",
+      "name_en": "Logitech MX Master 4",
+      "use_case_en": "Primary productivity control"
+    },
+    {
+      "id": "PERIPHERAL_02",
+      "name": "Viper V4 PRO",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Mouse",
+      "use_case": "遊戲主控",
+      "image_path": "images/Viper V4 PRO.png",
+      "name_en": "Viper V4 PRO",
+      "use_case_en": "Primary gaming control"
+    },
+    {
+      "id": "PERIPHERAL_03",
+      "name": "Razer Pro Type Ultra",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Keyboard",
+      "use_case": "生產力主控",
+      "image_path": "images/razer_pro_type.png",
+      "name_en": "Razer Pro Type Ultra",
+      "use_case_en": "Productivity typing surface"
+    },
+    {
+      "id": "PERIPHERAL_04",
+      "name": "BlackWidow V4 TKL HyperSpeed",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Keyboard",
+      "use_case": "遊戲主控",
+      "image_path": "images/BlackWidow V4 TKL HyperSpeed.png",
+      "name_en": "BlackWidow V4 TKL HyperSpeed",
+      "use_case_en": "Compact gaming mechanical keyboard"
+    },
+    {
+      "id": "PERIPHERAL_05",
+      "name": "Razer Kishi Ultra",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Gamepad",
+      "use_case": "行動遊戲控制",
+      "image_path": "images/razer_kishi.png",
+      "name_en": "Razer Kishi Ultra",
+      "use_case_en": "Mobile and handheld gaming controller"
+    },
+    {
+      "id": "PERIPHERAL_06",
+      "name": "Apple AirPods Pro 3",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Audio",
+      "use_case": "個人音訊",
+      "image_path": "images/airpods_pro_3.png",
+      "name_en": "Apple AirPods Pro 3",
+      "use_case_en": "Personal wireless audio and communication"
+    },
+    {
+      "id": "PERIPHERAL_07",
+      "name": "BOSE QuietComfort Earbuds",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Audio",
+      "use_case": "個人音訊",
+      "image_path": "images/bose_qc_earbuds.png",
+      "name_en": "BOSE QuietComfort Earbuds",
+      "use_case_en": "Personal noise-cancelling audio"
+    },
+    {
+      "id": "PERIPHERAL_08",
+      "name": "Steam Controller (#1)",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Gamepad",
+      "use_case": "PC 遊戲主控 / 雙觸控板與自定義配置",
+      "image_path": "images/steam_controller.png",
+      "name_en": "Steam Controller (#1)",
+      "use_case_en": "Living room & PC gaming master (dual trackpads & gyro)"
+    },
+    {
+      "id": "PERIPHERAL_09",
+      "name": "Steam Controller (#2)",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Gamepad",
+      "use_case": "雙人合作 / 備援控制器",
+      "image_path": "images/steam_controller.png",
+      "name_en": "Steam Controller (#2)",
+      "use_case_en": "Local co-op and backup controller"
+    },
+    {
+      "id": "PERIPHERAL_10",
+      "name": "ASUS TUF Gaming x 初音未來 MIKU 全套組",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Peripheral Set",
+      "use_case": "初音聯名電競四件套 (K3 Gen II 鍵盤 + Mini 無線滑鼠 + H1 Gen II 耳機 + P1 鼠墊)",
+      "image_path": "images/asus_tuf_miku_set.png",
+      "name_en": "ASUS TUF Gaming x Hatsune Miku Set (4-in-1)",
+      "use_case_en": "Miku edition 4-piece set (K3 Gen II + Mini Mouse + H1 Gen II + P1 Pad)"
+    }
   ],
   "power_assets": [
-    { "id": "POWER_01", "name": "UGREEN Nexode 500W GaN Fast Charging Station", "status": "supporting", "schedulable": false, "category": "Charging Station", "image_path": "images/ugreen_500w.png" },
-    { "id": "POWER_02", "name": "270W Zeus USB-C GaN Charger", "status": "supporting", "schedulable": false, "category": "Charger", "image_path": "images/zeus_270w.png" },
-    { "id": "POWER_03", "name": "280W Zeus USB-C GaN Charger", "status": "supporting", "schedulable": false, "category": "Charger", "image_path": "images/zeus_280w.png" }
+    {
+      "id": "POWER_01",
+      "name": "UGREEN Nexode 500W GaN Fast Charging Station",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Charging Station",
+      "image_path": "images/ugreen_500w.png"
+    },
+    {
+      "id": "POWER_02",
+      "name": "270W Zeus USB-C GaN Charger",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Charger",
+      "image_path": "images/zeus_270w.png"
+    },
+    {
+      "id": "POWER_03",
+      "name": "280W Zeus USB-C GaN Charger",
+      "status": "supporting",
+      "schedulable": false,
+      "category": "Charger",
+      "image_path": "images/zeus_280w.png"
+    }
   ]
 }

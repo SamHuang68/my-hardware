@@ -47,13 +47,13 @@ test("summary and support counts match the registry", () => {
 
 test("page contains semantic landmarks, skip navigation, and evidence language", () => {
   for (const snippet of [
-    'lang="zh-Hant"',
+    'lang="en"',
     'class="skip-link"',
-    'aria-label="主要導覽"',
+    'aria-label="Primary navigation"',
     '<main id="main-content">',
     '<time id="last-updated"',
     'Content-Security-Policy',
-    '硬體 snapshot'
+    'Hardware snapshot'
   ]) assert.ok(html.includes(snippet), `missing: ${snippet}`);
   assert.ok(!html.includes("System Sync Active"));
   assert.ok(!html.includes("High Performance Asset Database"));
@@ -71,4 +71,12 @@ test("responsive and accessibility CSS has required gates", () => {
   assert.ok(css.includes("@media (max-width: 430px)"));
   assert.ok(!css.includes("overflow-x: hidden"));
   assert.ok(css.includes("minmax(0, 1fr)"));
+});
+
+test("language switcher and default English contract are present", () => {
+  assert.ok(html.includes('class="lang-switch"'));
+  assert.ok(html.includes('data-lang="en"'));
+  assert.ok(html.includes('data-lang="zh"'));
+  assert.ok(js.includes('switchLanguage'));
+  assert.ok(js.includes('currentLang'));
 });
