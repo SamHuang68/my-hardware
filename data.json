@@ -6,7 +6,7 @@
     "active_memory_gb": 128,
     "installed_gpu_vram_gb": 28,
     "vram_note": "兩張獨立 GPU 的安裝容量合計，不能合併為單一 28GB VRAM。",
-    "supporting_assets": 16
+    "supporting_assets": 17
   },
   "hardware_registry": [
     {
@@ -117,7 +117,8 @@
     { "id": "PERIPHERAL_06", "name": "Apple AirPods Pro 3", "status": "supporting", "schedulable": false, "category": "Audio", "use_case": "個人音訊", "image_path": "images/airpods_pro_3.png" },
     { "id": "PERIPHERAL_07", "name": "BOSE QuietComfort Earbuds", "status": "supporting", "schedulable": false, "category": "Audio", "use_case": "個人音訊", "image_path": "images/bose_qc_earbuds.png" },
     { "id": "PERIPHERAL_08", "name": "Steam Controller (#1)", "status": "supporting", "schedulable": false, "category": "Gamepad", "use_case": "PC 遊戲主控 / 雙觸控板與自定義配置", "image_path": "images/steam_controller.png" },
-    { "id": "PERIPHERAL_09", "name": "Steam Controller (#2)", "status": "supporting", "schedulable": false, "category": "Gamepad", "use_case": "雙人合作 / 備援控制器", "image_path": "images/steam_controller.png" }
+    { "id": "PERIPHERAL_09", "name": "Steam Controller (#2)", "status": "supporting", "schedulable": false, "category": "Gamepad", "use_case": "雙人合作 / 備援控制器", "image_path": "images/steam_controller.png" },
+    { "id": "PERIPHERAL_10", "name": "ASUS TUF Gaming x 初音未來 MIKU 全套組", "status": "supporting", "schedulable": false, "category": "Peripheral Set", "use_case": "初音聯名電競四件套 (K3 Gen II 鍵盤 + Mini 無線滑鼠 + H1 Gen II 耳機 + P1 鼠墊)", "image_path": "images/asus_tuf_miku_set.png" }
   ],
   "power_assets": [
     { "id": "POWER_01", "name": "UGREEN Nexode 500W GaN Fast Charging Station", "status": "supporting", "schedulable": false, "category": "Charging Station", "image_path": "images/ugreen_500w.png" },

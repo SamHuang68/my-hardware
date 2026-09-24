@@ -27,8 +27,8 @@ test("scheduling truth is active 2, transferred 2, excluded 1", () => {
   );
 });
 
-test("registry contains 21 unique assets and every referenced image exists", () => {
-  assert.equal(allAssets.length, 21);
+test("registry contains 22 unique assets and every referenced image exists", () => {
+  assert.equal(allAssets.length, 22);
   assert.equal(new Set(allAssets.map((item) => item.id)).size, allAssets.length);
   for (const item of allAssets) {
     assert.match(item.id, /^[A-Z0-9]+(?:_[A-Z0-9]+)*_[0-9]{2}$/);
@@ -39,8 +39,8 @@ test("registry contains 21 unique assets and every referenced image exists", () 
 test("summary and support counts match the registry", () => {
   const supporting = [...data.display_assets, ...data.peripherals, ...data.power_assets];
   assert.equal(data.registry_summary.active_nodes, 2);
-  assert.equal(data.registry_summary.supporting_assets, 16);
-  assert.equal(supporting.length, 16);
+  assert.equal(data.registry_summary.supporting_assets, 17);
+  assert.equal(supporting.length, 17);
   assert.ok(supporting.every((item) => item.status === "supporting" && item.schedulable === false));
   assert.equal(data.last_updated, "2026-09-25");
 });
