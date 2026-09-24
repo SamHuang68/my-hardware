@@ -1,39 +1,46 @@
 {
-  "last_updated": "2026-05-18",
+  "last_updated": "2026-09-25",
   "inventory_owner": "Sam Huang",
+  "registry_summary": {
+    "active_nodes": 2,
+    "active_memory_gb": 128,
+    "installed_gpu_vram_gb": 28,
+    "vram_note": "兩張獨立 GPU 的安裝容量合計，不能合併為單一 28GB VRAM。",
+    "supporting_assets": 16
+  },
   "hardware_registry": [
     {
       "id": "AI_STATION_01",
       "name": "GMKtec EVO-T1 AI Rig",
-      "form_factor": "Mini PC",
+      "form_factor": "Mini PC + eGPU",
       "image_path": "images/gmk_evo_t1.jpg",
-      "lifecycle_status": "Active / Development",
+      "status": "active",
+      "schedulable": true,
+      "work_role": "primary",
+      "role_label": "主力互動節點",
+      "status_note": "可投入工作",
+      "summary": "承擔 AI／CUDA、視覺 QA、大型編譯，以及需要 96GB RAM 的資料工作。",
+      "workloads": ["Local AI", "CUDA", "Visual QA", "Large builds"],
+      "constraint": "單卡 VRAM 16GB；外接 GPU 連線需依工作負載量測頻寬。",
       "cpu": { "model": "Intel Core Ultra 9 285H", "architecture": "Arrow Lake-H" },
       "ram": { "capacity": "96GB", "spec": "Micron DDR5 5600MHz SODIMM (48GB x2)" },
       "storage": { "primary": "2TB Lexar NQ790 PCIe Gen4" },
       "gpu": { "internal": "Intel Arc 140T", "external": "PNY GeForce RTX 5080 OC 16GB (via Minisforum DEG2)" },
-      "power_supply": "ASUS ROG Thor III 1000W Platinum  (Type-C PD to Mini PC via DEG2)"
-    },
-    {
-      "id": "DESKTOP_PC_01",
-      "name": "AMD Performance Gaming Rig",
-      "form_factor": "Desktop",
-      "image_path": "images/XT_View-Matrix_Black_00-1024x1024.jpg",
-      "lifecycle_status": "Active / Main Station",
-      "cpu": { "model": "AMD Ryzen 7 7800X3D", "architecture": "Zen 4 3D V-Cache" },
-      "motherboard": "ASUS ROG STRIX X670E-I GAMING WIFI",
-      "ram": { "capacity": "32GB", "spec": "Micron Crucial Pro DDR5 5600MHz (16GB x2)" },
-      "storage": { "primary": "Kingston A2000 512GB PCIe Gen3 NVMe" },
-      "gpu": "GIGABYTE GeForce RTX 5060 Ti WINDFORCE OC 16GB",
-      "power_supply": "ROG Strix 850W Platinum",
-      "case": "Phanteks XT View Matrix"
+      "power_supply": "ASUS ROG Thor III 1000W Platinum (Type-C PD to Mini PC via DEG2)"
     },
     {
       "id": "DESKTOP_PC_02",
-      "name": "AMD Ryzen 7",
+      "name": "Ryzen 7 Background Node",
       "form_factor": "Desktop",
       "image_path": "images/mag-011c.png",
-      "lifecycle_status": "InActive / Obslete Station",
+      "status": "active",
+      "schedulable": true,
+      "work_role": "background",
+      "role_label": "背景與備援節點",
+      "status_note": "可投入工作",
+      "summary": "適合 CI／測試、批次工作、服務常駐與次要驗證，保留主力機的互動效能。",
+      "workloads": ["CI & tests", "Batch jobs", "Services", "Secondary QA"],
+      "constraint": "CPU、GPU 與記憶體世代較舊，優先承接長時間、非互動工作。",
       "cpu": { "model": "AMD Ryzen 7 3700X", "architecture": "Zen 2" },
       "motherboard": "MSI X570-A PRO",
       "ram": { "capacity": "32GB", "spec": "Kingston DDR4 3200MHz RGB (8GB x4)" },
@@ -43,51 +50,78 @@
       "case": "MSI MAG VAMPIRIC 011C"
     },
     {
-      "id": "HANDHELD_01",
-      "name": "MSI Claw 8 AI+",
-      "form_factor": "Handheld",
-      "image_path": "images/msi_claw.png",
-      "lifecycle_status": "Active / Portable AI",
-      "cpu": { "model": "Intel Core Ultra 7 268V", "architecture": "Lunar Lake" },
-      "ram": { "capacity": "32GB MoP", "spec": "32GB LPDDR5X-8533 MoP" },
-      "storage": { "primary": "1TB KIOXIA BG6 PCIe Gen4" },
-      "gpu": "Intel Arc 140V Graphics"
+      "id": "DESKTOP_PC_01",
+      "name": "AMD Performance Gaming Rig",
+      "form_factor": "Desktop",
+      "image_path": "images/XT_View-Matrix_Black_00-1024x1024.jpg",
+      "status": "transferred",
+      "schedulable": false,
+      "work_role": null,
+      "role_label": "已移交",
+      "status_note": "不在工作池",
+      "summary": "設備紀錄保留，但已移交且不納入工作排程、備援或容量估算。",
+      "cpu": { "model": "AMD Ryzen 7 7800X3D", "architecture": "Zen 4 3D V-Cache" },
+      "motherboard": "ASUS ROG STRIX X670E-I GAMING WIFI",
+      "ram": { "capacity": "32GB", "spec": "Micron Crucial Pro DDR5 5600MHz (16GB x2)" },
+      "storage": { "primary": "Kingston A2000 512GB PCIe Gen3 NVMe" },
+      "gpu": "GIGABYTE GeForce RTX 5060 Ti WINDFORCE OC 16GB",
+      "power_supply": "ROG Strix 850W Platinum",
+      "case": "Phanteks XT View Matrix"
     },
     {
       "id": "LAPTOP_01",
       "name": "Dell Pro 14 Plus (7450 / PB14250)",
       "form_factor": "Laptop",
       "image_path": "images/dell_laptop.png",
-      "lifecycle_status": "Active / Work",
+      "status": "transferred",
+      "schedulable": false,
+      "work_role": null,
+      "role_label": "已移交",
+      "status_note": "不在工作池",
+      "summary": "設備紀錄保留，但已移交且不作為行動工作端或備援資源。",
       "cpu": { "model": "Intel Core Ultra 7 268V", "architecture": "Lunar Lake" },
       "ram": { "capacity": "32GB MoP", "spec": "32GB LPDDR5X-8533 MoP" },
       "storage": { "primary": "512GB PCIe Gen4 NVMe" },
       "gpu": "Intel Arc 140V Graphics",
       "features": "Intel vPro Enterprise"
+    },
+    {
+      "id": "HANDHELD_01",
+      "name": "MSI Claw 8 AI+",
+      "form_factor": "Handheld",
+      "image_path": "images/msi_claw.png",
+      "status": "excluded",
+      "schedulable": false,
+      "work_role": null,
+      "role_label": "工作池排除",
+      "status_note": "散熱考量",
+      "summary": "保留設備紀錄；因散熱考量，不安排持續負載、備援或工作排程。",
+      "cpu": { "model": "Intel Core Ultra 7 268V", "architecture": "Lunar Lake" },
+      "ram": { "capacity": "32GB MoP", "spec": "32GB LPDDR5X-8533 MoP" },
+      "storage": { "primary": "1TB KIOXIA BG6 PCIe Gen4" },
+      "gpu": "Intel Arc 140V Graphics"
     }
   ],
   "display_assets": [
-    { "name": "JVC 65XM", "panel": "65\" 4K QD-Mini LED, 144Hz Native / HDMI 2.1", "image_path": "images/jvc_65xm.png" },
-    { "name": "AORUS FV43U", "panel": "43\" 4K VA, 144Hz / HDR-1000 / HDMI 2.1", "image_path": "images/aorus_fv43u.png" },
-    { "name": "AORUS FI32Q", "panel": "32\" SS IPS, 170Hz OC / QHD / KVM", "image_path": "images/aorus_fi32q.png" },
-    { "name": "MSI MPG 491CQP", "panel": "49\" QD-OLED, 144Hz / DQHD / HDR400 / 1800R", "image_path": "images/MSI MPG 491CQP.png" }
+    { "id": "DISPLAY_01", "name": "JVC 65XM", "status": "supporting", "schedulable": false, "category": "Display", "panel": "65\" 4K QD-Mini LED, 144Hz Native / HDMI 2.1", "use_case": "大畫面檢視、展示與客廳遊戲", "image_path": "images/jvc_65xm.png" },
+    { "id": "DISPLAY_02", "name": "AORUS FV43U", "status": "supporting", "schedulable": false, "category": "Display", "panel": "43\" 4K VA, 144Hz / HDR-1000 / HDMI 2.1", "use_case": "4K HDR 遊戲與內容檢查", "image_path": "images/aorus_fv43u.png" },
+    { "id": "DISPLAY_03", "name": "AORUS FI32Q", "status": "supporting", "schedulable": false, "category": "Display", "panel": "32\" SS IPS, 170Hz OC / QHD / KVM", "use_case": "高幀率競技與多主機 KVM 控制", "image_path": "images/aorus_fi32q.png" },
+    { "id": "DISPLAY_04", "name": "MSI MPG 491CQP", "status": "supporting", "schedulable": false, "category": "Display", "panel": "49\" QD-OLED, 144Hz / DQHD / HDR400 / 1800R", "use_case": "多視窗生產力與寬時間軸", "image_path": "images/MSI MPG 491CQP.png" }
   ],
   "peripherals": [
-    { "name": "Logitech MX Master 4", "category": "Mouse", "image_path": "images/mx_master_4.png" },
-    { "name": "Viper V4 PRO", "category": "Mouse", "image_path": "images/Viper V4 PRO.png" },
-    { "name": "Razer Pro Type Ultra", "category": "Keyboard", "image_path": "images/razer_pro_type.png" },
-    { "name": "BlackWidow V4 TKL HyperSpeed", "category": "Keyboard", "image_path": "images/BlackWidow V4 TKL HyperSpeed.png" },
-    { "name": "Razer Kishi Ultra", "category": "Gamepad", "image_path": "images/razer_kishi.png" },
-    { "name": "Apple AirPods Pro 3", "category": "Audio", "image_path": "images/airpods_pro_3.png" },
-    { "name": "BOSE QuietComfort Earbuds", "category": "Audio", "image_path": "images/bose_qc_earbuds.png" }
+    { "id": "PERIPHERAL_01", "name": "Logitech MX Master 4", "status": "supporting", "schedulable": false, "category": "Mouse", "use_case": "生產力主控", "image_path": "images/mx_master_4.png" },
+    { "id": "PERIPHERAL_02", "name": "Viper V4 PRO", "status": "supporting", "schedulable": false, "category": "Mouse", "use_case": "遊戲主控", "image_path": "images/Viper V4 PRO.png" },
+    { "id": "PERIPHERAL_03", "name": "Razer Pro Type Ultra", "status": "supporting", "schedulable": false, "category": "Keyboard", "use_case": "生產力主控", "image_path": "images/razer_pro_type.png" },
+    { "id": "PERIPHERAL_04", "name": "BlackWidow V4 TKL HyperSpeed", "status": "supporting", "schedulable": false, "category": "Keyboard", "use_case": "遊戲主控", "image_path": "images/BlackWidow V4 TKL HyperSpeed.png" },
+    { "id": "PERIPHERAL_05", "name": "Razer Kishi Ultra", "status": "supporting", "schedulable": false, "category": "Gamepad", "use_case": "行動遊戲控制", "image_path": "images/razer_kishi.png" },
+    { "id": "PERIPHERAL_06", "name": "Apple AirPods Pro 3", "status": "supporting", "schedulable": false, "category": "Audio", "use_case": "個人音訊", "image_path": "images/airpods_pro_3.png" },
+    { "id": "PERIPHERAL_07", "name": "BOSE QuietComfort Earbuds", "status": "supporting", "schedulable": false, "category": "Audio", "use_case": "個人音訊", "image_path": "images/bose_qc_earbuds.png" },
+    { "id": "PERIPHERAL_08", "name": "Steam Controller (#1)", "status": "supporting", "schedulable": false, "category": "Gamepad", "use_case": "PC 遊戲主控 / 雙觸控板與自定義配置", "image_path": "images/steam_controller.png" },
+    { "id": "PERIPHERAL_09", "name": "Steam Controller (#2)", "status": "supporting", "schedulable": false, "category": "Gamepad", "use_case": "雙人合作 / 備援控制器", "image_path": "images/steam_controller.png" }
   ],
   "power_assets": [
-    { "name": "UGREEN Nexode 500W GaN Fast Charging Station", "category": "Charging Station", "image_path": "images/ugreen_500w.png" },
-    { "name": "270W Zeus USB-C GaN Charger", "category": "Charger", "image_path": "images/zeus_270w.png" },
-    { "name": "280W Zeus USB-C GaN Charger", "category": "Charger", "image_path": "images/zeus_280w.png" }
+    { "id": "POWER_01", "name": "UGREEN Nexode 500W GaN Fast Charging Station", "status": "supporting", "schedulable": false, "category": "Charging Station", "image_path": "images/ugreen_500w.png" },
+    { "id": "POWER_02", "name": "270W Zeus USB-C GaN Charger", "status": "supporting", "schedulable": false, "category": "Charger", "image_path": "images/zeus_270w.png" },
+    { "id": "POWER_03", "name": "280W Zeus USB-C GaN Charger", "status": "supporting", "schedulable": false, "category": "Charger", "image_path": "images/zeus_280w.png" }
   ]
 }
-
-
-
-
