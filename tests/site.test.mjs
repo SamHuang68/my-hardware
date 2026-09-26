@@ -87,7 +87,7 @@ test("language toggle HUD and default English contract are present", () => {
   assert.ok(js.includes('currentLang'));
 });
 
-test("cockpit dark console, topology matrix, and export capabilities are present", () => {
+test("filter console, topology matrix, and export capabilities are present", () => {
   assert.ok(html.includes('id="filter-console"'));
   assert.ok(html.includes('id="asset-search"'));
   assert.ok(html.includes('id="topology-matrix"'));
@@ -102,4 +102,19 @@ test("cockpit dark console, topology matrix, and export capabilities are present
   assert.ok(css.includes('.filter-console'));
   assert.ok(css.includes('.topology-matrix'));
 });
+
+test("light theme mandate (Rule 0003) and UTF-8 integrity gate (Rule 0004)", () => {
+  assert.ok(css.includes("color-scheme: light"));
+  assert.ok(css.includes("--paper: #f8fafc"));
+  assert.ok(css.includes("--ink: #0f172a"));
+  assert.ok(html.includes('name="theme-color" content="#f8fafc"'));
+  assert.ok(html.includes("styles.css?v=20260926-light-v6"));
+  for (const forbiddenDark of ["#051622", "#061b29", "#092235", "#0d2b40", "#082132", "#102c3d", "#081d2b", "#092336"]) {
+    assert.ok(!css.toLowerCase().includes(forbiddenDark), `forbidden dark token present in styles.css: ${forbiddenDark}`);
+  }
+  for (const [name, content] of [["index.html", html], ["styles.css", css], ["app.js", js]]) {
+    assert.ok(!content.includes("\uFFFD"), `${name} contains UTF-8 replacement character`);
+  }
+});
+
 
