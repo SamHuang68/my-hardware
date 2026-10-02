@@ -22,12 +22,18 @@
   --radius-sm: 4px;
   --radius-md: 10px;
   --page: 1240px;
+  --header-height: 79px;
+  --filter-height: 105px;
 }
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
 }
 
 html {
@@ -99,7 +105,7 @@ textarea {
   left: 10px;
   z-index: 1000;
   padding: 10px 14px;
-  background: var(--cyan);
+  background: var(--aqua);
   color: #ffffff;
   font-weight: 700;
   text-decoration: none;
@@ -369,7 +375,18 @@ html[lang="en"] .language-toggle [data-lang-option="en"] {
 }
 
 main > section {
-  scroll-margin-top: 90px;
+  scroll-margin-top: calc(var(--header-height) + var(--filter-height) + 16px);
+}
+
+#filter-console,
+#main-content {
+  scroll-margin-top: var(--header-height);
+}
+
+.section :is(button, a),
+.site-footer :is(button, a) {
+  scroll-margin-top: calc(var(--header-height) + var(--filter-height) + 16px);
+  scroll-margin-bottom: 16px;
 }
 
 /* Hero Section */
@@ -468,7 +485,7 @@ main > section {
 }
 
 .button-primary {
-  background: var(--cyan);
+  background: var(--aqua);
   color: #ffffff;
 }
 
@@ -631,20 +648,9 @@ main > section {
   font-size: 12px;
 }
 
-/* VRAM Micro Hover Pill */
-.metric-vram-card {
-  cursor: pointer;
-}
-
+/* Keep the separate-pool caveat readable on touchscreens and by keyboard. */
 .vram-hover-pill {
-  position: absolute;
-  bottom: 8px;
-  left: 28px;
-  right: 28px;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 160ms ease, transform 160ms ease;
-  pointer-events: none;
+  margin-top: 4px;
 }
 
 .vram-hover-pill span {
@@ -656,25 +662,19 @@ main > section {
   color: var(--aqua) !important;
   font-family: var(--font-mono);
   font-size: 10px !important;
-  white-space: nowrap;
-}
-
-.metric-vram-card:hover .vram-hover-pill,
-.metric-vram-card:focus-within .vram-hover-pill {
-  opacity: 1;
-  transform: translateY(0);
+  white-space: normal;
 }
 
 /* Filter & Search Console */
 .filter-console {
   position: sticky;
-  top: 78px;
+  top: var(--header-height);
   z-index: 90;
   background: rgba(248, 250, 252, 0.94);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line-dark);
-  padding-block: 14px;
+  padding-block: 10px;
 }
 
 .filter-inner {
@@ -698,6 +698,7 @@ main > section {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  min-height: 40px;
   padding: 6px 14px;
   background: #ffffff;
   border: 1px solid var(--line-dark);
@@ -718,8 +719,8 @@ main > section {
 }
 
 .filter-chip.active {
-  background: var(--cyan);
-  border-color: var(--cyan);
+  background: var(--aqua);
+  border-color: var(--aqua);
   color: #ffffff;
 }
 
@@ -749,7 +750,7 @@ main > section {
 
 .search-input {
   width: 100%;
-  height: 36px;
+  height: 40px;
   padding: 0 32px 0 34px;
   background: #ffffff;
   border: 1px solid var(--line-dark);
@@ -772,7 +773,9 @@ main > section {
 
 .search-clear {
   position: absolute;
-  right: 10px;
+  right: 1px;
+  width: 38px;
+  height: 38px;
   background: none;
   border: none;
   color: var(--muted);
@@ -783,6 +786,26 @@ main > section {
 
 .search-clear:hover {
   color: var(--ink);
+}
+
+.filter-feedback {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  padding-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.filter-feedback p {
+  margin: 0;
+}
+
+button:disabled,
+input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Sections Base Styling - Light Silicon & Warm Paper Alignment */
@@ -1007,7 +1030,7 @@ main > section {
 }
 
 .copy-spec-btn:hover {
-  background: var(--cyan);
+  background: var(--aqua);
   color: #ffffff;
   border-color: var(--cyan);
 }
@@ -1502,7 +1525,7 @@ main > section {
 
 .supporting-intro {
   position: sticky;
-  top: 140px;
+  top: calc(var(--header-height) + var(--filter-height) + 16px);
 }
 
 .supporting-intro > p:last-child {
@@ -1745,7 +1768,7 @@ main > section {
 }
 
 .export-btn:hover {
-  background: var(--cyan);
+  background: var(--aqua);
   color: #ffffff;
   border-color: var(--cyan);
 }
@@ -1878,6 +1901,27 @@ main > section {
     left: 14px;
   }
 
+  .filter-chips {
+    flex-wrap: nowrap;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 4px;
+    margin: -4px;
+    scrollbar-width: thin;
+  }
+
+  .filter-chip {
+    flex-shrink: 0;
+  }
+
+  .filter-inner {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 10px;
+  }
+
   .hero-layout {
     min-height: auto;
     grid-template-columns: 1fr;
@@ -1971,14 +2015,6 @@ main > section {
 
   .site-nav a {
     font-size: 13px;
-  }
-
-  main > section {
-    scroll-margin-top: 116px;
-  }
-
-  .filter-console {
-    top: 62px;
   }
 
   .filter-inner {

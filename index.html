@@ -47,8 +47,8 @@
     html[data-language="zh"] button.language-toggle [data-lang-option="en"],
     html[lang="zh-Hant"] button.language-toggle [data-lang-option="en"] { color: #64748b !important; }
   </style>
-  <link rel="stylesheet" href="styles.css?v=20260926-light-v6">
-  <script defer src="app.js?v=20260926-light-v6"></script>
+  <link rel="stylesheet" href="styles.css?v=20261003-accessibility-v7">
+  <script defer src="app.js?v=20261003-accessibility-v7"></script>
 </head>
 <body>
   <a class="skip-link" id="skip-link" href="#main-content">Skip to main content</a>
@@ -111,7 +111,7 @@
         <div class="metric-vram-card" id="metric-vram-card">
           <strong id="metric-vram">28<small>GB</small></strong>
           <span id="metric-label-vram">Dedicated GPU VRAM*</span>
-          <div class="vram-hover-pill" id="vram-hover-pill" aria-hidden="true">
+          <div class="vram-hover-pill" id="vram-hover-pill">
             <span>16GB (5080) + 12GB (3060) · Discrete Pools</span>
           </div>
         </div>
@@ -122,19 +122,24 @@
     <!-- Interactive Filter & Live Search HUD Bar -->
     <section class="filter-console" id="filter-console" aria-label="Asset filters and search">
       <div class="page-shell filter-inner">
-        <div class="filter-chips" role="tablist" aria-label="Asset category filters" id="filter-chips">
-          <button class="filter-chip active" type="button" role="tab" aria-selected="true" data-filter="all" id="chip-all">All Assets <span class="chip-count" id="count-all">22</span></button>
-          <button class="filter-chip" type="button" role="tab" aria-selected="false" data-filter="compute" id="chip-compute">Compute Nodes <span class="chip-count" id="count-compute">2</span></button>
-          <button class="filter-chip" type="button" role="tab" aria-selected="false" data-filter="boundaries" id="chip-boundaries">Boundaries <span class="chip-count" id="count-boundaries">3</span></button>
-          <button class="filter-chip" type="button" role="tab" aria-selected="false" data-filter="displays" id="chip-displays">Displays <span class="chip-count" id="count-displays">4</span></button>
-          <button class="filter-chip" type="button" role="tab" aria-selected="false" data-filter="peripherals" id="chip-peripherals">Controls <span class="chip-count" id="count-peripherals">10</span></button>
-          <button class="filter-chip" type="button" role="tab" aria-selected="false" data-filter="power" id="chip-power">Power Layer <span class="chip-count" id="count-power">3</span></button>
+        <div class="filter-chips" role="group" aria-label="Asset category filters" id="filter-chips">
+          <button class="filter-chip active" type="button" aria-pressed="true" data-filter="all" id="chip-all">All Assets <span class="chip-count" id="count-all">22</span></button>
+          <button class="filter-chip" type="button" aria-pressed="false" data-filter="compute" id="chip-compute">Compute Nodes <span class="chip-count" id="count-compute">2</span></button>
+          <button class="filter-chip" type="button" aria-pressed="false" data-filter="boundaries" id="chip-boundaries">Boundaries <span class="chip-count" id="count-boundaries">3</span></button>
+          <button class="filter-chip" type="button" aria-pressed="false" data-filter="displays" id="chip-displays">Displays <span class="chip-count" id="count-displays">4</span></button>
+          <button class="filter-chip" type="button" aria-pressed="false" data-filter="peripherals" id="chip-peripherals">Controls <span class="chip-count" id="count-peripherals">10</span></button>
+          <button class="filter-chip" type="button" aria-pressed="false" data-filter="power" id="chip-power">Power Layer <span class="chip-count" id="count-power">3</span></button>
         </div>
         <div class="search-box">
           <span class="search-icon" aria-hidden="true">⌕</span>
           <input type="search" id="asset-search" class="search-input" placeholder="Search 22 assets (e.g. RTX, 49&quot;, GaN, DDR5)..." aria-label="Search hardware assets">
           <button type="button" id="search-clear" class="search-clear" aria-label="Clear search" hidden>×</button>
         </div>
+      </div>
+      <div class="page-shell filter-feedback">
+        <p id="search-status" role="status" aria-live="polite" aria-atomic="true">Loading assets…</p>
+        <button type="button" class="export-btn" id="reset-filters" hidden>Reset filters</button>
+        <button type="button" class="export-btn" id="retry-load" hidden>Try again</button>
       </div>
     </section>
 

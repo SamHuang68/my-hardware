@@ -20,6 +20,10 @@ npm.cmd run serve
 
 預覽位址為 `http://127.0.0.1:4173/`。網站本身仍是純靜態檔案，`package.json` 只提供零相依的測試與預覽指令。
 
+互動驗證可使用已安裝的 Playwright 與 Microsoft Edge：`npm run test:browser`。若 Playwright 位於另一個工具工作區，將 `PLAYWRIGHT_MODULE` 設為其 `index.mjs` 的完整 `file:///` URL；不會自動下載套件或瀏覽器。`BROWSER_CHANNEL` 可指定其他已安裝的 Chromium channel，`BASE_URL` 可指定已啟動的預覽或正式站；未指定時會自動啟動並關閉本機 4183 port 預覽。
+
+瀏覽器檢查涵蓋五種視窗、雙語篩選與搜尋、鍵盤焦點、下載資料一致性、剪貼簿成功／拒絕及讀取失敗後重試，截圖與結果寫入未追蹤的 `qa/after/`。640 × 450 視窗用於模擬 1280 × 900 畫面放大至 200% 後的重排；不代表完成讀屏或完整 WCAG 認證。
+
 ## 檔案
 
 - `index.html`：語意化頁面結構與 SEO metadata。

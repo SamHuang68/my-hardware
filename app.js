@@ -65,7 +65,7 @@ function showToast(message) {
     toast.style.opacity = "0";
     toast.style.transform = "translateY(8px)";
     setTimeout(() => toast.remove(), 320);
-  }, 2200);
+  }, 5000);
 }
 
 /**
@@ -107,6 +107,14 @@ const I18N = {
     filter_power: "Power Layer",
     search_placeholder: "Search 22 assets (e.g. RTX, 49\", GaN, DDR5)...",
     search_clear_aria: "Clear search",
+    filter_aria: "Asset category filters",
+    console_aria: "Asset filters and search",
+    search_label: "Search hardware assets",
+    search_results: "{n} of {total} assets shown",
+    search_empty: "No matching assets. Try another search or reset filters.",
+    reset_filters: "Reset filters",
+    retry_load: "Try again",
+    loading_assets: "Loading assets…",
     compute_eyebrow: "01 / ACTIVE COMPUTE POOL",
     compute_title: "Two Production-Ready Compute Nodes",
     compute_desc: "Capability over model numbers. The primary node handles low-latency, GPU-heavy tasks; the background node absorbs schedulable workloads to prevent bottlenecks.",
@@ -139,6 +147,7 @@ const I18N = {
     export_md: "Export Markdown",
     copy_specs: "Copy Specs",
     copied_toast: "Specifications copied to clipboard",
+    copy_failed: "Copy failed. Select the specifications below to copy them manually.",
     ai_profile_title: "AI INFERENCE PROFILE",
     ai_gpu_native: "GPU Native",
     ai_cpu_offload: "DDR5 Offload",
@@ -149,7 +158,7 @@ const I18N = {
     loading_displays: "Loading displays…",
     loading_controls: "Loading peripherals…",
     loading_power: "Loading power equipment…",
-    err_message: "Hardware registry failed to load. Ensure data.json is in the same directory.",
+    err_message: "Hardware registry could not be loaded. Check your connection and try again.",
     workloads_label: "Best-fit workloads",
     status_labels: {
       transferred: { label: "TRANSFERRED / Transferred", note: "Out of pool" },
@@ -200,6 +209,14 @@ const I18N = {
     filter_power: "供電設施",
     search_placeholder: "搜尋 22 項資產 (例如 RTX, 49\", 氮化鎵, DDR5)...",
     search_clear_aria: "清除搜尋",
+    filter_aria: "資產分類篩選",
+    console_aria: "資產篩選與搜尋",
+    search_label: "搜尋硬體資產",
+    search_results: "顯示 {n} / {total} 項資產",
+    search_empty: "沒有符合的資產。請嘗試其他關鍵字或重設篩選。",
+    reset_filters: "重設篩選",
+    retry_load: "重新載入",
+    loading_assets: "正在讀取資產…",
     compute_eyebrow: "01 / ACTIVE COMPUTE POOL",
     compute_title: "真正可投入工作的雙節點",
     compute_desc: "能力先於型號。主力節點負責低延遲與 GPU 密集工作；背景節點吸收可排程負載，避免所有任務都擠在同一台機器。",
@@ -232,6 +249,7 @@ const I18N = {
     export_md: "匯出 Markdown",
     copy_specs: "複製規格",
     copied_toast: "硬體規格已複製至剪貼簿",
+    copy_failed: "複製失敗。請選取下方規格文字，手動複製。",
     ai_profile_title: "本地 AI 推論能力指標",
     ai_gpu_native: "純顯存推論",
     ai_cpu_offload: "記憶體分流",
@@ -242,7 +260,7 @@ const I18N = {
     loading_displays: "正在讀取顯示設備…",
     loading_controls: "正在讀取控制設備…",
     loading_power: "正在讀取供電設備…",
-    err_message: "硬體清冊暫時無法讀取。請確認 data.json 與頁面位於同一目錄。",
+    err_message: "硬體清冊暫時無法讀取。請檢查網路連線後重新載入。",
     workloads_label: "適合工作",
     status_labels: {
       transferred: { label: "TRANSFERRED / 已移交", note: "不在工作池" },
@@ -271,6 +289,16 @@ let currentLang = "en";
  * @type {object|null}
  */
 let cachedData = null;
+let activeFilter = "all";
+let loadState = "loading";
+
+const assetSections = {
+  compute: "compute",
+  boundaries: "boundaries",
+  displays: "workspace",
+  peripherals: "controls",
+  power: "power"
+};
 
 /**
  * Format GPU description text from string or compound object.
@@ -365,8 +393,9 @@ function makeNodeCard(item, lang) {
   card.dataset.assetKeywords = [
     item.name,
     item.cpu?.model,
-    item.gpu,
+    gpuLabel(item),
     item.ram?.capacity,
+    item.ram?.spec,
     item.summary,
     item.summary_en,
     ...(item.workloads ?? [])
@@ -399,7 +428,7 @@ function makeNodeCard(item, lang) {
         copyBtn.replaceChildren(document.createTextNode("📋 " + dict.copy_specs));
       }, 1800);
     } catch {
-      showToast(dict.copied_toast);
+      showToast(dict.copy_failed);
     }
   });
   headerRow.append(copyBtn);
@@ -472,7 +501,7 @@ function makeBoundaryItem(item, lang) {
   card.dataset.assetKeywords = [
     item.name,
     item.cpu?.model,
-    item.gpu,
+    gpuLabel(item),
     item.summary,
     item.summary_en
   ].filter(Boolean).join(" ").toLowerCase();
@@ -679,8 +708,13 @@ function updateStaticTexts(lang) {
   const searchInput = byId("asset-search");
   if (searchInput) {
     searchInput.placeholder = dict.search_placeholder;
-    searchInput.setAttribute("aria-label", dict.search_placeholder);
+    searchInput.setAttribute("aria-label", dict.search_label);
   }
+  byId("search-clear").setAttribute("aria-label", dict.search_clear_aria);
+  byId("filter-chips").setAttribute("aria-label", dict.filter_aria);
+  byId("filter-console").setAttribute("aria-label", dict.console_aria);
+  byId("reset-filters").textContent = dict.reset_filters;
+  byId("retry-load").textContent = dict.retry_load;
 
   if (byId("compute-eyebrow")) byId("compute-eyebrow").textContent = dict.compute_eyebrow;
   if (byId("compute-title")) byId("compute-title").textContent = dict.compute_title;
@@ -832,28 +866,51 @@ function renderRegistry(data, lang) {
  */
 function applySearchFilter(query) {
   const q = query.trim().toLowerCase();
+  const dict = I18N[currentLang];
   const allCards = document.querySelectorAll(
     "#active-nodes .node-card, #inactive-nodes .boundary-item, #display-assets .display-card, #peripheral-assets .compact-asset, #power-assets .power-card"
   );
 
+  let count = 0;
   for (const card of allCards) {
-    if (!q) {
-      card.style.display = "";
-      continue;
-    }
-    const kw = card.dataset.assetKeywords || "";
-    const name = card.dataset.assetName || "";
-    if (kw.includes(q) || name.includes(q)) {
-      card.style.display = "";
-    } else {
-      card.style.display = "none";
-    }
+    const inCategory = activeFilter === "all" || card.closest("section").id === assetSections[activeFilter];
+    const searchable = `${card.dataset.assetKeywords || ""} ${card.textContent}`.toLowerCase();
+    card.hidden = !inCategory || !searchable.includes(q);
+    if (!card.hidden) count++;
   }
+  for (const sectionId of Object.values(assetSections)) {
+    const section = byId(sectionId);
+    section.hidden = ![...section.querySelectorAll("[data-asset-name]")].some(card => !card.hidden);
+  }
+  byId("search-status").textContent = count
+    ? dict.search_results.replace("{n}", count).replace("{total}", allCards.length)
+    : dict.search_empty;
+  byId("reset-filters").hidden = !q && activeFilter === "all";
 
   const clearBtn = byId("search-clear");
   if (clearBtn) {
-    clearBtn.hidden = !q;
+    clearBtn.hidden = !query;
   }
+}
+
+function selectCategory(filter) {
+  activeFilter = filter;
+  for (const chip of document.querySelectorAll(".filter-chip[data-filter]")) {
+    const selected = chip.dataset.filter === filter;
+    chip.classList.toggle("active", selected);
+    chip.setAttribute("aria-pressed", String(selected));
+  }
+}
+
+function resetFilters() {
+  selectCategory("all");
+  byId("asset-search").value = "";
+  if (cachedData) applySearchFilter("");
+}
+
+function showFilterResults() {
+  // Keep the controls and first results together, also after long sections collapse.
+  byId("filter-console").scrollIntoView({ behavior: "instant", block: "start" });
 }
 
 /**
@@ -866,11 +923,13 @@ function initFilterConsole() {
   if (searchInput) {
     searchInput.addEventListener("input", (e) => {
       applySearchFilter(e.target.value);
+      showFilterResults();
     });
     searchInput.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
         searchInput.value = "";
         applySearchFilter("");
+        showFilterResults();
       }
     });
   }
@@ -882,35 +941,26 @@ function initFilterConsole() {
         searchInput.focus();
       }
       applySearchFilter("");
+      showFilterResults();
     });
   }
 
   const chips = document.querySelectorAll(".filter-chip[data-filter]");
   for (const chip of chips) {
     chip.addEventListener("click", () => {
-      for (const c of chips) {
-        c.classList.remove("active");
-        c.setAttribute("aria-selected", "false");
-      }
-      chip.classList.add("active");
-      chip.setAttribute("aria-selected", "true");
-
-      const filter = chip.dataset.filter;
-      const targetSectionId = {
-        compute: "compute",
-        boundaries: "boundaries",
-        displays: "workspace",
-        peripherals: "controls",
-        power: "power"
-      }[filter];
-
-      if (targetSectionId) {
-        const target = byId(targetSectionId);
-        if (target) {
-          target.scrollIntoView({ behavior: "smooth" });
-        }
-      }
+      selectCategory(chip.dataset.filter);
+      applySearchFilter(searchInput.value);
+      showFilterResults();
     });
+  }
+  byId("reset-filters").addEventListener("click", () => {
+    resetFilters();
+    searchInput.focus({ preventScroll: true });
+    showFilterResults();
+  });
+  // Header and hero links always reveal their target even after filtering.
+  for (const link of document.querySelectorAll('a[href^="#"]')) {
+    link.addEventListener("click", resetFilters);
   }
 }
 
@@ -982,19 +1032,18 @@ function initExportButtons() {
 
 /**
  * Render user-friendly failure state across asset grids.
- * @param {Error} error - Caught error.
  * @param {string} lang - Active language.
  */
-function renderFailure(error, lang) {
-  console.error("Hardware registry failed to load:", error);
+function renderFailure(lang) {
   const dict = I18N[lang] || I18N.en;
-  for (const id of ["active-nodes", "inactive-nodes", "display-assets", "peripheral-assets", "power-assets"]) {
+  for (const id of ["active-nodes", "inactive-nodes", "display-assets", "peripheral-assets", "power-assets", "topology-lanes"]) {
     const target = byId(id);
     if (!target) continue;
     const alert = make("p", "error-state", dict.err_message);
-    alert.setAttribute("role", "alert");
     target.replaceChildren(alert);
   }
+  byId("search-status").textContent = dict.err_message;
+  byId("retry-load").hidden = false;
 }
 
 /**
@@ -1013,9 +1062,11 @@ function switchLanguage(targetLang) {
   if (cachedData) {
     renderRegistry(cachedData, targetLang);
     const searchInput = byId("asset-search");
-    if (searchInput && searchInput.value) {
-      applySearchFilter(searchInput.value);
-    }
+    applySearchFilter(searchInput.value);
+  } else if (loadState === "error") {
+    renderFailure(targetLang);
+  } else {
+    byId("search-status").textContent = I18N[targetLang].loading_assets;
   }
 }
 
@@ -1063,9 +1114,9 @@ function initNavigation() {
   const update = () => {
     queued = false;
     const threshold = Math.min(window.innerHeight * 0.36, 320);
-    let current = "compute";
+    let current = tracked.find(entry => entry.section && !entry.section.hidden)?.navId || "";
     for (const entry of tracked) {
-      if (entry.section && entry.section.getBoundingClientRect().top <= threshold) {
+      if (entry.section && !entry.section.hidden && entry.section.getBoundingClientRect().top <= threshold) {
         current = entry.navId;
       }
     }
@@ -1093,13 +1144,46 @@ async function start() {
   initLanguageSwitch();
   initFilterConsole();
   initExportButtons();
+  // Measure the actual wrapped header and filter heights, including zoom and language changes.
+  const updateOffsets = () => {
+    document.documentElement.style.setProperty("--header-height", `${byId("top").offsetHeight}px`);
+    document.documentElement.style.setProperty("--filter-height", `${byId("filter-console").offsetHeight}px`);
+  };
+  const resizeObserver = new ResizeObserver(updateOffsets);
+  resizeObserver.observe(byId("top"));
+  resizeObserver.observe(byId("filter-console"));
+  updateOffsets();
+  byId("retry-load").addEventListener("click", loadRegistry);
+  await loadRegistry();
+}
+
+async function loadRegistry() {
+  const retryHadFocus = document.activeElement === byId("retry-load");
+  loadState = "loading";
+  byId("retry-load").hidden = true;
+  byId("search-status").textContent = I18N[currentLang].loading_assets;
+  setDataControlsDisabled(true);
   try {
     const response = await fetch(DATA_URL, { cache: "no-store" });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    cachedData = await response.json();
-    renderRegistry(cachedData, currentLang);
+    const data = await response.json();
+    renderRegistry(data, currentLang);
+    cachedData = data;
+    loadState = "ready";
+    setDataControlsDisabled(false);
+    applySearchFilter(byId("asset-search").value);
+    if (retryHadFocus) byId("asset-search").focus({ preventScroll: true });
   } catch (error) {
-    renderFailure(error, currentLang);
+    console.error("Hardware registry failed to load:", error);
+    loadState = "error";
+    renderFailure(currentLang);
+    if (retryHadFocus) byId("retry-load").focus({ preventScroll: true });
+  }
+}
+
+function setDataControlsDisabled(disabled) {
+  for (const control of document.querySelectorAll('.filter-chip, #asset-search, #search-clear, #reset-filters, #export-json-btn, #export-md-btn')) {
+    control.disabled = disabled;
   }
 }
 
