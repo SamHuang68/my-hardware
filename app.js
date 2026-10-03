@@ -920,6 +920,19 @@ function initFilterConsole() {
   const searchInput = byId("asset-search");
   const clearBtn = byId("search-clear");
 
+  byId("filter-console").addEventListener("focusin", (event) => {
+    // WebKit can place a focused search field behind the header in a short viewport.
+    // Check after native focus scrolling; preserve its position when already visible.
+    requestAnimationFrame(() => {
+      const target = event.target;
+      if (document.activeElement !== target || getComputedStyle(byId("filter-console")).position === "sticky") return;
+      const rect = target.getBoundingClientRect();
+      if (rect.top < byId("top").getBoundingClientRect().bottom || rect.bottom > window.innerHeight) {
+        target.scrollIntoView({ block: "nearest", behavior: "instant" });
+      }
+    });
+  });
+
   if (searchInput) {
     searchInput.addEventListener("input", (e) => {
       applySearchFilter(e.target.value);

@@ -24,6 +24,7 @@
   --page: 1240px;
   --header-height: 79px;
   --filter-height: 105px;
+  --sticky-filter-height: var(--filter-height);
 }
 
 *,
@@ -375,7 +376,7 @@ html[lang="en"] .language-toggle [data-lang-option="en"] {
 }
 
 main > section {
-  scroll-margin-top: calc(var(--header-height) + var(--filter-height) + 16px);
+  scroll-margin-top: calc(var(--header-height) + var(--sticky-filter-height) + 16px);
 }
 
 #filter-console,
@@ -385,7 +386,7 @@ main > section {
 
 .section :is(button, a),
 .site-footer :is(button, a) {
-  scroll-margin-top: calc(var(--header-height) + var(--filter-height) + 16px);
+  scroll-margin-top: calc(var(--header-height) + var(--sticky-filter-height) + 16px);
   scroll-margin-bottom: 16px;
 }
 
@@ -1525,7 +1526,7 @@ input:disabled {
 
 .supporting-intro {
   position: sticky;
-  top: calc(var(--header-height) + var(--filter-height) + 16px);
+  top: calc(var(--header-height) + var(--sticky-filter-height) + 16px);
 }
 
 .supporting-intro > p:last-child {
@@ -2272,6 +2273,22 @@ input:disabled {
     height: 140px;
     border-right: 0;
     border-bottom: 1px solid var(--line-dark);
+  }
+}
+
+/* Leave room for content at high zoom, in landscape, or with a short viewport. */
+@media (max-height: 500px) {
+  :root {
+    --sticky-filter-height: 0px;
+  }
+
+  .filter-console {
+    position: static;
+  }
+
+  .filter-console :is(button, input) {
+    scroll-margin-top: calc(var(--header-height) + 16px);
+    scroll-margin-bottom: 16px;
   }
 }
 

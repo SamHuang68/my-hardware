@@ -47,8 +47,8 @@
     html[data-language="zh"] button.language-toggle [data-lang-option="en"],
     html[lang="zh-Hant"] button.language-toggle [data-lang-option="en"] { color: #64748b !important; }
   </style>
-  <link rel="stylesheet" href="styles.css?v=20261003-accessibility-v7">
-  <script defer src="app.js?v=20261003-accessibility-v7"></script>
+  <link rel="stylesheet" href="styles.css?v=20261003-cross-engine-v8">
+  <script defer src="app.js?v=20261003-cross-engine-v8"></script>
 </head>
 <body>
   <a class="skip-link" id="skip-link" href="#main-content">Skip to main content</a>
@@ -153,7 +153,7 @@
           <p id="compute-desc">Capability over model numbers. The primary node handles low-latency, GPU-heavy tasks; the background node absorbs schedulable workloads to prevent bottlenecks.</p>
         </header>
 
-        <div class="node-grid" id="active-nodes" aria-live="polite">
+        <div class="node-grid" id="active-nodes">
           <p class="loading-state">Loading compute nodes…</p>
         </div>
 
@@ -178,7 +178,7 @@
           <h2 id="boundaries-title">Preserve Device Records, Clarify Allocation Boundaries</h2>
           <p id="boundaries-desc">Transferred or heat-constrained devices stay in the historical ledger, but are excluded from active pools, redundancy, or capacity calculations.</p>
         </header>
-        <div class="boundary-ledger" id="inactive-nodes" aria-live="polite">
+        <div class="boundary-ledger" id="inactive-nodes">
           <p class="loading-state">Loading asset status…</p>
         </div>
       </div>
@@ -208,7 +208,7 @@
           </div>
         </div>
 
-        <div class="display-grid" id="display-assets" aria-live="polite">
+        <div class="display-grid" id="display-assets">
           <p class="loading-state loading-state-dark">Loading displays…</p>
         </div>
       </div>
@@ -221,7 +221,7 @@
           <h2 id="controls-title">Compact, Trackable Input and Audio</h2>
           <p id="controls-desc">Supporting peripherals maintain high traceability through clear categories, use cases, and imagery without visual clutter.</p>
         </header>
-        <div class="compact-asset-grid" id="peripheral-assets" aria-live="polite">
+        <div class="compact-asset-grid" id="peripheral-assets">
           <p class="loading-state">Loading peripherals…</p>
         </div>
       </div>
@@ -233,7 +233,7 @@
           <p class="eyebrow eyebrow-copper" id="power-eyebrow">05 / POWER LAYER</p>
           <h2 id="power-title">Power Stations & Chargers</h2>
         </header>
-        <div class="power-grid" id="power-assets" aria-live="polite">
+        <div class="power-grid" id="power-assets">
           <p class="loading-state">Loading power equipment…</p>
         </div>
       </div>
