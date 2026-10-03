@@ -108,7 +108,7 @@ test("light theme mandate (Rule 0003) and UTF-8 integrity gate (Rule 0004)", () 
   assert.ok(css.includes("--paper: #f8fafc"));
   assert.ok(css.includes("--ink: #0f172a"));
   assert.ok(html.includes('name="theme-color" content="#f8fafc"'));
-  assert.ok(html.includes("styles.css?v=20261003-accessibility-v7"));
+  assert.ok(html.includes("styles.css?v=20261003-cross-engine-v8"));
   for (const forbiddenDark of ["#051622", "#061b29", "#092235", "#0d2b40", "#082132", "#102c3d", "#081d2b", "#092336"]) {
     assert.ok(!css.toLowerCase().includes(forbiddenDark), `forbidden dark token present in styles.css: ${forbiddenDark}`);
   }

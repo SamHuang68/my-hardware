@@ -20,9 +20,11 @@ npm.cmd run serve
 
 預覽位址為 `http://127.0.0.1:4173/`。網站本身仍是純靜態檔案，`package.json` 只提供零相依的測試與預覽指令。
 
-互動驗證可使用已安裝的 Playwright 與 Microsoft Edge：`npm run test:browser`。若 Playwright 位於另一個工具工作區，將 `PLAYWRIGHT_MODULE` 設為其 `index.mjs` 的完整 `file:///` URL；不會自動下載套件或瀏覽器。`BROWSER_CHANNEL` 可指定其他已安裝的 Chromium channel，`BASE_URL` 可指定已啟動的預覽或正式站；未指定時會自動啟動並關閉本機 4183 port 預覽。
+互動驗證使用已安裝的 Playwright 與瀏覽器：`npm run test:browser`。若 Playwright 位於另一個工具工作區，將 `PLAYWRIGHT_MODULE` 設為其 `index.mjs` 的完整 `file:///` URL；不會自動下載套件或瀏覽器。`BROWSER_ENGINE` 可設為 `chromium`（預設）、`firefox` 或 `webkit`；Chromium 可另用 `BROWSER_CHANNEL=msedge` 指定已安裝的 Edge。`BASE_URL` 可指定已啟動的預覽或正式站；未指定時會自動啟動並關閉本機 4183 port 預覽。
 
-瀏覽器檢查涵蓋五種視窗、雙語篩選與搜尋、鍵盤焦點、下載資料一致性、剪貼簿成功／拒絕及讀取失敗後重試，截圖與結果寫入未追蹤的 `qa/after/`。640 × 450 視窗用於模擬 1280 × 900 畫面放大至 200% 後的重排；不代表完成讀屏或完整 WCAG 認證。
+瀏覽器檢查涵蓋六種視窗、雙語篩選與搜尋、鍵盤焦點、下載資料一致性、剪貼簿成功／拒絕及讀取失敗後重試，截圖與結果寫入未追蹤的 `qa/cross-engine/<engine>/`。640 × 450 與 320 × 256 視窗分別模擬 1280 × 900 的 200% 及 1280 × 1024 的 400% 放大重排，並非作業系統或瀏覽器實際縮放驗收。
+
+`npm run test:a11y` 使用相同引擎設定，另檢查雙語 ARIA snapshot、名稱／參照、結果與通知專用 live region、文字間距、執行期間切換減少動態效果及低高度焦點。Chromium／WebKit 使用 Pixel 7／iPhone 13 設定並驗證合成 touchstart；Firefox 僅檢查窄視窗。未指定 `BASE_URL` 時使用本機 4184 port。此套件是語意與模擬驗證，不能代表實機、Safari、讀屏實聽或完整 WCAG 認證。Windows WebKit 若預設 Tab 跳過連結，測試會明確記錄，另驗證 skip link 目標，不修改使用者瀏覽器設定。
 
 ## 檔案
 

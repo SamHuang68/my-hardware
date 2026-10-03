@@ -7,6 +7,7 @@
     "serve": "node scripts/serve.mjs",
     "test": "node --test tests/*.test.mjs",
     "test:browser": "node tests/browser.mjs",
+    "test:a11y": "node tests/accessibility.mjs",
     "verify": "npm test"
   }
 }

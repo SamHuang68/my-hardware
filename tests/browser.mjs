@@ -4,9 +4,11 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 // Reuse an installed Playwright via PLAYWRIGHT_MODULE, or resolve the local package.
-const { chromium } = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
+const playwright = await import(process.env.PLAYWRIGHT_MODULE || 'playwright');
+const engine = process.env.BROWSER_ENGINE || 'chromium';
+assert.ok(['chromium', 'firefox', 'webkit'].includes(engine), `Unknown browser engine: ${engine}`);
 const root = fileURLToPath(new URL('../', import.meta.url));
-const output = new URL('../qa/after/', import.meta.url);
+const output = new URL(`../qa/cross-engine/${engine}/`, import.meta.url);
 await mkdir(output, { recursive: true });
 let server;
 let browser;
@@ -39,27 +41,41 @@ try {
       server.stdout.once('data',resolve);
     });
   }
-  browser = await chromium.launch({ channel:process.env.BROWSER_CHANNEL || 'msedge', headless:true });
-  for (const [width,height] of [[320,740],[390,844],[768,1024],[1440,1000],[640,450]]) {
+  browser = await playwright[engine].launch({
+    ...(engine === 'chromium' && process.env.BROWSER_CHANNEL ? {channel:process.env.BROWSER_CHANNEL} : {}),
+    headless:true
+  });
+  report.push({engine, version:browser.version()});
+  for (const [width,height] of [[320,740],[390,844],[768,1024],[1440,1000],[640,450],[320,256]]) {
     const page = await browser.newPage({viewport:{width,height},reducedMotion:'reduce'});
     const errors=[];
     page.on('pageerror',error=>errors.push(error.message));
     await ready(page);
     await page.keyboard.press('Tab');
-    assert.equal(await page.evaluate(()=>document.activeElement.id),'skip-link');
+    const firstTabTarget = await page.evaluate(()=>document.activeElement.id);
+    const linksSkippedByDefault = engine === 'webkit' && firstTabTarget === 'languageToggle';
+    if (linksSkippedByDefault) {
+      // This Windows WebKit build skips links in its default Tab policy.
+      // Verify the skip target separately without claiming full link traversal.
+      assert.equal(firstTabTarget, 'languageToggle');
+      await page.locator('#skip-link').focus();
+    } else assert.equal(firstTabTarget,'skip-link');
     await page.keyboard.press('Enter');
-    await page.keyboard.press('Tab');
-    assert.equal(await page.evaluate(()=>document.activeElement.id),'hero-btn-compute');
+    assert.equal(new URL(page.url()).hash, '#main-content');
+    if (!linksSkippedByDefault) {
+      await page.keyboard.press('Tab');
+      assert.equal(await page.evaluate(()=>document.activeElement.id),'hero-btn-compute');
+    }
     await page.evaluate(()=>scrollTo(0,0));
     assert.equal(await page.locator(assets).count(),22);
     assert.equal(await visibleCount(page),22);
-    await screenshot(page,`${width}-top.png`);
+    await screenshot(page,`${width}x${height}-top.png`);
     await page.locator('#chip-power').click();
     assert.equal(await visibleCount(page),3);
     assert.equal(await page.locator('#chip-power').getAttribute('aria-pressed'),'true');
     await page.waitForTimeout(100);
     const enLayout=await assertLayout(page);
-    await screenshot(page,`${width}-power.png`);
+    await screenshot(page,`${width}x${height}-power.png`);
     await page.locator('#asset-search').fill('no-such-device-xyz');
     assert.equal(await visibleCount(page),0);
     assert.match(await page.locator('#search-status').innerText(),/No matching assets/);
@@ -75,9 +91,11 @@ try {
     await page.locator('#asset-search').press('Escape');
     assert.equal(await visibleCount(page),22);
     const zhLayout=await assertLayout(page);
-    await screenshot(page,`${width}-zh-results.png`);
+    await screenshot(page,`${width}x${height}-zh-results.png`);
     // Native button keyboard operation, with a visible focus ring.
-    await page.locator('#chip-compute').focus();
+    await page.locator('#chip-all').focus();
+    await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(()=>document.activeElement.id),'chip-compute');
     await page.keyboard.press('Space');
     assert.equal(await visibleCount(page),2);
     assert.equal(await page.locator('#chip-compute').evaluate(e=>getComputedStyle(e).outlineStyle),'solid');
@@ -90,7 +108,10 @@ try {
     await page.waitForTimeout(100);
     assert.equal(await visibleCount(page),22);
     const titleTop=await page.locator('#compute-title').evaluate(e=>e.getBoundingClientRect().top);
-    const stickyBottom=await page.locator('#filter-console').evaluate(e=>e.getBoundingClientRect().bottom);
+    const stickyBottom=await page.evaluate(()=>Math.max(
+      document.querySelector('.site-header').getBoundingClientRect().bottom,
+      document.querySelector('#filter-console').getBoundingClientRect().bottom
+    ));
     assert.ok(titleTop>=stickyBottom,`Title covered: ${titleTop}/${stickyBottom}`);
     await page.locator('#chip-compute').click();
     await page.locator('#asset-search').focus();
@@ -101,13 +122,13 @@ try {
       name:document.activeElement.className,
       top:document.activeElement.getBoundingClientRect().top,
       bottom:document.activeElement.getBoundingClientRect().bottom,
-      stickyBottom:document.querySelector('#filter-console').getBoundingClientRect().bottom,
+      stickyBottom:Math.max(document.querySelector('.site-header').getBoundingClientRect().bottom,document.querySelector('#filter-console').getBoundingClientRect().bottom),
       height:innerHeight
     }));
     assert.equal(focused.name,'copy-spec-btn');
     assert.ok(focused.top>=focused.stickyBottom && focused.bottom<=focused.height,JSON.stringify(focused));
     assert.deepEqual(errors,[]);
-    report.push({viewport:{width,height},enLayout,zhLayout,assets:22,filterSearchKeyboard:'passed',navigationTitleTop:titleTop});
+    report.push({viewport:{width,height},enLayout,zhLayout,assets:22,filterSearchKeyboard:'passed',navigationTitleTop:titleTop,firstTabTarget});
     await page.close();
   }
   const page = await browser.newPage({viewport:{width:1280,height:900},acceptDownloads:true});
@@ -144,7 +165,8 @@ try {
   assert.match(await retry.locator('#search-status').innerText(),/暫時無法讀取/);
   await retry.locator('#retry-load').scrollIntoViewIfNeeded();
   await screenshot(retry,'mobile-load-error.png');
-  await retry.locator('#retry-load').click();
+  await retry.locator('#retry-load').focus();
+  await retry.keyboard.press('Enter');
   await retry.waitForFunction(()=>document.querySelector('#search-status').textContent.includes('22 / 22'));
   assert.equal(await visibleCount(retry),22);
   assert.equal(await retry.locator('#asset-search').evaluate(e=>e===document.activeElement),true);
