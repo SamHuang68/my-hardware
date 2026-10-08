@@ -8,7 +8,7 @@
 
 "use strict";
 
-const DATA_URL = "data.json?v=20261009-steam";
+const DATA_URL = "data.json?v=20261009-nobg";
 
 /**
  * Shorthand for document.getElementById.
@@ -40,7 +40,7 @@ function make(tag, className, text) {
  */
 function makeImage(src, alt = "", eager = false) {
   const image = make("img");
-  image.src = src ? (src.includes("?") ? src : `${src}?v=20261009-steam`) : src;
+  image.src = src ? (src.includes("?") ? src : `${src}?v=20261009-nobg`) : src;
   image.alt = alt;
   image.decoding = "async";
   if (!eager) image.loading = "lazy";

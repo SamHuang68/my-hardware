@@ -181,7 +181,7 @@
       "id": "DESKTOP_PC_01",
       "name": "AMD Performance Gaming Rig",
       "form_factor": "Desktop",
-      "image_path": "images/XT_View-Matrix_Black_00-1024x1024.jpg",
+      "image_path": "images/XT_View-Matrix_Black_00-1024x1024.png",
       "status": "transferred",
       "schedulable": false,
       "work_role": null,

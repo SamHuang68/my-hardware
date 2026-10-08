@@ -1,2 +1,4 @@
 .loop-engineering/
 qa/
+__pycache__/
+*.pyc
