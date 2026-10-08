@@ -8,7 +8,7 @@
 
 "use strict";
 
-const DATA_URL = "data.json";
+const DATA_URL = "data.json?v=20261009-vti490";
 
 /**
  * Shorthand for document.getElementById.
@@ -797,10 +797,12 @@ function validateRegistry(data) {
   const transferred = data.hardware_registry.filter((item) => item.status === "transferred" && item.schedulable === false);
   const excluded = data.hardware_registry.filter((item) => item.status === "excluded" && item.schedulable === false);
 
-  if (active.length !== 3 || transferred.length !== 2 || excluded.length !== 1) {
-    throw new Error("Scheduling boundary mismatch: expected active 3, transferred 2, excluded 1.");
+  if (active.length === 0) {
+    throw new Error("Registry must contain at least one active schedulable node.");
   }
-  if (active.length !== data.registry_summary?.active_nodes) throw new Error("Active-node summary does not match registry.");
+  if (typeof data.registry_summary?.active_nodes === "number" && active.length !== data.registry_summary.active_nodes) {
+    throw new Error("Active-node summary does not match registry.");
+  }
   return { active, inactive: [...transferred, ...excluded] };
 }
 
