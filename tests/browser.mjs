@@ -19,7 +19,7 @@ const visibleCount = page => page.locator(`${assets.split(', ').map(s=>`${s}:vis
 const screenshot = (page, name) => page.screenshot({ path: fileURLToPath(new URL(name, output)), fullPage: false });
 async function ready(page) {
   await page.goto(baseURL);
-  await page.waitForFunction(() => document.querySelector('#search-status').textContent.includes('22 of 22'));
+  await page.waitForFunction(() => document.querySelector('#search-status').textContent.includes('23 of 23'));
 }
 async function assertLayout(page) {
   const layout = await page.evaluate(() => {
@@ -67,8 +67,8 @@ try {
       assert.equal(await page.evaluate(()=>document.activeElement.id),'hero-btn-compute');
     }
     await page.evaluate(()=>scrollTo(0,0));
-    assert.equal(await page.locator(assets).count(),22);
-    assert.equal(await visibleCount(page),22);
+    assert.equal(await page.locator(assets).count(),23);
+    assert.equal(await visibleCount(page),23);
     await screenshot(page,`${width}x${height}-top.png`);
     await page.locator('#chip-power').click();
     assert.equal(await visibleCount(page),3);
@@ -80,7 +80,7 @@ try {
     assert.equal(await visibleCount(page),0);
     assert.match(await page.locator('#search-status').innerText(),/No matching assets/);
     await page.locator('#reset-filters').click();
-    assert.equal(await visibleCount(page),22);
+    assert.equal(await visibleCount(page),23);
     assert.equal(await page.locator('#asset-search').evaluate(e=>e===document.activeElement),true);
     await page.locator('#asset-search').fill('DDR5');
     assert.ok(await visibleCount(page)>0);
@@ -89,7 +89,7 @@ try {
     assert.equal(await page.locator('#search-clear').getAttribute('aria-label'),'清除搜尋');
     assert.equal(await page.locator('#asset-search').inputValue(),'DDR5');
     await page.locator('#asset-search').press('Escape');
-    assert.equal(await visibleCount(page),22);
+    assert.equal(await visibleCount(page),23);
     const zhLayout=await assertLayout(page);
     await screenshot(page,`${width}x${height}-zh-results.png`);
     // Native button keyboard operation, with a visible focus ring.
@@ -97,7 +97,7 @@ try {
     await page.keyboard.press('Tab');
     assert.equal(await page.evaluate(()=>document.activeElement.id),'chip-compute');
     await page.keyboard.press('Space');
-    assert.equal(await visibleCount(page),2);
+    assert.equal(await visibleCount(page),3);
     assert.equal(await page.locator('#chip-compute').evaluate(e=>getComputedStyle(e).outlineStyle),'solid');
     await page.keyboard.press('Tab');
     assert.equal(await page.evaluate(()=>document.activeElement.id),'chip-boundaries');
@@ -106,7 +106,7 @@ try {
     // Navigation reveals a section hidden by category selection.
     await page.locator('#nav-compute').click();
     await page.waitForTimeout(100);
-    assert.equal(await visibleCount(page),22);
+    assert.equal(await visibleCount(page),23);
     const titleTop=await page.locator('#compute-title').evaluate(e=>e.getBoundingClientRect().top);
     const stickyBottom=await page.evaluate(()=>Math.max(
       document.querySelector('.site-header').getBoundingClientRect().bottom,
@@ -128,7 +128,7 @@ try {
     assert.equal(focused.name,'copy-spec-btn');
     assert.ok(focused.top>=focused.stickyBottom && focused.bottom<=focused.height,JSON.stringify(focused));
     assert.deepEqual(errors,[]);
-    report.push({viewport:{width,height},enLayout,zhLayout,assets:22,filterSearchKeyboard:'passed',navigationTitleTop:titleTop,firstTabTarget});
+    report.push({viewport:{width,height},enLayout,zhLayout,assets:23,filterSearchKeyboard:'passed',navigationTitleTop:titleTop,firstTabTarget});
     await page.close();
   }
   const page = await browser.newPage({viewport:{width:1280,height:900},acceptDownloads:true});
@@ -167,8 +167,8 @@ try {
   await screenshot(retry,'mobile-load-error.png');
   await retry.locator('#retry-load').focus();
   await retry.keyboard.press('Enter');
-  await retry.waitForFunction(()=>document.querySelector('#search-status').textContent.includes('22 / 22'));
-  assert.equal(await visibleCount(retry),22);
+  await retry.waitForFunction(()=>document.querySelector('#search-status').textContent.includes('23 / 23'));
+  assert.equal(await visibleCount(retry),23);
   assert.equal(await retry.locator('#asset-search').evaluate(e=>e===document.activeElement),true);
   assert.equal(await retry.locator('#export-json-btn').isDisabled(),false);
   report.push({copySuccess:true,copyDeniedIsHonest:true,exports:['JSON data equal','Markdown complete'],loadFailureRetry:'passed',requests});

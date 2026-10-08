@@ -75,7 +75,7 @@ const I18N = {
   en: {
     lang_code: "en",
     page_title: "Sam Huang · Hardware Capability Registry",
-    meta_desc: "Sam Huang's hardware capability & compute registry: active dual-node compute pool, lifecycle boundaries, and visual workspace.",
+    meta_desc: "Sam Huang's hardware capability & compute registry: active three-node compute pool, lifecycle boundaries, and visual workspace.",
     skip_link: "Skip to main content",
     brand_title: "COMPUTE.REGISTRY",
     brand_sub: "Sam Huang / Hardware capability",
@@ -88,8 +88,8 @@ const I18N = {
     lang_toggle_aria: "Switch to Traditional Chinese (切換至繁體中文)",
     header_status: "{n} nodes ready",
     hero_eyebrow: "PERSONAL COMPUTE INVENTORY",
-    hero_reviewed: "REVIEWED 2026.09",
-    hero_lead: "Two active nodes assigned to their best-fit roles. RTX 5080 reserved for interactive and heavy GPU workloads; RTX 3060 handles background tasks, CI, and batch jobs.",
+    hero_reviewed: "REVIEWED 2026.10",
+    hero_lead: "Three active nodes assigned to their best-fit roles. RTX 5080 reserved for interactive and heavy GPU workloads; RTX 3060 handles background tasks, CI, and batch jobs; VTI-490 powers high-throughput 10GbE network pipelines and agile edge compute.",
     hero_btn_compute: "View Compute Pool",
     hero_btn_boundaries: "Explore Boundaries",
     hero_note: "Capacity reflects separate installed totals and cannot be combined across machines.",
@@ -97,7 +97,7 @@ const I18N = {
     metric_active: "Active Nodes",
     metric_memory: "Total Installed RAM",
     metric_vram: "Dedicated GPU VRAM*",
-    metric_routing: "Interactive / Background",
+    metric_routing: "Interactive / Background / Edge",
     vram_hover: "16GB (5080) + 12GB (3060) · Discrete Pools",
     filter_all: "All Assets",
     filter_compute: "Compute Nodes",
@@ -105,7 +105,7 @@ const I18N = {
     filter_displays: "Displays",
     filter_peripherals: "Controls",
     filter_power: "Power Layer",
-    search_placeholder: "Search 22 assets (e.g. RTX, 49\", GaN, DDR5)...",
+    search_placeholder: "Search 23 assets (e.g. RTX, VTI-490, 49\", GaN, DDR5)...",
     search_clear_aria: "Clear search",
     filter_aria: "Asset category filters",
     console_aria: "Asset filters and search",
@@ -116,12 +116,13 @@ const I18N = {
     retry_load: "Try again",
     loading_assets: "Loading assets…",
     compute_eyebrow: "01 / ACTIVE COMPUTE POOL",
-    compute_title: "Two Production-Ready Compute Nodes",
-    compute_desc: "Capability over model numbers. The primary node handles low-latency, GPU-heavy tasks; the background node absorbs schedulable workloads to prevent bottlenecks.",
+    compute_title: "Three Production-Ready Compute Nodes",
+    compute_desc: "Capability over model numbers. The primary node handles low-latency, GPU-heavy tasks; the background node absorbs schedulable workloads; the edge node drives high-speed 10GbE ingestion and agile compute.",
     routing_rule: "ROUTING RULE",
     routing_title: "Route Work to the Smallest Sufficient Rig",
     route_primary_label: "Interactive / CUDA / High-RAM",
     route_secondary_label: "CI / Batch / Background Services",
+    route_edge_label: "10GbE / Fast Pipelines / Edge",
     boundaries_eyebrow: "02 / ALLOCATION & EXCLUSION LEDGER",
     boundaries_title: "Preserve Device Records, Clarify Allocation Boundaries",
     boundaries_desc: "Transferred or heat-constrained devices stay in the historical ledger, but are excluded from active pools, redundancy, or capacity calculations.",
@@ -166,7 +167,8 @@ const I18N = {
     },
     node_roles: {
       primary: "PRIMARY",
-      background: "BACKGROUND"
+      background: "BACKGROUND",
+      edge: "EDGE"
     },
     status_chips: {
       active: "Ready for work",
@@ -177,7 +179,7 @@ const I18N = {
   zh: {
     lang_code: "zh-Hant",
     page_title: "Sam Huang · 硬體能力與資產清冊",
-    meta_desc: "Sam Huang 的硬體能力與資產清冊：可投入工作的雙節點運算資源、生命週期邊界，以及顯示與控制設備。",
+    meta_desc: "Sam Huang 的硬體能力與資產清冊：可投入工作的三節點運算資源、生命週期邊界，以及顯示與控制設備。",
     skip_link: "跳到主要內容",
     brand_title: "COMPUTE.REGISTRY",
     brand_sub: "Sam Huang / 硬體能力清冊",
@@ -190,8 +192,8 @@ const I18N = {
     lang_toggle_aria: "Switch to English (切換至英文)",
     header_status: "{n} 個節點就緒",
     hero_eyebrow: "PERSONAL COMPUTE INVENTORY",
-    hero_reviewed: "REVIEWED 2026.09",
-    hero_lead: "兩個工作節點，各自承擔最合適的任務。RTX 5080 保留給互動與重 GPU 工作；RTX 3060 接手背景、測試與長時間批次。",
+    hero_reviewed: "REVIEWED 2026.10",
+    hero_lead: "三個工作節點，各自承擔最合適的任務。RTX 5080 保留給互動與重 GPU 工作；RTX 3060 接手背景、測試與長時間批次；VTI-490 負責萬兆高速資料管線與敏捷邊緣運算。",
     hero_btn_compute: "查看工作池",
     hero_btn_boundaries: "了解排除邊界",
     hero_note: "容量是兩台獨立主機的安裝總量，不代表 RAM 或 VRAM 可以合併。",
@@ -199,7 +201,7 @@ const I18N = {
     metric_active: "可投入節點",
     metric_memory: "安裝記憶體合計",
     metric_vram: "獨立 GPU VRAM 合計*",
-    metric_routing: "互動主力 / 背景分流",
+    metric_routing: "互動主力 / 背景分流 / 邊緣運算",
     vram_hover: "16GB (5080) + 12GB (3060) · 兩卡獨立不可合併",
     filter_all: "全部資產",
     filter_compute: "算力節點",
@@ -207,7 +209,7 @@ const I18N = {
     filter_displays: "顯示設備",
     filter_peripherals: "控制周邊",
     filter_power: "供電設施",
-    search_placeholder: "搜尋 22 項資產 (例如 RTX, 49\", 氮化鎵, DDR5)...",
+    search_placeholder: "搜尋 23 項資產 (例如 RTX, VTI-490, 49\", 氮化鎵, DDR5)...",
     search_clear_aria: "清除搜尋",
     filter_aria: "資產分類篩選",
     console_aria: "資產篩選與搜尋",
@@ -218,12 +220,13 @@ const I18N = {
     retry_load: "重新載入",
     loading_assets: "正在讀取資產…",
     compute_eyebrow: "01 / ACTIVE COMPUTE POOL",
-    compute_title: "真正可投入工作的雙節點",
-    compute_desc: "能力先於型號。主力節點負責低延遲與 GPU 密集工作；背景節點吸收可排程負載，避免所有任務都擠在同一台機器。",
+    compute_title: "真正可投入工作的三節點",
+    compute_desc: "能力先於型號。主力節點負責低延遲與 GPU 密集工作；背景節點吸收排程負載；邊緣節點驅動萬兆吞吐量與靈活運算。",
     routing_rule: "ROUTING RULE",
     routing_title: "把工作送到最小、但足夠的設備",
     route_primary_label: "互動 / CUDA / 大記憶體",
     route_secondary_label: "CI / 批次 / 背景服務",
+    route_edge_label: "萬兆管線 / 快速處理 / 邊緣運算",
     boundaries_eyebrow: "02 / ALLOCATION & EXCLUSION LEDGER",
     boundaries_title: "保留設備紀錄，也清楚標示工作邊界",
     boundaries_desc: "已移交或因散熱排除的設備仍屬於歷史清冊，但不會被算進工作池、備援或容量評估。",
@@ -268,7 +271,8 @@ const I18N = {
     },
     node_roles: {
       primary: "PRIMARY",
-      background: "BACKGROUND"
+      background: "BACKGROUND",
+      edge: "EDGE"
     },
     status_chips: {
       active: "可投入工作",
@@ -413,7 +417,8 @@ function makeNodeCard(item, lang) {
   const content = make("div", "node-content");
 
   const headerRow = make("div", "node-header-row");
-  headerRow.append(make("p", "node-kicker", `${isPrimary ? "PRIMARY" : "BACKGROUND"} / ${roleLabel}`));
+  const roleKicker = dict.node_roles[item.work_role] || item.work_role?.toUpperCase() || (isPrimary ? "PRIMARY" : "BACKGROUND");
+  headerRow.append(make("p", "node-kicker", `${roleKicker} / ${roleLabel}`));
 
   const copyBtn = make("button", "copy-spec-btn");
   copyBtn.type = "button";
@@ -724,6 +729,7 @@ function updateStaticTexts(lang) {
   if (byId("allocation-title")) byId("allocation-title").textContent = dict.routing_title;
   if (byId("route-primary-text")) byId("route-primary-text").textContent = dict.route_primary_label;
   if (byId("route-secondary-text")) byId("route-secondary-text").textContent = dict.route_secondary_label;
+  if (byId("route-edge-text")) byId("route-edge-text").textContent = dict.route_edge_label;
 
   if (byId("boundaries-eyebrow")) byId("boundaries-eyebrow").textContent = dict.boundaries_eyebrow;
   if (byId("boundaries-title")) byId("boundaries-title").textContent = dict.boundaries_title;
@@ -791,8 +797,8 @@ function validateRegistry(data) {
   const transferred = data.hardware_registry.filter((item) => item.status === "transferred" && item.schedulable === false);
   const excluded = data.hardware_registry.filter((item) => item.status === "excluded" && item.schedulable === false);
 
-  if (active.length !== 2 || transferred.length !== 2 || excluded.length !== 1) {
-    throw new Error("Scheduling boundary mismatch: expected active 2, transferred 2, excluded 1.");
+  if (active.length !== 3 || transferred.length !== 2 || excluded.length !== 1) {
+    throw new Error("Scheduling boundary mismatch: expected active 3, transferred 2, excluded 1.");
   }
   if (active.length !== data.registry_summary?.active_nodes) throw new Error("Active-node summary does not match registry.");
   return { active, inactive: [...transferred, ...excluded] };
@@ -806,7 +812,8 @@ function validateRegistry(data) {
 function renderRegistry(data, lang) {
   const dict = I18N[lang] || I18N.en;
   const { active, inactive } = validateRegistry(data);
-  active.sort((a, b) => (a.work_role === "primary" ? -1 : 1) - (b.work_role === "primary" ? -1 : 1));
+  const roleOrder = { primary: 0, edge: 1, background: 2 };
+  active.sort((a, b) => (roleOrder[a.work_role] ?? 9) - (roleOrder[b.work_role] ?? 9));
 
   const activeNodes = byId("active-nodes");
   activeNodes.replaceChildren(...active.map((item) => makeNodeCard(item, lang)));
@@ -852,7 +859,7 @@ function renderRegistry(data, lang) {
     .replace("{supporting}", String(supportingCount));
 
   // Update counts in filter bar
-  if (byId("count-all")) byId("count-all").textContent = String(2 + transferredCount + excludedCount + supportingCount);
+  if (byId("count-all")) byId("count-all").textContent = String(active.length + transferredCount + excludedCount + supportingCount);
   if (byId("count-compute")) byId("count-compute").textContent = String(active.length);
   if (byId("count-boundaries")) byId("count-boundaries").textContent = String(transferredCount + excludedCount);
   if (byId("count-displays")) byId("count-displays").textContent = String(data.display_assets.length);

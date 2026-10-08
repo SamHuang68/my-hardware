@@ -38,17 +38,17 @@ try {
     const errors=[];
     page.on('pageerror',error=>errors.push(error.message));
     await page.goto(baseURL);
-    await page.waitForFunction(()=>document.querySelector('#search-status').textContent.includes('22 of 22'));
+    await page.waitForFunction(()=>document.querySelector('#search-status').textContent.includes('23 of 23'));
     await page.evaluate(()=>{
       window.auditTouches=0;
       document.addEventListener('touchstart',()=>window.auditTouches++,{passive:true});
     });
     if(item.name==='text-spacing') await page.addStyleTag({content:'* { line-height:1.5!important; letter-spacing:.12em!important; word-spacing:.16em!important; } p { margin-bottom:2em!important; }'});
-    if(item.name==='mobile-touch') await page.getByRole('button',{name:'Compute Nodes 2',exact:true}).tap();
-    else await page.getByRole('button',{name:'Compute Nodes 2',exact:true}).click();
-    assert.equal(await page.getByRole('article').count(),2);
-    assert.equal(await page.getByRole('button',{name:'Compute Nodes 2',exact:true}).getAttribute('aria-pressed'),'true');
-    assert.match(await page.getByRole('status').first().innerText(),/2 of 22/);
+    if(item.name==='mobile-touch') await page.getByRole('button',{name:'Compute Nodes 3',exact:true}).tap();
+    else await page.getByRole('button',{name:'Compute Nodes 3',exact:true}).click();
+    assert.equal(await page.getByRole('article').count(),3);
+    assert.equal(await page.getByRole('button',{name:'Compute Nodes 3',exact:true}).getAttribute('aria-pressed'),'true');
+    assert.match(await page.getByRole('status').first().innerText(),/3 of 23/);
     const enSnapshot=await page.locator('body').ariaSnapshot();
     assert.match(enSnapshot,/- main:/);
     assert.match(enSnapshot,/- searchbox "Search hardware assets"/);
@@ -57,8 +57,8 @@ try {
     await writeFile(new URL(`${item.name}-en.aria.txt`,output),enSnapshot);
     await page.getByRole('button',{name:'Switch to Traditional Chinese (切換至繁體中文)',exact:true}).click();
     assert.equal(await page.locator('html').getAttribute('lang'),'zh-Hant');
-    assert.equal(await page.getByRole('article').count(),2);
-    assert.match(await page.getByRole('status').first().innerText(),/顯示 2 \/ 22/);
+    assert.equal(await page.getByRole('article').count(),3);
+    assert.match(await page.getByRole('status').first().innerText(),/顯示 3 \/ 23/);
     const zhSnapshot=await page.locator('body').ariaSnapshot();
     assert.match(zhSnapshot,/- searchbox "搜尋硬體資產"/);
     assert.match(zhSnapshot,/- group "資產分類篩選"/);

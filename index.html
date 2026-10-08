@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Sam Huang's hardware capability & compute registry: active dual-node compute pool, lifecycle boundaries, and visual workspace.">
+  <meta name="description" content="Sam Huang's hardware capability & compute registry: active three-node compute pool, lifecycle boundaries, and visual workspace.">
   <meta name="theme-color" content="#f8fafc">
   <meta property="og:title" content="Sam Huang · Compute Capability Registry">
   <meta property="og:description" content="Manage personal compute nodes and supporting devices by real schedulable capacity.">
@@ -71,7 +71,7 @@
       </nav>
 
       <div class="header-actions">
-        <p class="header-status" id="header-status"><span class="status-dot" aria-hidden="true"></span><span id="header-status-text">2 nodes ready</span></p>
+        <p class="header-status" id="header-status"><span class="status-dot" aria-hidden="true"></span><span id="header-status-text">3 nodes ready</span></p>
         <button class="language-toggle" id="languageToggle" type="button" aria-label="Switch to Traditional Chinese (切換至繁體中文)">
           <b data-lang-option="zh">中</b><i>/</i><b data-lang-option="en">EN</b>
         </button>
@@ -84,9 +84,9 @@
       <div class="signal-grid" aria-hidden="true"></div>
       <div class="page-shell hero-layout">
         <div class="hero-copy">
-          <p class="eyebrow"><span id="hero-eyebrow-text">PERSONAL COMPUTE INVENTORY</span><span id="hero-reviewed-text">REVIEWED 2026.09</span></p>
+          <p class="eyebrow"><span id="hero-eyebrow-text">PERSONAL COMPUTE INVENTORY</span><span id="hero-reviewed-text">REVIEWED 2026.10</span></p>
           <h1 id="hero-title">My hardware, <em>managed by real,<br>schedulable compute.</em></h1>
-          <p class="hero-lead" id="hero-lead">Two active nodes assigned to their best-fit roles. RTX 5080 reserved for interactive and heavy GPU workloads; RTX 3060 handles background tasks, CI, and batch jobs.</p>
+          <p class="hero-lead" id="hero-lead">Three active nodes assigned to their best-fit roles. RTX 5080 reserved for interactive and heavy GPU workloads; RTX 3060 handles background tasks, CI, and batch jobs; VTI-490 powers high-throughput 10GbE network pipelines and agile edge compute.</p>
           <div class="hero-actions">
             <a class="button button-primary" id="hero-btn-compute" href="#compute">View Compute Pool</a>
             <a class="button button-quiet" id="hero-btn-boundaries" href="#boundaries">Explore Boundaries</a>
@@ -106,8 +106,8 @@
       </div>
 
       <div class="page-shell hero-metrics" aria-label="Available resource metrics">
-        <div><strong id="metric-active">2</strong><span id="metric-label-active">Active Nodes</span></div>
-        <div><strong id="metric-memory">128<small>GB</small></strong><span id="metric-label-memory">Total Installed RAM</span></div>
+        <div><strong id="metric-active">3</strong><span id="metric-label-active">Active Nodes</span></div>
+        <div><strong id="metric-memory">192<small>GB</small></strong><span id="metric-label-memory">Total Installed RAM</span></div>
         <div class="metric-vram-card" id="metric-vram-card">
           <strong id="metric-vram">28<small>GB</small></strong>
           <span id="metric-label-vram">Dedicated GPU VRAM*</span>
@@ -115,7 +115,7 @@
             <span>16GB (5080) + 12GB (3060) · Discrete Pools</span>
           </div>
         </div>
-        <div><strong>5080<span aria-hidden="true"> → </span>3060</strong><span id="metric-label-routing">Interactive / Background</span></div>
+        <div><strong>5080<span aria-hidden="true"> → </span>3060<span aria-hidden="true"> → </span>B390</strong><span id="metric-label-routing">Interactive / Background / Edge</span></div>
       </div>
     </section>
 
@@ -123,8 +123,8 @@
     <section class="filter-console" id="filter-console" aria-label="Asset filters and search">
       <div class="page-shell filter-inner">
         <div class="filter-chips" role="group" aria-label="Asset category filters" id="filter-chips">
-          <button class="filter-chip active" type="button" aria-pressed="true" data-filter="all" id="chip-all">All Assets <span class="chip-count" id="count-all">22</span></button>
-          <button class="filter-chip" type="button" aria-pressed="false" data-filter="compute" id="chip-compute">Compute Nodes <span class="chip-count" id="count-compute">2</span></button>
+          <button class="filter-chip active" type="button" aria-pressed="true" data-filter="all" id="chip-all">All Assets <span class="chip-count" id="count-all">23</span></button>
+          <button class="filter-chip" type="button" aria-pressed="false" data-filter="compute" id="chip-compute">Compute Nodes <span class="chip-count" id="count-compute">3</span></button>
           <button class="filter-chip" type="button" aria-pressed="false" data-filter="boundaries" id="chip-boundaries">Boundaries <span class="chip-count" id="count-boundaries">3</span></button>
           <button class="filter-chip" type="button" aria-pressed="false" data-filter="displays" id="chip-displays">Displays <span class="chip-count" id="count-displays">4</span></button>
           <button class="filter-chip" type="button" aria-pressed="false" data-filter="peripherals" id="chip-peripherals">Controls <span class="chip-count" id="count-peripherals">10</span></button>
@@ -132,7 +132,7 @@
         </div>
         <div class="search-box">
           <span class="search-icon" aria-hidden="true">⌕</span>
-          <input type="search" id="asset-search" class="search-input" placeholder="Search 22 assets (e.g. RTX, 49&quot;, GaN, DDR5)..." aria-label="Search hardware assets">
+          <input type="search" id="asset-search" class="search-input" placeholder="Search 23 assets (e.g. RTX, VTI-490, 49&quot;, GaN, DDR5)..." aria-label="Search hardware assets">
           <button type="button" id="search-clear" class="search-clear" aria-label="Clear search" hidden>×</button>
         </div>
       </div>
@@ -148,9 +148,9 @@
         <header class="section-heading">
           <div>
             <p class="eyebrow eyebrow-dark" id="compute-eyebrow">01 / ACTIVE COMPUTE POOL</p>
-            <h2 id="compute-title">Two Production-Ready Compute Nodes</h2>
+            <h2 id="compute-title">Three Production-Ready Compute Nodes</h2>
           </div>
-          <p id="compute-desc">Capability over model numbers. The primary node handles low-latency, GPU-heavy tasks; the background node absorbs schedulable workloads to prevent bottlenecks.</p>
+          <p id="compute-desc">Capability over model numbers. The primary node handles low-latency, GPU-heavy tasks; the background node absorbs schedulable workloads; the edge node drives high-speed 10GbE ingestion and agile compute.</p>
         </header>
 
         <div class="node-grid" id="active-nodes">
@@ -166,6 +166,8 @@
             <div role="listitem"><span id="route-primary-text">Interactive / CUDA / High-RAM</span><strong>EVO-T1 · RTX 5080</strong></div>
             <span class="route-divider" aria-hidden="true">/</span>
             <div role="listitem"><span id="route-secondary-text">CI / Batch / Background Services</span><strong>3700X · RTX 3060</strong></div>
+            <span class="route-divider" aria-hidden="true">/</span>
+            <div role="listitem"><span id="route-edge-text">10GbE / Fast Pipelines / Edge</span><strong>VTI-490 · Ultra X7</strong></div>
           </div>
         </aside>
       </div>
@@ -247,7 +249,7 @@
         </div>
         <div class="evidence-copy">
           <p id="evidence-desc">This page is a Hardware snapshot, not real-time telemetry. Models and installed capacities reflect the asset registry; recommended workloads describe scheduling roles; omitted benchmarks are never implied.</p>
-          <p class="review-date"><span id="evidence-reviewed-label">Inventory reviewed</span> <time id="last-updated" datetime="2026-09-25">2026-09-25</time></p>
+          <p class="review-date"><span id="evidence-reviewed-label">Inventory reviewed</span> <time id="last-updated" datetime="2026-10-09">2026-10-09</time></p>
         </div>
       </div>
     </section>
@@ -256,7 +258,7 @@
   <footer class="site-footer">
     <div class="page-shell footer-inner">
       <p><strong>SAM HUANG</strong><span id="footer-brand-sub">Compute Capability Registry</span></p>
-      <p id="footer-summary">Active 2 · Transferred 2 · Excluded 1 · Supporting 17</p>
+      <p id="footer-summary">Active 3 · Transferred 2 · Excluded 1 · Supporting 17</p>
       <div class="footer-actions">
         <button type="button" class="export-btn" id="export-json-btn">Export JSON</button>
         <button type="button" class="export-btn" id="export-md-btn">Export Markdown</button>

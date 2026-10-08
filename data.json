@@ -1,13 +1,13 @@
 {
-  "last_updated": "2026-09-25",
+  "last_updated": "2026-10-09",
   "inventory_owner": "Sam Huang",
   "registry_summary": {
-    "active_nodes": 2,
-    "active_memory_gb": 128,
+    "active_nodes": 3,
+    "active_memory_gb": 192,
     "installed_gpu_vram_gb": 28,
-    "vram_note": "兩張獨立 GPU 的安裝容量合計，不能合併為單一 28GB VRAM。",
+    "vram_note": "兩張獨立 GPU 的安裝容量合計（16GB + 12GB），不能合併為單一 28GB VRAM；VTI-490 搭載 Intel Arc B390 共享記憶體架構。",
     "supporting_assets": 17,
-    "vram_note_en": "Combined capacity of two discrete GPUs; cannot be pooled into a single 28GB VRAM pool.",
+    "vram_note_en": "Combined capacity of two discrete GPUs (16GB + 12GB); cannot be pooled into a single 28GB VRAM pool; VTI-490 uses Intel Arc B390 shared-memory architecture.",
     "vram_breakdown": [
       {
         "node_id": "AI_STATION_01",
@@ -80,6 +80,54 @@
       },
       "link_interface": "PCIe 4.0 x4 (OCuLink / USB4 40Gbps via Minisforum DEG2 dock)",
       "link_interface_en": "PCIe 4.0 x4 (OCuLink / USB4 40Gbps via Minisforum DEG2 dock)"
+    },
+    {
+      "id": "MINI_PC_01",
+      "name": "BOSGAME VTI-490 Mini PC",
+      "form_factor": "Mini PC",
+      "image_path": "images/bosgame_vti_490.png",
+      "status": "active",
+      "schedulable": true,
+      "work_role": "edge",
+      "role_label": "萬兆網路與邊緣運算節點",
+      "status_note": "可投入工作",
+      "summary": "搭載 16 核 Core Ultra X7 358H、64GB LPDDR5X-9600 高速記憶體與 10G+2.5G 雙網口，專為高頻寬資料管線、輕量 AI 推論與多螢幕展示設計。",
+      "workloads": [
+        "10GbE Pipelines",
+        "Lightweight AI",
+        "Edge Microservices",
+        "Quad-8K Display"
+      ],
+      "constraint": "整合式 Arc B390 iGPU 共享系統記憶體；若需重度 CUDA 算力可透過 OCuLink 外接獨立顯卡。",
+      "cpu": {
+        "model": "Intel Core Ultra X7 358H",
+        "architecture": "Arrow Lake / 16C 16T (Up to 4.8GHz)"
+      },
+      "ram": {
+        "capacity": "64GB",
+        "spec": "LPDDR5X 9600MHz On-Board"
+      },
+      "storage": {
+        "primary": "1TB M.2 2280 NVMe PCIe 4.0 SSD"
+      },
+      "gpu": "Intel Arc B390 Graphics (Max Dynamic Freq 2500 MHz)",
+      "link_interface": "OCuLink (PCIe 4.0 x4) · Dual Thunderbolt 4 (40Gbps)",
+      "link_interface_en": "OCuLink (PCIe 4.0 x4) · Dual Thunderbolt 4 (40Gbps)",
+      "role_label_en": "10GbE Network & Edge Compute Node",
+      "status_note_en": "Ready for Work",
+      "summary_en": "Powered by 16-core Core Ultra X7 358H, 64GB LPDDR5X-9600 ultra-fast RAM, and 10G+2.5G dual LAN. Built for high-bandwidth data pipelines, agile AI inference, and quad-8K output.",
+      "constraint_en": "Integrated Arc B390 iGPU shares system memory; heavy CUDA workloads require an external GPU via OCuLink.",
+      "ai_inference": {
+        "gpu_native": "Intel Arc B390 OpenVINO / DirectML (Phi-3, Mistral 7B)",
+        "cpu_offload": "64GB LPDDR5X 9600MHz 高頻寬記憶體模型載入",
+        "services": "10GbE High-Throughput Pipelines, Quad-8K Monitoring & Edge Services",
+        "services_zh": "萬兆高速資料管線、四螢幕監控與邊緣微服務"
+      },
+      "environment": {
+        "os": "Windows 11 Pro",
+        "runtime": "OpenVINO · DirectML · Node.js 22 · Python 3.12 (uv)",
+        "networking": "10GbE + 2.5GbE Dual LAN · Wi-Fi 7 · Bluetooth 5.4"
+      }
     },
     {
       "id": "DESKTOP_PC_02",

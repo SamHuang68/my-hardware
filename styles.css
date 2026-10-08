@@ -917,12 +917,24 @@ input:disabled {
 }
 
 .node-card-primary {
-  grid-column: span 7;
+  grid-column: span 12;
   border-color: rgba(13, 148, 136, 0.35);
 }
 
+@media (min-width: 921px) {
+  .node-card-primary {
+    display: grid;
+    grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.15fr);
+  }
+
+  .node-card-primary .node-media {
+    border-bottom: none;
+    border-right: 1px solid var(--line-dark);
+  }
+}
+
 .node-card-secondary {
-  grid-column: span 5;
+  grid-column: span 6;
 }
 
 .node-media {
