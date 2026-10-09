@@ -1479,7 +1479,7 @@ input:disabled {
   min-height: 0;
   max-height: 100%;
   object-fit: contain;
-  padding: 18px;
+  padding: 12px;
   transition: transform 160ms ease;
 }
 
