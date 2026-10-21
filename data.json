@@ -79,7 +79,13 @@
         "networking": "2.5GbE LAN · Tailscale Mesh VPN"
       },
       "link_interface": "PCIe 4.0 x4 (OCuLink / USB4 40Gbps via Minisforum DEG2 dock)",
-      "link_interface_en": "PCIe 4.0 x4 (OCuLink / USB4 40Gbps via Minisforum DEG2 dock)"
+      "link_interface_en": "PCIe 4.0 x4 (OCuLink / USB4 40Gbps via Minisforum DEG2 dock)",
+      "product_links": [
+        {
+          "url": "https://www.gmktec.com/products/intel-core-ultra-9-285h-evo-t1-ai-mini-pc",
+          "kind": "product"
+        }
+      ]
     },
     {
       "id": "MINI_PC_01",
@@ -127,7 +133,13 @@
         "os": "Windows 11 Pro",
         "runtime": "OpenVINO · DirectML · Node.js 22 · Python 3.12 (uv)",
         "networking": "10GbE + 2.5GbE Dual LAN · Wi-Fi 7 · Bluetooth 5.4"
-      }
+      },
+      "product_links": [
+        {
+          "url": "https://www.bosgamepc.com/products/bosgame-vti-490-intel-core-ultra-x7-358h-16c-16t-up-to-4.8ghz-64gb-lpddr5x-9600mhz-1tb-pcie4.0-ssd-",
+          "kind": "product"
+        }
+      ]
     },
     {
       "id": "DESKTOP_PC_02",
@@ -175,7 +187,27 @@
         "os": "Windows 11 / WSL2",
         "runtime": "Docker Desktop · Node.js 22 · Python 3.12 (uv)",
         "networking": "1GbE LAN · Tailscale Mesh VPN"
-      }
+      },
+      "product_links": [
+        {
+          "url": "https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-3000-series/amd-ryzen-7-3700x.html",
+          "kind": "component",
+          "spec": "CPU",
+          "page_type": "support"
+        },
+        {
+          "url": "https://www.msi.com/Motherboard/X570-A-PRO/Specification",
+          "kind": "component",
+          "spec": "MOBO",
+          "page_type": "specifications"
+        },
+        {
+          "url": "https://www.msi.com/PC-case/MAG-VAMPIRIC-011C/Specification",
+          "kind": "component",
+          "spec": "CASE",
+          "page_type": "specifications"
+        }
+      ]
     },
     {
       "id": "DESKTOP_PC_01",
@@ -205,7 +237,45 @@
       "case": "Phanteks XT View Matrix",
       "role_label_en": "Transferred",
       "status_note_en": "Out of Pool",
-      "summary_en": "Hardware specs preserved in historical record; transferred and excluded from active scheduling and capacity estimates."
+      "summary_en": "Hardware specs preserved in historical record; transferred and excluded from active scheduling and capacity estimates.",
+      "product_links": [
+        {
+          "url": "https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-7-7800x3d.html",
+          "kind": "component",
+          "spec": "CPU",
+          "page_type": "product"
+        },
+        {
+          "url": "https://www.gigabyte.com/tw/Graphics-Card/GV-N506TWF2OC-16GD",
+          "kind": "component",
+          "spec": "GPU",
+          "page_type": "product"
+        },
+        {
+          "url": "https://www.kingston.com/tw/support/technical/products/sa2000",
+          "kind": "component",
+          "spec": "STORAGE",
+          "page_type": "support"
+        },
+        {
+          "url": "https://rog.asus.com/tw/motherboards/rog-strix/rog-strix-x670e-i-gaming-wifi-model/",
+          "kind": "component",
+          "spec": "MOBO",
+          "page_type": "product"
+        },
+        {
+          "url": "https://rog.asus.com/tw/power-supply-units/rog-strix/rog-strix-850p-gaming/",
+          "kind": "component",
+          "spec": "PSU",
+          "page_type": "product"
+        },
+        {
+          "url": "https://phanteks.com/product/xt-view-matrix-black/",
+          "kind": "component",
+          "spec": "CASE",
+          "page_type": "product"
+        }
+      ]
     },
     {
       "id": "LAPTOP_01",
@@ -233,7 +303,13 @@
       "features": "Intel vPro Enterprise",
       "role_label_en": "Transferred",
       "status_note_en": "Out of Pool",
-      "summary_en": "Hardware specs preserved in historical record; transferred and no longer in use as a mobile or standby resource."
+      "summary_en": "Hardware specs preserved in historical record; transferred and no longer in use as a mobile or standby resource.",
+      "product_links": [
+        {
+          "url": "https://www.dell.com/en-us/shop/dell-laptops/spd/dellproplus14laptoppb14250",
+          "kind": "product"
+        }
+      ]
     },
     {
       "id": "HANDHELD_01",
@@ -260,7 +336,13 @@
       "gpu": "Intel Arc 140V Graphics",
       "role_label_en": "Pool Excluded",
       "status_note_en": "Thermal Limit",
-      "summary_en": "Hardware specs preserved; excluded from sustained background loads, redundancy, or scheduling due to thermal constraints."
+      "summary_en": "Hardware specs preserved; excluded from sustained background loads, redundancy, or scheduling due to thermal constraints.",
+      "product_links": [
+        {
+          "url": "https://tw.msi.com/Handheld/Claw-8-AI-Plus-A2VMX",
+          "kind": "product"
+        }
+      ]
     }
   ],
   "display_assets": [
@@ -273,7 +355,13 @@
       "panel": "65\" 4K QD-Mini LED, 144Hz Native / HDMI 2.1",
       "use_case": "大畫面檢視、展示與客廳遊戲",
       "image_path": "images/jvc_65xm.png",
-      "use_case_en": "Large-format review, showcase, and living room gaming"
+      "use_case_en": "Large-format review, showcase, and living room gaming",
+      "product_links": [
+        {
+          "url": "https://www.jvc.tv/pro/pro_65XM.html",
+          "kind": "product"
+        }
+      ]
     },
     {
       "id": "DISPLAY_02",
@@ -284,7 +372,13 @@
       "panel": "43\" 4K VA, 144Hz / HDR-1000 / HDMI 2.1",
       "use_case": "4K HDR 遊戲與內容檢查",
       "image_path": "images/aorus_fv43u.png",
-      "use_case_en": "4K HDR gaming and color/content inspection"
+      "use_case_en": "4K HDR gaming and color/content inspection",
+      "product_links": [
+        {
+          "url": "https://www.gigabyte.com/tw/Monitor/AORUS-FV43U",
+          "kind": "product"
+        }
+      ]
     },
     {
       "id": "DISPLAY_03",
@@ -295,7 +389,13 @@
       "panel": "32\" SS IPS, 170Hz OC / QHD / KVM",
       "use_case": "高幀率競技與多主機 KVM 控制",
       "image_path": "images/aorus_fi32q.png",
-      "use_case_en": "High-refresh competitive gaming and multi-host KVM switching"
+      "use_case_en": "High-refresh competitive gaming and multi-host KVM switching",
+      "product_links": [
+        {
+          "url": "https://www.gigabyte.com/Monitor/AORUS-FI32Q",
+          "kind": "product"
+        }
+      ]
     },
     {
       "id": "DISPLAY_04",
@@ -306,7 +406,13 @@
       "panel": "49\" QD-OLED, 144Hz / DQHD / HDR400 / 1800R",
       "use_case": "多視窗生產力與寬時間軸",
       "image_path": "images/MSI MPG 491CQP.png",
-      "use_case_en": "Multi-window productivity and wide timeline editing"
+      "use_case_en": "Multi-window productivity and wide timeline editing",
+      "product_links": [
+        {
+          "url": "https://tw.msi.com/Monitor/MPG-491CQP-QD-OLED",
+          "kind": "product"
+        }
+      ]
     }
   ],
   "peripherals": [
@@ -319,7 +425,13 @@
       "use_case": "生產力主控",
       "image_path": "images/mx_master_4.png",
       "name_en": "Logitech MX Master 4",
-      "use_case_en": "Primary productivity control"
+      "use_case_en": "Primary productivity control",
+      "product_links": [
+        {
+          "url": "https://www.logitech.com/zh-tw/shop/p/mx-master-4",
+          "kind": "product"
+        }
+      ]
     },
     {
       "id": "PERIPHERAL_02",
@@ -330,7 +442,13 @@
       "use_case": "遊戲主控",
       "image_path": "images/Viper V4 PRO.png",
       "name_en": "Viper V4 PRO",
-      "use_case_en": "Primary gaming control"
+      "use_case_en": "Primary gaming control",
+      "product_links": [
+        {
+          "url": "https://www.razer.com/gaming-mice/razer-viper-v4-pro",
+          "kind": "product"
+        }
+      ]
     },
     {
       "id": "PERIPHERAL_03",
@@ -341,7 +459,13 @@
       "use_case": "生產力主控",
       "image_path": "images/razer_pro_type.png",
       "name_en": "Razer Pro Type Ultra",
-      "use_case_en": "Productivity typing surface"
+      "use_case_en": "Productivity typing surface",
+      "product_links": [
+        {
+          "url": "https://www.razer.com/productivity/razer-pro-type-ultra",
+          "kind": "product"
+        }
+      ]
     },
     {
       "id": "PERIPHERAL_04",
@@ -352,7 +476,13 @@
       "use_case": "遊戲主控",
       "image_path": "images/BlackWidow V4 TKL HyperSpeed.png",
       "name_en": "BlackWidow V4 TKL HyperSpeed",
-      "use_case_en": "Compact gaming mechanical keyboard"
+      "use_case_en": "Compact gaming mechanical keyboard",
+      "product_links": [
+        {
+          "url": "https://www.razer.com/gaming-keyboards/razer-blackwidow-v4-tenkeyless-hyperspeed",
+          "kind": "product"
+        }
+      ]
     },
     {
       "id": "PERIPHERAL_05",
@@ -363,7 +493,13 @@
       "use_case": "行動遊戲控制",
       "image_path": "images/razer_kishi.png",
       "name_en": "Razer Kishi Ultra",
-      "use_case_en": "Mobile and handheld gaming controller"
+      "use_case_en": "Mobile and handheld gaming controller",
+      "product_links": [
+        {
+          "url": "https://www.razer.com/mobile-controllers/razer-kishi-ultra",
+          "kind": "product"
+        }
+      ]
     },
     {
       "id": "PERIPHERAL_06",
@@ -374,7 +510,13 @@
       "use_case": "個人音訊",
       "image_path": "images/airpods_pro_3.png",
       "name_en": "Apple AirPods Pro 3",
-      "use_case_en": "Personal wireless audio and communication"
+      "use_case_en": "Personal wireless audio and communication",
+      "product_links": [
+        {
+          "url": "https://www.apple.com/tw/airpods-pro/",
+          "kind": "product"
+        }
+      ]
     },
     {
       "id": "PERIPHERAL_07",
@@ -385,7 +527,13 @@
       "use_case": "個人音訊",
       "image_path": "images/bose_qc_earbuds.png",
       "name_en": "BOSE QuietComfort Earbuds",
-      "use_case_en": "Personal noise-cancelling audio"
+      "use_case_en": "Personal noise-cancelling audio",
+      "product_links": [
+        {
+          "url": "https://support.bose.com/s/article/quietcomfort-earbuds-2020-specifications?language=en_CA",
+          "kind": "specifications"
+        }
+      ]
     },
     {
       "id": "PERIPHERAL_08",
@@ -396,7 +544,13 @@
       "use_case": "PC 遊戲主控 / 雙觸控板與自定義配置",
       "image_path": "images/steam_controller.png",
       "name_en": "Steam Controller (#1)",
-      "use_case_en": "Living room & PC gaming master (dual trackpads & gyro)"
+      "use_case_en": "Living room & PC gaming master (dual trackpads & gyro)",
+      "product_links": [
+        {
+          "url": "https://store.steampowered.com/app/353370/Steam_Controller_2015/",
+          "kind": "product"
+        }
+      ]
     },
     {
       "id": "PERIPHERAL_09",
@@ -407,7 +561,13 @@
       "use_case": "雙人合作 / 備援控制器",
       "image_path": "images/steam_controller.png",
       "name_en": "Steam Controller (#2)",
-      "use_case_en": "Local co-op and backup controller"
+      "use_case_en": "Local co-op and backup controller",
+      "product_links": [
+        {
+          "url": "https://store.steampowered.com/app/353370/Steam_Controller_2015/",
+          "kind": "product"
+        }
+      ]
     },
     {
       "id": "PERIPHERAL_10",
@@ -418,7 +578,13 @@
       "use_case": "初音聯名電競四件套 (K3 Gen II 鍵盤 + Mini 無線滑鼠 + H1 Gen II 耳機 + P1 鼠墊)",
       "image_path": "images/asus_tuf_miku_set.png",
       "name_en": "ASUS TUF Gaming x Hatsune Miku Set (4-in-1)",
-      "use_case_en": "Miku edition 4-piece set (K3 Gen II + Mini Mouse + H1 Gen II + P1 Pad)"
+      "use_case_en": "Miku edition 4-piece set (K3 Gen II + Mini Mouse + H1 Gen II + P1 Pad)",
+      "product_links": [
+        {
+          "url": "https://www.asus.com/us/site/TUFGamingxHatsuneMiku/",
+          "kind": "collection"
+        }
+      ]
     }
   ],
   "power_assets": [
@@ -430,7 +596,13 @@
       "category": "Charging Station",
       "image_path": "images/ugreen_500w.png",
       "spec": "500W GaN 氮化鎵桌面電站 · 5 埠 (4C+1A) · 單埠 PD 3.1 140W · 雙筆電+多周邊滿速供電",
-      "spec_en": "500W GaN Desktop Charging Station · 5-Port (4C+1A) · PD 3.1 140W max single-port"
+      "spec_en": "500W GaN Desktop Charging Station · 5-Port (4C+1A) · PD 3.1 140W max single-port",
+      "product_links": [
+        {
+          "url": "https://www.ugreen.com/en-sg/products/sg-55551",
+          "kind": "product"
+        }
+      ]
     },
     {
       "id": "POWER_02",
@@ -440,7 +612,13 @@
       "category": "Charger",
       "image_path": "images/zeus_270w.png",
       "spec": "270W 氮化鎵快充 · 即時數位功率顯示 · 3 埠智慧動態分配",
-      "spec_en": "270W GaN Fast Charger · Real-time digital power display · 3-port dynamic allocation"
+      "spec_en": "270W GaN Fast Charger · Real-time digital power display · 3-port dynamic allocation",
+      "product_links": [
+        {
+          "url": "https://chargeasap.com/blogs/news/chargeasap-launches-zeus",
+          "kind": "introduction"
+        }
+      ]
     },
     {
       "id": "POWER_03",
@@ -450,7 +628,13 @@
       "category": "Charger",
       "image_path": "images/zeus_280w.png",
       "spec": "280W 高密度氮化鎵快充 · 多路大功率輸出 · 支援多裝置並聯快充",
-      "spec_en": "280W High-density GaN · Multi-channel high-output PD"
+      "spec_en": "280W High-density GaN · Multi-channel high-output PD",
+      "product_links": [
+        {
+          "url": "https://chargeasap.com/products/280w-zeus-charger",
+          "kind": "product"
+        }
+      ]
     }
   ],
   "workspace_topology": [
