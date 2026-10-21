@@ -126,6 +126,7 @@
       "ai_inference": {
         "gpu_native": "Intel Arc B390 OpenVINO / DirectML (Phi-3, Mistral 7B)",
         "cpu_offload": "64GB LPDDR5X 9600MHz 高頻寬記憶體模型載入",
+        "cpu_offload_en": "64GB LPDDR5X 9600MHz high-bandwidth memory for model loading",
         "services": "10GbE High-Throughput Pipelines, Quad-8K Monitoring & Edge Services",
         "services_zh": "萬兆高速資料管線、四螢幕監控與邊緣微服務"
       },

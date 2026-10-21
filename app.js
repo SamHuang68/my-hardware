@@ -8,7 +8,7 @@
 
 "use strict";
 
-const DATA_URL = "data.json?v=20261009-display";
+const DATA_URL = "data.json?v=20261021-offload-i18n";
 
 /**
  * Shorthand for document.getElementById.
@@ -511,7 +511,8 @@ function makeNodeCard(item, lang) {
     }
     if (item.ai_inference.cpu_offload) {
       const row = make("div", "ai-profile-row");
-      row.append(make("dt", null, dict.ai_cpu_offload), make("dd", null, item.ai_inference.cpu_offload));
+      const offload = lang === "en" ? (item.ai_inference.cpu_offload_en || item.ai_inference.cpu_offload) : item.ai_inference.cpu_offload;
+      row.append(make("dt", null, dict.ai_cpu_offload), make("dd", null, offload));
       aiList.append(row);
     }
     if (item.ai_inference.vision_gen) {
