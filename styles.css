@@ -83,6 +83,36 @@ a {
   color: inherit;
 }
 
+.product-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.product-links li {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.product-link {
+  display: inline-block;
+  min-height: 32px;
+  padding: 4px 0;
+  color: var(--aqua);
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.product-link:hover {
+  color: var(--ink);
+}
+
 button,
 input,
 select,

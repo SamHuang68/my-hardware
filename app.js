@@ -73,6 +73,9 @@ function showToast(message) {
  */
 const I18N = {
   en: {
+    product_link_labels: { product: "Official product page", component: "Official component", specifications: "Official specifications", introduction: "Official product introduction", collection: "Official collection page", support: "Official support" },
+    product_links_label: "Official hardware links",
+    opens_new_tab: "opens in a new tab",
     lang_code: "en",
     page_title: "Sam Huang · Hardware Capability Registry",
     meta_desc: "Sam Huang's hardware capability & compute registry: active three-node compute pool, lifecycle boundaries, and visual workspace.",
@@ -177,6 +180,9 @@ const I18N = {
     }
   },
   zh: {
+    product_link_labels: { product: "官方產品頁", component: "官方零組件", specifications: "官方規格", introduction: "官方產品介紹", collection: "官方套組頁", support: "官方支援" },
+    product_links_label: "硬體官方連結",
+    opens_new_tab: "在新分頁開啟",
     lang_code: "zh-Hant",
     page_title: "Sam Huang · 硬體能力與資產清冊",
     meta_desc: "Sam Huang 的硬體能力與資產清冊：可投入工作的三節點運算資源、生命週期邊界，以及顯示與控制設備。",
@@ -324,7 +330,9 @@ function specEntries(item) {
     ["CPU", [item.cpu?.model, item.cpu?.architecture].filter(Boolean).join(" · ")],
     ["RAM", [item.ram?.capacity, item.ram?.spec].filter(Boolean).join(" · ")],
     ["GPU", gpuLabel(item)],
-    ["STORAGE", item.storage?.primary]
+    ["STORAGE", item.storage?.primary],
+    ...[["MOBO", item.motherboard], ["PSU", item.power_supply], ["CASE", item.case]]
+      .filter(([label]) => item.product_links?.some((link) => link.kind === "component" && link.spec === label))
   ].filter(([, value]) => value);
 }
 
@@ -333,14 +341,59 @@ function specEntries(item) {
  * @param {object} item - Computing node asset.
  * @return {HTMLElement} dl element containing specs.
  */
-function makeSpecList(item) {
+function makeSpecList(item, lang) {
   const list = make("dl", "spec-list");
   for (const [label, value] of specEntries(item)) {
     const row = make("div", "spec-row");
-    row.append(make("dt", null, label), make("dd", null, value));
+    const description = make("dd");
+    const entry = item.product_links?.find((link) => link.kind === "component" && link.spec === label);
+    description.append((entry && makeProductLink(entry, item, lang, value)) || document.createTextNode(value));
+    row.append(make("dt", null, label), description);
     list.append(row);
   }
   return list;
+}
+
+/** Build a safe, accessible link to a verified official hardware page. */
+function makeProductLink(entry, item, lang, text) {
+  const dict = I18N[lang] || I18N.en;
+  const kindLabel = dict.product_link_labels[entry.page_type || entry.kind];
+  let url;
+  try {
+    url = new URL(entry.url);
+  } catch {
+    return null;
+  }
+  if (!kindLabel || url.protocol !== "https:" || url.username || url.password) return null;
+  const detail = lang === "en" ? (entry.label_en || entry.label) : entry.label;
+  const referenceLabel = entry.kind === "component" && entry.page_type && entry.page_type !== "product" ? ` · ${kindLabel}` : "";
+  const label = text ? `${text}${referenceLabel}` : (detail ? `${kindLabel}: ${detail}` : kindLabel);
+  const link = make("a", "product-link", label);
+  link.href = url.href;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  const name = lang === "en" ? (item.name_en || item.name) : item.name;
+  link.setAttribute("aria-label", `${name} — ${kindLabel}: ${text || detail || name} (${dict.opens_new_tab})`);
+  const arrow = make("span", null, " ↗");
+  arrow.setAttribute("aria-hidden", "true");
+  link.append(arrow);
+  return link;
+}
+
+/** Append product, collection or reference links; components belong in spec rows. */
+function appendProductLinks(container, item, lang) {
+  const dict = I18N[lang] || I18N.en;
+  const list = make("ul", "product-links");
+  list.setAttribute("aria-label", dict.product_links_label);
+  for (const entry of item.product_links ?? []) {
+    if (entry.kind === "component") continue;
+    const link = makeProductLink(entry, item, lang);
+    if (!link) continue;
+    const row = make("li");
+    row.append(link);
+    list.append(row);
+  }
+  if (list.childElementCount) container.append(list);
 }
 
 /**
@@ -485,7 +538,8 @@ function makeNodeCard(item, lang) {
     content.append(envContainer);
   }
 
-  content.append(makeSpecList(item));
+  content.append(makeSpecList(item, lang));
+  appendProductLinks(content, item, lang);
 
   if (constraint) content.append(make("p", "constraint-note", constraint));
   card.append(media, content);
@@ -524,13 +578,21 @@ function makeBoundaryItem(item, lang) {
 
   state.append(make("strong", null, copy.label), make("span", null, copy.note));
   main.append(state, make("h3", null, item.name), make("p", null, summary));
+  appendProductLinks(main, item, lang);
 
   const specs = make("div", "boundary-spec");
-  const cpu = make("span");
-  cpu.append(make("b", null, "CPU"), document.createTextNode(item.cpu?.model ?? "—"));
-  const gpu = make("span");
-  gpu.append(make("b", null, "GPU"), document.createTextNode(gpuLabel(item) || "—"));
-  specs.append(cpu, gpu);
+  const entries = [["CPU", item.cpu?.model ?? "—"], ["GPU", gpuLabel(item) || "—"]];
+  for (const [label, value] of specEntries(item)) {
+    if (!["CPU", "GPU"].includes(label) && item.product_links?.some((link) => link.kind === "component" && link.spec === label)) {
+      entries.push([label, value]);
+    }
+  }
+  for (const [label, value] of entries) {
+    const row = make("span");
+    const entry = item.product_links?.find((link) => link.kind === "component" && link.spec === label);
+    row.append(make("b", null, label), (entry && makeProductLink(entry, item, lang, value)) || document.createTextNode(value));
+    specs.append(row);
+  }
 
   card.append(thumb, main, specs);
   return card;
@@ -566,6 +628,7 @@ function makeDisplayCard(item, index, lang) {
     make("p", "display-panel", item.panel),
     make("p", "display-use", useCase)
   );
+  appendProductLinks(content, item, lang);
   card.append(visual, content);
   return card;
 }
@@ -600,6 +663,7 @@ function makeCompactAsset(item, lang) {
     make("h3", null, name),
     make("p", "compact-use", useCase)
   );
+  appendProductLinks(copy, item, lang);
   card.append(visual, copy);
   return card;
 }
@@ -631,6 +695,7 @@ function makePowerCard(item, lang) {
   if (specText) {
     content.append(make("span", "power-spec-badge", specText));
   }
+  appendProductLinks(content, item, lang);
 
   card.append(visual, content);
   return card;
